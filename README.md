@@ -18,4 +18,8 @@ The project structure will look something like this:
 - - `void close(file_t* file)`
 - - `void read(file_t* file, void* buffer, size_t size, size_t offset)`
 - - `void write(file_t* file, void* buffer, size_t size, size_t offset)`
+- A module can specify the following function and they fill be called in that order by the kernel:
+- - init (directly called after loading)
+- - device_init (called in the device init phase of the kernel)
+- - fs_init (called after kernel started all known devices should scan disks for the filesystem and then register a vfs node with \<fs_name\>-\<id\> (the id is just a internal number in the driver counting up)
 - The rules described [here](https://github.com/TheUltimateFoxOS/FoxOS/blob/main/CONTRIBUTING.md) still apply.
