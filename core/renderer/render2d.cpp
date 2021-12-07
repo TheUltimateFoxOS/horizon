@@ -1,5 +1,9 @@
 #include <renderer/render2d.h>
 
+#include <renderer/font_renderer.h>
+
+#include <utils/string.h>
+
 using namespace renderer;
 
 namespace renderer {
@@ -53,7 +57,7 @@ void render2d::load_bitmap(uint8_t data[], int y) {
 		}
 	}
 
-	// renderer::global_font_renderer->cursor_position = { 0, src_height + 16 };
+	renderer::global_font_renderer->cursor_position = { 0, src_height + 16 };
 }
 
 void render2d::load_bitmap(uint8_t data[], int y, int x) {
@@ -95,7 +99,7 @@ void render2d::load_bitmap(uint8_t data[], int y, int x) {
 		}
 	}
 
-	//renderer::global_font_renderer->cursor_position = { 0, src_height + 16 };
+	renderer::global_font_renderer->cursor_position = { 0, src_height + 16 };
 }
 
 renderer::point_t render2d::get_bitmap_info(uint8_t data[]) {
@@ -116,4 +120,10 @@ renderer::point_t render2d::get_bitmap_info(uint8_t data[]) {
 	int src_height = *(int*)&info[22];
 
 	return { src_height, src_width };
+}
+
+void render2d::next_line() {
+	memcpy((void*) (uint64_t)this->target->base_address, (void*)((uint64_t)this->target->base_address + (16 * this->target->width * 4)), (this->target->width * 4 * (this->target->height - 16)));
+	memset((void*) ((uint64_t)this->target->base_address + ((this->target->width * 4) * (this->target->height - 16))), 0, (this->target->width * 4 * 16));
+	memset((void*) ((uint64_t)this->target->base_address + ((this->target->width * 4) * (this->target->height - 16))), 0, (this->target->width * 4 * 16));
 }

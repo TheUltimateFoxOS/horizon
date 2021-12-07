@@ -5,6 +5,7 @@
 
 #include <renderer/renderer.h>
 #include <renderer/render2d.h>
+#include <renderer/font_renderer.h>
 
 #include <gdt.h>
 #include <memory/memory.h>
@@ -29,6 +30,12 @@ extern "C" void main() {
 	renderer::setup(global_bootinfo);
 
 	renderer::global_renderer_2d->load_bitmap(logo, 0);
+
+	renderer::global_font_renderer->putstring("Welcome to FoxOS ");
+	renderer::global_font_renderer->set_color(0xffffff00);
+	renderer::global_font_renderer->putstring("Horizon");
+	renderer::global_font_renderer->reset_color();
+	renderer::global_font_renderer->putstring("!");
 
 	while(1) {
 		__asm__ __volatile__("hlt");
