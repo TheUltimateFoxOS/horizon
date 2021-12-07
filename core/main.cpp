@@ -4,6 +4,7 @@
 #include <output/serial_port.h>
 
 #include <gdt.h>
+#include <memory/memory.h>
 
 #include <utils/log.h>
 
@@ -19,6 +20,7 @@ extern "C" void main() {
 	printf("Hello, world!\n");
 
 	setup_gdt();
+	memory::prepare_memory(global_bootinfo);
 
 	while(1) {
 		__asm__ __volatile__("hlt");
