@@ -10,7 +10,7 @@ void* heap_end;
 heap_segment_header_t* last_hdr;
 
 //#memory::initialize_heap-doc: Initialize the memory heap.
-void memory::initialize_heap(void* heap_address, size_t page_count){
+void memory::initialize_heap(void* heap_address, size_t page_count) {
 	void* pos = heap_address;
 
 	for (size_t i = 0; i < page_count; i++){
@@ -31,7 +31,7 @@ void memory::initialize_heap(void* heap_address, size_t page_count){
 }
 
 //#memory::free-doc: Free some allocated memory at an address.
-void memory::free(void* address){
+void memory::free(void* address) {
 	heap_segment_header_t* segment = (heap_segment_header_t*)address - 1;
 	segment->free = true;
 	segment->combine_forward();
@@ -39,7 +39,7 @@ void memory::free(void* address){
 }
 
 //#memory::malloc-doc: Allocate some memory.
-void* memory::malloc(size_t size){
+void* memory::malloc(size_t size) {
 	if (size % 0x10 > 0){ // it is not a multiple of 0x10
 		size -= (size % 0x10);
 		size += 0x10;
@@ -68,26 +68,26 @@ void* memory::malloc(size_t size){
 }
 
 //#memory::realloc-doc: Re-allocate some memory with a different size.
-void* memory::realloc(void* ptr, size_t oldSize, size_t size) {
+void* memory::realloc(void* ptr, size_t old_size, size_t size) {
 	if (size == 0) {
 		free(ptr);
 		return NULL;
 	} else if (!ptr) {
 		return malloc(size);
-	} else if (size <= oldSize) {
+	} else if (size <= old_size) {
 		return ptr;
 	} else {
-		void* newPtr = malloc(size);
-		if (newPtr) {
-			memcpy(newPtr, ptr, oldSize);
+		void* new_ptr = malloc(size);
+		if (new_ptr) {
+			memcpy(new_ptr, ptr, old_size);
 			free(ptr);
 		}
-		return newPtr;
+		return new_ptr;
 	}
 }
 
 //#heap_segment_header_t::split-doc: Split a heap segment.
-heap_segment_header_t* heap_segment_header_t::split(size_t split_length){
+heap_segment_header_t* heap_segment_header_t::split(size_t split_length) {
 	if (split_length < 0x10) return NULL;
 	int64_t split_seg_length = length - split_length - (sizeof(heap_segment_header_t));
 	if (split_seg_length < 0x10) return NULL;
@@ -106,7 +106,7 @@ heap_segment_header_t* heap_segment_header_t::split(size_t split_length){
 }
 
 //#memory::expand_heap-doc: Expand the heap size.
-void memory::expand_heap(size_t length){
+void memory::expand_heap(size_t length) {
 	if (length % 0x1000) {
 		length -= length % 0x1000;
 		length += 0x1000;
@@ -130,7 +130,7 @@ void memory::expand_heap(size_t length){
 }
 
 //#heap_segment_header_t::combine_forward-doc: Combine the next part of the heap with the current one. Used to expand the heap size.
-void heap_segment_header_t::combine_forward(){
+void heap_segment_header_t::combine_forward() {
 	if (next == NULL) return;
 	if (!next->free) return;
 
@@ -146,6 +146,6 @@ void heap_segment_header_t::combine_forward(){
 }
 
 //#heap_segment_header_t::combine_backward-doc: Combine the next part of the heap with the current one. Used to expand the heap size.
-void heap_segment_header_t::combine_backward(){
+void heap_segment_header_t::combine_backward() {
 	if (last != NULL && last->free) last->combine_forward();
 }
