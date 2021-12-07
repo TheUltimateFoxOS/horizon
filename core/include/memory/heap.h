@@ -23,8 +23,8 @@ namespace memory {
 	void expand_heap(size_t length);
 }
 
-inline void* operator new(size_t size) {return memory::malloc(size);}
-inline void* operator new[](size_t size) {return memory::malloc(size);}
+// inline void* operator new(size_t size) {return memory::malloc(size);}
+// inline void* operator new[](size_t size) {return memory::malloc(size);}
 
-inline void operator delete(void* p, unsigned long) {memory::free(p);}
-inline void operator delete[](void* p) {memory::free(p);}
+// inline void operator delete(void* p, unsigned long) {memory::free(p);}
+// inline void operator delete[](void* p) {memory::free(p);}

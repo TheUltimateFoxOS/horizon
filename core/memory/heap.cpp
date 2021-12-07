@@ -149,3 +149,19 @@ void heap_segment_header_t::combine_forward() {
 void heap_segment_header_t::combine_backward() {
 	if (last != NULL && last->free) last->combine_forward();
 }
+
+void* operator new(size_t size) {
+	return memory::malloc(size);
+}
+
+void* operator new[](size_t size) {
+	return memory::malloc(size);
+}
+
+void operator delete(void* p, unsigned long) {
+	memory::free(p);
+}
+
+void operator delete[](void* p) {
+	memory::free(p);
+}

@@ -29,8 +29,8 @@ void renderer::setup(stivale2_struct* bootinfo) {
 
 	debugf("Creating global_renderer2d...\n");
 
-	// TODO use new here once usable
-	render2d* renderer2d = (render2d*) memory::global_allocator.request_pages(sizeof(render2d) / 0x1000 + 1);
-	*renderer2d = render2d(&default_framebuffer);
+	//render2d* renderer2d = (render2d*) memory::global_allocator.request_pages(sizeof(render2d) / 0x1000 + 1);
+	//*renderer2d = render2d(&default_framebuffer);
+	render2d* renderer2d = new render2d(&default_framebuffer);
 	global_renderer_2d = renderer2d;
 }
