@@ -3,10 +3,15 @@
 #include <output/stivale2_terminal.h>
 #include <output/serial_port.h>
 
+#include <renderer/renderer.h>
+#include <renderer/render2d.h>
+
 #include <gdt.h>
 #include <memory/memory.h>
 
 #include <utils/log.h>
+
+extern uint8_t logo[];
 
 extern "C" void main() {
 
@@ -21,6 +26,9 @@ extern "C" void main() {
 
 	setup_gdt();
 	memory::prepare_memory(global_bootinfo);
+	renderer::setup(global_bootinfo);
+
+	renderer::global_renderer_2d->load_bitmap(logo, 0);
 
 	while(1) {
 		__asm__ __volatile__("hlt");
