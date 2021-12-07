@@ -35,24 +35,3 @@ int sprintf(char *buf, const char *fmt, ...) {
 	va_end(args);
 	return i;
 }
-
-void debugf(const char *fmt, ...) {
-	va_list args;
-	char buf[1024];
-
-	va_start(args, fmt);
-	vsprintf(buf, fmt, args);
-	va_end(args);
-
-	output::global_terminal->putstring(buf);
-}
-void printf(const char *fmt, ...) {
-	va_list args;
-	char buf[1024];
-
-	va_start(args, fmt);
-	vsprintf(buf, fmt, args);
-	va_end(args);
-
-	output::global_terminal->putstring(buf);
-}
