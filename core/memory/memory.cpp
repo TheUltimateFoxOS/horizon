@@ -6,6 +6,7 @@
 #include <memory/heap.h>
 
 #include <utils/log.h>
+#include <utils/string.h>
 
 using namespace memory;
 

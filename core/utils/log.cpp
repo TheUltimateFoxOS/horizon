@@ -6,6 +6,11 @@
 
 #include <stdarg.h>
 
+namespace log {
+	output::output_device* debug_device;
+	output::output_device* stdout_device;
+}
+
 void debugf(const char *fmt, ...) {
 	va_list args;
 	char buf[1024];
@@ -14,7 +19,7 @@ void debugf(const char *fmt, ...) {
 	vsprintf(buf, fmt, args);
 	va_end(args);
 
-	output::global_serial_port->putstring(buf);
+	log::debug_device->putstring(buf);
 }
 
 void printf(const char *fmt, ...) {
@@ -25,5 +30,5 @@ void printf(const char *fmt, ...) {
 	vsprintf(buf, fmt, args);
 	va_end(args);
 
-	output::global_terminal->putstring(buf);
+	log::stdout_device->putstring(buf);
 }

@@ -12,7 +12,7 @@ namespace renderer {
 			virtual void putstring(const char *str);
 			virtual void putchar(char c);
 
-			void clear();
+			void clear(uint32_t c_color);
 			void clear_line();
 			void set_color(uint32_t new_color);
 			void reset_color();

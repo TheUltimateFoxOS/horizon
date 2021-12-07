@@ -18,9 +18,12 @@ extern "C" void main() {
 
 	output::stivale2_terminal terminal = output::stivale2_terminal();
 	output::global_terminal = &terminal;
+	log::stdout_device = output::global_terminal;
 
 	output::serial_port serial_port = output::serial_port(COM1);
 	output::global_serial_port = &serial_port;
+	log::debug_device = output::global_serial_port;
+
 
 	debugf("Hello, world!\n");
 	printf("Hello, world!\n");
@@ -29,13 +32,10 @@ extern "C" void main() {
 	memory::prepare_memory(global_bootinfo);
 	renderer::setup(global_bootinfo);
 
+	renderer::global_font_renderer->clear(0);
 	renderer::global_renderer_2d->load_bitmap(logo, 0);
 
-	renderer::global_font_renderer->putstring("Welcome to FoxOS ");
-	renderer::global_font_renderer->set_color(0xffffff00);
-	renderer::global_font_renderer->putstring("Horizon");
-	renderer::global_font_renderer->reset_color();
-	renderer::global_font_renderer->putstring("!");
+	printf("Welcome to FoxOS Horizon!\n");
 
 	while(1) {
 		__asm__ __volatile__("hlt");

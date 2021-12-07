@@ -1,6 +1,6 @@
 #include <stivale2.h>
 
-static unsigned char stack[0x4000];
+static unsigned char stack[0x4000 * 16];
 
 #ifdef USE_STIVALE2_SMP
 static stivale2_header_tag_smp smp_tag = {

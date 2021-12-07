@@ -84,7 +84,7 @@ void font_renderer::putstring(const char *str) {
 	}
 }
 
-void font_renderer::clear() {
+void font_renderer::clear(uint32_t c_color) {
 	uint64_t base = (uint64_t) target_frame_buffer->base_address;
 	uint64_t bytes_per_scanline = target_frame_buffer->width * 4;
 	uint64_t fb_height = target_frame_buffer->height;
@@ -93,7 +93,7 @@ void font_renderer::clear() {
 	for (int vertical_scanline = 0; vertical_scanline < fb_height; vertical_scanline ++){
 		uint64_t pix_ptr_base = base + (bytes_per_scanline * vertical_scanline);
 		for (uint32_t* pixPtr = (uint32_t*)pix_ptr_base; pixPtr < (uint32_t*)(pix_ptr_base + bytes_per_scanline); pixPtr ++){
-			*pixPtr = color;
+			*pixPtr = c_color;
 		}
 	}
 }

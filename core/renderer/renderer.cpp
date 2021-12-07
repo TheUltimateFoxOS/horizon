@@ -55,7 +55,8 @@ void renderer::setup(stivale2_struct* bootinfo) {
 	finished_font->psf1_Header = font_header;
 	finished_font->glyph_buffer = glyph_buffer;
 
-	debugf("Creating global_font_renderer");
+	debugf("Creating global_font_renderer\n");
 	font_renderer* _font_renderer = new font_renderer(&default_framebuffer, finished_font);
 	global_font_renderer = _font_renderer;
+	log::stdout_device = renderer::global_font_renderer;
 }
