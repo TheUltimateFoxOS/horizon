@@ -3,6 +3,7 @@
 #include <memory/page_frame_allocator.h>
 #include <memory/page_table_manager.h>
 #include <memory/pagetable.h>
+#include <memory/heap.h>
 
 #include <utils/log.h>
 
@@ -65,4 +66,7 @@ void memory::prepare_memory(stivale2_struct* bootinfo) {
 
 	debugf("Loading page table...\n");
 	__asm__ __volatile__ ("mov %0, %%cr3" : : "r" (pml4));
+
+	debugf("Loading heap...\n");
+	memory::initialize_heap((void*) 0x0000100000000000, 0x10);
 }
