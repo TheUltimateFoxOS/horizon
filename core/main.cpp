@@ -3,6 +3,8 @@
 #include <output/stivale2_terminal.h>
 #include <output/serial_port.h>
 
+#include <gdt.h>
+
 #include <utils/log.h>
 
 extern "C" void main() {
@@ -15,6 +17,8 @@ extern "C" void main() {
 
 	debugf("Hello, world!\n");
 	printf("Hello, world!\n");
+
+	setup_gdt();
 
 	while(1) {
 		__asm__ __volatile__("hlt");
