@@ -14,6 +14,7 @@
 #include <utils/string.h>
 
 #include <elf/elf_resolver.h>
+#include <elf/kernel_module.h>
 #include <fs/vfs.h>
 #include <fs/stivale_modules.h>
 
@@ -60,6 +61,10 @@ extern "C" void main() {
 	// fs::global_vfs->read(test, buffer, test->size > 512 ? 512 : test->size, 0);
 
 	// printf("%s", buffer);
+
+	elf::load_kernel_module("stivale:test_mod.o");
+	elf::device_init_all();
+	elf::fs_init_all();
 
 	while(1) {
 		__asm__ __volatile__("hlt");
