@@ -17,23 +17,6 @@
 
 extern uint8_t logo[];
 
-void test4() {
-	printf("test4\n");
-	abortf("test4");
-}
-
-void test3() {
-	test4();
-}
-
-void test2() {
-	test3();
-}
-
-void test1() {
-	test2();
-}
-
 extern "C" void main() {
 
 	output::stivale2_terminal terminal = output::stivale2_terminal();
@@ -57,10 +40,6 @@ extern "C" void main() {
 	renderer::global_renderer_2d->load_bitmap(logo, 0);
 
 	printf("Welcome to FoxOS Horizon!\n");
-
-	test1();
-
-	abortf("Test %d", 123);
 
 	while(1) {
 		__asm__ __volatile__("hlt");
