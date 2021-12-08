@@ -2,9 +2,11 @@
 
 #include <utils/log.h>
 #include <utils/vsprintf.h>
+#include <utils/string.h>
 #include <renderer/font_renderer.h>
 #include <renderer/render2d.h>
 #include <elf/unwind.h>
+#include <elf/elf_resolver.h>
 
 #include <stdint.h>
 
@@ -46,7 +48,14 @@ __attribute__((noreturn)) void abortf(const char* fmt, ...) {
 	debugf("Starting stack trace using %d as max lines!\n", max_lines);
 
 	elf::unwind(max_lines, rbp, [](int frame_num, uint64_t rip) {
-		printf("%d: %p\n", frame_num, rip);
+		if(elf::resolve_symbol(elf::resolve_symbol(rip)) != 0) {
+			char str[512] = {0};
+			sprintf(str, "%s + %d", elf::resolve_symbol(rip), rip - elf::resolve_symbol(elf::resolve_symbol(rip)));
+			printf("%s\n", str);
+		} else {
+			printf("<unknown function at 0x%x>\n", rip);
+		}
+		// printf("%d: %p\n", frame_num, rip);
 	});
 
 	renderer::global_renderer_2d->load_bitmap(screen_of_death, renderer::global_renderer_2d->target->height - bmp_info.x, 0);

@@ -7,6 +7,8 @@
 #include <renderer/render2d.h>
 #include <renderer/font_renderer.h>
 #include <utils/abort.h>
+#include <utils/string.h>
+#include <elf/elf_resolver.h>
 
 #include <gdt.h>
 #include <memory/memory.h>
@@ -14,6 +16,23 @@
 #include <utils/log.h>
 
 extern uint8_t logo[];
+
+void test4() {
+	printf("test4\n");
+	abortf("test4");
+}
+
+void test3() {
+	test4();
+}
+
+void test2() {
+	test3();
+}
+
+void test1() {
+	test2();
+}
 
 extern "C" void main() {
 
@@ -31,6 +50,7 @@ extern "C" void main() {
 
 	setup_gdt();
 	memory::prepare_memory(global_bootinfo);
+	elf::setup(global_bootinfo);
 	renderer::setup(global_bootinfo);
 
 	renderer::global_font_renderer->clear(0);
@@ -38,7 +58,9 @@ extern "C" void main() {
 
 	printf("Welcome to FoxOS Horizon!\n");
 
-	// abortf("Test %d", 123);
+	test1();
+
+	abortf("Test %d", 123);
 
 	while(1) {
 		__asm__ __volatile__("hlt");
