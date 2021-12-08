@@ -1,4 +1,7 @@
 #include <stivale2.h>
+#include <gdt.h>
+
+#include <interrupts/interrupts.h>
 
 #include <output/stivale2_terminal.h>
 #include <output/serial_port.h>
@@ -6,11 +9,12 @@
 #include <renderer/renderer.h>
 #include <renderer/render2d.h>
 #include <renderer/font_renderer.h>
+
 #include <utils/abort.h>
 #include <utils/string.h>
+
 #include <elf/elf_resolver.h>
 
-#include <gdt.h>
 #include <memory/memory.h>
 
 #include <utils/log.h>
@@ -33,6 +37,7 @@ extern "C" void main() {
 
 	setup_gdt();
 	memory::prepare_memory(global_bootinfo);
+	interrupts::prepare_interrupts();
 	elf::setup(global_bootinfo);
 	renderer::setup(global_bootinfo);
 
