@@ -97,10 +97,10 @@ uint64_t elf::resolve_symbol(char* name) {
 
 char* elf::resolve_symbol(uint64_t address) {
 	char* sym_name = kernel_resolver->resolve((void*) address);
-	if (strcmp(sym_name, "<unknown function>") == 0) {
+	if (strcmp(sym_name, (char*) "<unknown function>") == 0) {
 		for (int i = 0; i < other_resolver_count; i++) {
 			sym_name = other_resolver[i]->resolve((void*) address);
-			if (strcmp(sym_name, "<unknown function>") != 0) {
+			if (strcmp(sym_name, (char*) "<unknown function>") != 0) {
 				break;
 			}
 		}
