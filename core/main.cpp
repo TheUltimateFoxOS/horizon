@@ -1,6 +1,8 @@
 #include <stivale2.h>
 #include <gdt.h>
 
+#include <driver/driver.h>
+
 #include <interrupts/interrupts.h>
 
 #include <output/stivale2_terminal.h>
@@ -48,6 +50,9 @@ extern "C" void main() {
 	renderer::global_renderer_2d->load_bitmap(logo, 0);
 
 	printf("Welcome to FoxOS Horizon!\n");
+
+	//init drivers here
+	driver::global_driver_manager->activate_all(false);
 
 	fs::vfs::setup();
 
