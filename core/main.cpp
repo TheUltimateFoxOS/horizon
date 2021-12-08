@@ -14,6 +14,8 @@
 #include <utils/string.h>
 
 #include <elf/elf_resolver.h>
+#include <fs/vfs.h>
+#include <fs/stivale_modules.h>
 
 #include <memory/memory.h>
 
@@ -45,6 +47,19 @@ extern "C" void main() {
 	renderer::global_renderer_2d->load_bitmap(logo, 0);
 
 	printf("Welcome to FoxOS Horizon!\n");
+
+	fs::vfs::setup();
+
+	debugf("Mounting stivale modules vfs mount...\n");
+	fs::stivale_mount* stivale_mount = new fs::stivale_mount(global_bootinfo);
+	fs::global_vfs->register_mount((char*) "stivale", stivale_mount);
+
+	// fs::vfs::file_t* test = fs::global_vfs->open("stivale:limine.cfg");
+
+	// char buffer[512] = {0};
+	// fs::global_vfs->read(test, buffer, test->size > 512 ? 512 : test->size, 0);
+
+	// printf("%s", buffer);
 
 	while(1) {
 		__asm__ __volatile__("hlt");

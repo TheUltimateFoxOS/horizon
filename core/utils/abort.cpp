@@ -36,7 +36,7 @@ __attribute__((noreturn)) void abortf(const char* fmt, ...) {
 
 	printf("Please report this issue at ");
 	renderer::global_font_renderer->set_color(0xff0000ff);
-	printf("https://github.com/TheUltimateFoxOS/FoxOS");
+	printf("https://github.com/TheUltimateFoxOS/horizon");
 	renderer::global_font_renderer->reset_color();
 	printf(" by creating an issue.\n");
 	printf("Feel free to fix this and submit a pull request!\n\n");
