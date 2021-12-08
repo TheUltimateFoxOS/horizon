@@ -169,6 +169,8 @@ void interrupts::prepare_interrupts() {
 
 	pic1_data.Write(0);
 	pci2_data.Write(0);
+
+	__asm__ __volatile__ ("sti");
 }
 
 //#intr_common_handler_c-doc: The general purpose interrupt handler. This handler is called when an interrupt is received. The handler will check if there is a interrupt handler for the interrupt. If there is a interrupt handler, the handler will be called. If the interrupt is a exception, the handler will cause a panic if there is no signal handler.

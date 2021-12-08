@@ -62,7 +62,7 @@ extern "C" void main() {
 
 	// printf("%s", buffer);
 
-	// elf::load_kernel_module("stivale:test_mod.o");
+	elf::load_kernel_module("stivale:ps2_keyboard.o");
 
 	elf::device_init_all();
 	// driver::global_driver_manager->add_driver(new driver::device_driver());

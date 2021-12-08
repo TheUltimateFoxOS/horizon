@@ -5,6 +5,7 @@ build:
 	make -C core
 
 	make -C test_mod
+	make -C ps2_keyboard
 
 setup:
 	@mkdir $(BUILDDIR)
