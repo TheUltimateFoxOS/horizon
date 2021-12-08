@@ -181,6 +181,11 @@ void elf::load_kernel_module(void* module, uint32_t size) {
 void elf::device_init_all() {
 	debugf("Calling device_init for all modules\n");
 
+	if (!modules) {
+		debugf("No modules loaded\n");
+		return;
+	}
+
 	modules->foreach([](list<module_t*>::node* n) {
 		module_t* module = n->data;
 		if (module->device_init != nullptr) {
@@ -192,6 +197,11 @@ void elf::device_init_all() {
 
 void elf::fs_init_all() {
 	debugf("Calling fs_init for all modules\n");
+
+	if (!modules) {
+		debugf("No modules loaded\n");
+		return;
+	}
 
 	modules->foreach([](list<module_t*>::node* n) {
 		module_t* module = n->data;
