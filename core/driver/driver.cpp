@@ -47,6 +47,8 @@ void driver_manager::add_driver(device_driver* driver) {
 
 //#driver_manager::set_status-doc: Print the device status onto the screen.
 void driver_manager::set_status(char* status, uint64_t color) {
+	renderer::global_font_renderer->cursor_position.x = renderer::global_font_renderer->target_frame_buffer->width - 8 * (strlen(status) + 4);
+	
 	uint64_t old_color = renderer::global_font_renderer->color;
 	printf("[");
 	renderer::global_font_renderer->color = color;

@@ -49,11 +49,6 @@ extern "C" void main() {
 	renderer::global_font_renderer->clear(0);
 	renderer::global_renderer_2d->load_bitmap(logo, 0);
 
-	printf("Welcome to FoxOS Horizon!\n");
-
-	//init drivers here
-	driver::global_driver_manager->activate_all(false);
-
 	fs::vfs::setup();
 
 	debugf("Mounting stivale modules vfs mount...\n");
@@ -67,9 +62,16 @@ extern "C" void main() {
 
 	// printf("%s", buffer);
 
-	elf::load_kernel_module("stivale:test_mod.o");
+	// elf::load_kernel_module("stivale:test_mod.o");
+
 	elf::device_init_all();
+	// driver::global_driver_manager->add_driver(new driver::device_driver());
+	//init drivers here
+	driver::global_driver_manager->activate_all(false);
+
 	elf::fs_init_all();
+
+	printf("Welcome to FoxOS Horizon!\n");
 
 	while(1) {
 		__asm__ __volatile__("hlt");
