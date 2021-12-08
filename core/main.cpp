@@ -6,6 +6,7 @@
 #include <renderer/renderer.h>
 #include <renderer/render2d.h>
 #include <renderer/font_renderer.h>
+#include <utils/abort.h>
 
 #include <gdt.h>
 #include <memory/memory.h>
@@ -36,6 +37,8 @@ extern "C" void main() {
 	renderer::global_renderer_2d->load_bitmap(logo, 0);
 
 	printf("Welcome to FoxOS Horizon!\n");
+
+	// abortf("Test %d", 123);
 
 	while(1) {
 		__asm__ __volatile__("hlt");

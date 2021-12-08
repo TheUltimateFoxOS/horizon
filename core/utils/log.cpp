@@ -13,7 +13,7 @@ namespace log {
 
 void debugf(const char *fmt, ...) {
 	va_list args;
-	char buf[1024];
+	char buf[1024] = {0};
 
 	va_start(args, fmt);
 	vsprintf(buf, fmt, args);
@@ -24,7 +24,7 @@ void debugf(const char *fmt, ...) {
 
 void printf(const char *fmt, ...) {
 	va_list args;
-	char buf[1024];
+	char buf[1024] = {0};
 
 	va_start(args, fmt);
 	vsprintf(buf, fmt, args);
