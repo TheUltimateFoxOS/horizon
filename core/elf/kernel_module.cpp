@@ -8,13 +8,30 @@
 #include <utils/string.h>
 #include <utils/list.h>
 
+#include <renderer/font_renderer.h>
+
 #include <memory/page_frame_allocator.h>
 
 using namespace elf;
 
 list<module_t*>* modules = nullptr;
 
-void elf::load_kernel_module(char* path) {
+void kernel_module_render_status(char* status, uint64_t color) {
+	renderer::global_font_renderer->cursor_position.x = renderer::global_font_renderer->target_frame_buffer->width - 8 * (strlen(status) + 4);
+	
+	uint64_t old_color = renderer::global_font_renderer->color;
+	printf("[");
+	renderer::global_font_renderer->color = color;
+	printf("%s", status);
+	renderer::global_font_renderer->color = old_color;
+	printf("]\n");
+}
+
+void elf::load_kernel_module(char* path, bool announce) {
+	if (announce) {
+		printf("Loading kernel module %s", path);
+	}
+
 	fs::vfs::file_t* file = fs::vfs::global_vfs->open(path);
 
 	if (file == nullptr) {
@@ -30,6 +47,10 @@ void elf::load_kernel_module(char* path) {
 
 	fs::vfs::global_vfs->close(file);
 	memory::global_allocator.free_pages(elf_contents, page_amount);
+
+	if (announce) {
+		kernel_module_render_status((char*) "ok", 0xff00ff00);
+	}
 }
 
 void elf::load_kernel_module(void* module, uint32_t size) {

@@ -71,7 +71,7 @@ extern "C" void main() {
 	char* kernel_module_path = nullptr;
 	while ((kernel_module_path = global_argparser->get_arg("--load_module"))) {
 		debugf("Loading module: %s\n", kernel_module_path);
-		elf::load_kernel_module(kernel_module_path);
+		elf::load_kernel_module(kernel_module_path, true);
 	}
 
 	pci::enumerate_pci();
