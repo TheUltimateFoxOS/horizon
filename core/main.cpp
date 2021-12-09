@@ -2,6 +2,7 @@
 #include <gdt.h>
 
 #include <driver/driver.h>
+#include <driver/disk.h>
 
 #include <interrupts/interrupts.h>
 
@@ -20,6 +21,8 @@
 #include <elf/kernel_module.h>
 #include <fs/vfs.h>
 #include <fs/stivale_modules.h>
+
+#include <pci/pci.h>
 
 #include <memory/memory.h>
 
@@ -56,6 +59,8 @@ extern "C" void main() {
 	fs::stivale_mount* stivale_mount = new fs::stivale_mount(global_bootinfo);
 	fs::global_vfs->register_mount((char*) "stivale", stivale_mount);
 
+	driver::global_disk_manager = new driver::disk_driver_manager();
+
 	setup_global_argparser(global_bootinfo);
 
 	if (global_argparser->is_arg("--serial_to_screen_redirect")) {
@@ -68,6 +73,8 @@ extern "C" void main() {
 		debugf("Loading module: %s\n", kernel_module_path);
 		elf::load_kernel_module(kernel_module_path);
 	}
+
+	pci::enumerate_pci();
 
 	// fs::vfs::file_t* test = fs::global_vfs->open("stivale:limine.cfg");
 

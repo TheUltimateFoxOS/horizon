@@ -24,4 +24,4 @@ The project structure will look something like this:
 - - device_init (called in the device init phase of the kernel)
 - - fs_init (called after kernel started all known devices should scan disks for the filesystem and then register a vfs node with \<fs_name\>-\<id\> (the id is just a internal number in the driver counting up)
 - The rules described [here](https://github.com/TheUltimateFoxOS/FoxOS/blob/main/CONTRIBUTING.md) still apply.
-- Syscals are implemented by id's. there will be always id 0 (get_syscall_id) wich returns the id for a syscall searchd by name
+- Syscall's are implemented by id's. there will be always id 0 (get_syscall_id) witch returns the id for a syscall searched by name
