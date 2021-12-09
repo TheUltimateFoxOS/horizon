@@ -14,6 +14,7 @@
 
 #include <utils/abort.h>
 #include <utils/string.h>
+#include <utils/argparse.h>
 
 #include <elf/elf_resolver.h>
 #include <elf/kernel_module.h>
@@ -55,6 +56,19 @@ extern "C" void main() {
 	fs::stivale_mount* stivale_mount = new fs::stivale_mount(global_bootinfo);
 	fs::global_vfs->register_mount((char*) "stivale", stivale_mount);
 
+	setup_global_argparser(global_bootinfo);
+
+	if (global_argparser->is_arg("--serial_to_screen_redirect")) {
+		debugf("Redirecting serial port to screen\n");
+		log::debug_device = renderer::global_font_renderer;
+	}
+
+	char* kernel_module_path = nullptr;
+	while ((kernel_module_path = global_argparser->get_arg("--load_module"))) {
+		debugf("Loading module: %s\n", kernel_module_path);
+		elf::load_kernel_module(kernel_module_path);
+	}
+
 	// fs::vfs::file_t* test = fs::global_vfs->open("stivale:limine.cfg");
 
 	// char buffer[512] = {0};
@@ -62,7 +76,7 @@ extern "C" void main() {
 
 	// printf("%s", buffer);
 
-	elf::load_kernel_module("stivale:ps2_keyboard.o");
+	// elf::load_kernel_module("stivale:ps2_keyboard.o");
 
 	elf::device_init_all();
 	// driver::global_driver_manager->add_driver(new driver::device_driver());
