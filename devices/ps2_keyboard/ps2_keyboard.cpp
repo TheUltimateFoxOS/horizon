@@ -1,8 +1,10 @@
 #include <ps2_keyboard.h>
 
-#include <layout.h>
+#include <ps2_layout.h>
 #include <utils/log.h>
 #include <stdint.h>
+
+using namespace ps2;
 
 ps2_keyboard::ps2_keyboard() : interrupts::interrupt_handler(0x21), dataport(0x60), commandport(0x64) {}
 

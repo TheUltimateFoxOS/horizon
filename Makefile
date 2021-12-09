@@ -4,8 +4,7 @@ BUILDDIR = bin
 build:
 	make -C core
 
-	make -C test_mod
-	make -C ps2_keyboard
+	make -C devices
 
 setup:
 	@mkdir $(BUILDDIR)

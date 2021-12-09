@@ -71,7 +71,7 @@ extern "C" void main() {
 
 	elf::fs_init_all();
 
-	printf("Welcome to FoxOS Horizon!\n");
+	printf("\nWelcome to FoxOS Horizon!\n");
 
 	while(1) {
 		__asm__ __volatile__("hlt");

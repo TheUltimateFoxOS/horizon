@@ -8,7 +8,7 @@
 void init() {}
 
 void device_init() {
-	driver::global_driver_manager->add_driver(new ps2_keyboard());
+	driver::global_driver_manager->add_driver(new ps2::ps2_keyboard());
 }
 
 void fs_init() {}

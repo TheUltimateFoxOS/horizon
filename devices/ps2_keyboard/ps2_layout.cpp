@@ -1,6 +1,7 @@
-#include <layout.h>
+#include <ps2_layout.h>
+using namespace ps2;
 
-char keymap_de(uint8_t key, bool l_shift, bool r_shift, bool caps_lock) {
+char ps2::keymap_de(uint8_t key, bool l_shift, bool r_shift, bool caps_lock) {
 	if(l_shift || r_shift || caps_lock){
 		switch(key){
 			case 0x02: return('!'); break;
