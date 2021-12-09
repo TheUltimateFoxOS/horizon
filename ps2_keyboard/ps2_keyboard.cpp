@@ -38,8 +38,42 @@ char ps2_keyboard::getchar() {
 	return current_char;
 }
 
+void ps2_keyboard::special_key_down(special_key key) {
+
+}
+
+void ps2_keyboard::special_key_up(special_key key) {
+
+}
+
 void ps2_keyboard::handle() {
 	uint8_t key = dataport.Read();
-	current_char = keymap_de(key, false, false, false);
-	printf("%c", current_char);
+	
+	switch (key)
+	{
+	case 0x2A: //Left shift up
+		this->l_shift = true;
+		special_key_down(special_key::left_shift);
+		break;
+
+	case 0xAA: //Left shift up
+		this->l_shift = false;
+		special_key_up(special_key::left_shift);
+		break;
+
+	case 0x36: //Right shift down
+		this->r_shift = true;
+		special_key_down(special_key::right_shift);
+		break; 
+	case 0xB6: //Right shift up
+		this->r_shift = false;
+		special_key_up(special_key::right_shift);
+		break;
+	
+	default:
+		current_char = keymap_de(key, l_shift, r_shift, caps_lock);
+		printf("%c", current_char);
+		break;
+	}
+
 }
