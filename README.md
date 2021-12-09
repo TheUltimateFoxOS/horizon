@@ -5,7 +5,8 @@ Horizon is planed to become the main FoxOS kernel at some point. We decided to r
 The project structure will look something like this:
 
 - /core -> contains the core kernel stuff like paging and memory management it will also contain some very basic drivers like the VGA/serial and ps2 drivers.
-- /\<device name\> -> contains the drivers for the device as a loadable module.
+- /devices/\<device name\> -> contains the drivers for the device as a loadable module.
+- /filesystems/\<fs name\> -> contains the drivers for the filesystem as a loadable module.
 
 ## The strict design principles
 
