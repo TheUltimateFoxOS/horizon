@@ -26,9 +26,9 @@ void apic::smp_spinup(stivale2_struct* bootinfo) {
 
 	trampoline_data* data = (trampoline_data*) (((uint64_t) &ap_trampoline_data - (uint64_t) &ap_trampoline) + 0x8000);
 
-	debugf("Trampline data: 0x%x\n", data);
-	debugf("Trampline: 0x%x\n", ((uint64_t) &ap_trampoline - (uint64_t) &ap_trampoline) + 0x8000);
-	debugf("Trampline 64: 0x%x\n", ((uint64_t) &ap_trampoline_64 - (uint64_t) &ap_trampoline) + 0x8000);
+	debugf("Trampoline data: 0x%x\n", data);
+	debugf("Trampoline: 0x%x\n", ((uint64_t) &ap_trampoline - (uint64_t) &ap_trampoline) + 0x8000);
+	debugf("Trampoline 64: 0x%x\n", ((uint64_t) &ap_trampoline_64 - (uint64_t) &ap_trampoline) + 0x8000);
 
 	for (int i = 0; i < acpi::madt::lapic_count; i++) {
 		if(acpi::madt::lapic_ids[i] == bsp_id) {

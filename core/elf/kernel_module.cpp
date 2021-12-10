@@ -190,12 +190,14 @@ void elf::load_kernel_module(void* module, uint32_t size) {
 
 	debugf("Loaded module %s at %x\n", module_data->name, base_address);
 
-	__asm__ __volatile__ (
-		"movq %0, %%rax;"
-		"callq *%%rax;"
-		:
-		: "r"(module_data->init)
-	);
+	if (module_data->init != nullptr) {
+		__asm__ __volatile__ (
+			"movq %0, %%rax;"
+			"callq *%%rax;"
+			:
+			: "r"(module_data->init)
+		);
+	}
 }
 
 

@@ -35,9 +35,9 @@ void enumerate_function(uint64_t address, uint64_t function, uint16_t bus, uint1
 		debugf("Searching for pci driver...\n");
 		list<pci_driver>::node* driver = pci_drivers->find<pci_header_0_t*>([](pci_header_0_t* header, list<pci_driver>::node* node) {
 			if (node->data.use_class_subclass_prog_IF) {
-				return (header->header.class_ == node->data._class && header->header.subclass == node->data.subclass && header->header.prog_if == node->data.prog_IF);
+				return ((header->header.class_ == node->data._class || node->data._class == 0) && (header->header.subclass == node->data.subclass || node->data.subclass == 0) && (header->header.prog_if == node->data.prog_IF || node->data.prog_IF == 0));
 			} else if (node->data.use_vendor_device_id) {
-				return (header->header.vendor_id == node->data.vendor_id && header->header.device_id == node->data.device_id);
+				return ((header->header.vendor_id == node->data.vendor_id || node->data.vendor_id == 0) && (header->header.device_id == node->data.device_id || node->data.device_id == 0));
 			} else {
 				debugf("Error: Driver does not use vendor/device id or class/subclass/prog_IF witch is invalid\n");
 				return false;
@@ -129,9 +129,9 @@ void enumerate_legacy() {
 					debugf("Searching for pci driver...\n");
 					list<pci_driver>::node* driver = pci_drivers->find<pci_header_0_t*>([](pci_header_0_t* header, list<pci_driver>::node* node) {
 						if (node->data.use_class_subclass_prog_IF) {
-							return (header->header.class_ == node->data._class && header->header.subclass == node->data.subclass && header->header.prog_if == node->data.prog_IF);
+							return ((header->header.class_ == node->data._class || node->data._class == 0) && (header->header.subclass == node->data.subclass || node->data.subclass == 0) && (header->header.prog_if == node->data.prog_IF || node->data.prog_IF == 0));
 						} else if (node->data.use_vendor_device_id) {
-							return (header->header.vendor_id == node->data.vendor_id && header->header.device_id == node->data.device_id);
+							return ((header->header.vendor_id == node->data.vendor_id || node->data.vendor_id == 0) && (header->header.device_id == node->data.device_id || node->data.device_id == 0));
 						} else {
 							debugf("Error: Driver does not use vendor/device id or class/subclass/prog_IF witch is invalid\n");
 							return false;

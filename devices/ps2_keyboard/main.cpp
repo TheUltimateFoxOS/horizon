@@ -5,12 +5,8 @@
 #include <input/input.h>
 #include <utils/log.h>
 
-void init() {}
-
 void device_init() {
 	driver::global_driver_manager->add_driver(new ps2::ps2_keyboard());
 }
 
-void fs_init() {}
-
-define_module("ps2 keyboard", init, device_init, fs_init);
+define_module("ps2 keyboard", null_ptr_func, device_init, null_ptr_func);

@@ -62,6 +62,7 @@ extern "C" void main() {
 	fs::stivale_mount* stivale_mount = new fs::stivale_mount(global_bootinfo);
 	fs::global_vfs->register_mount((char*) "stivale", stivale_mount);
 
+	driver::global_driver_manager = new driver::driver_manager();
 	driver::global_disk_manager = new driver::disk_driver_manager();
 
 	acpi::madt::parse_madt(global_bootinfo);
@@ -76,7 +77,7 @@ extern "C" void main() {
 
 	if (!global_argparser->is_arg("--no_smp")) {
 		apic::smp_spinup(global_bootinfo);
-    	}
+    }
 
 	char* kernel_module_path = nullptr;
 	while ((kernel_module_path = global_argparser->get_arg("--load_module"))) {

@@ -14,8 +14,4 @@ void init() {
 	pci::register_pci_driver(0x1, 0x6, 0x1, ahci_pci_device_found);
 }
 
-void device_init() {}
-
-void fs_init() {}
-
-define_module("ahci", init, device_init, fs_init);
+define_module("ahci", init, null_ptr_func, null_ptr_func);

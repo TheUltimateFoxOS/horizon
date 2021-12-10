@@ -37,6 +37,7 @@ char* device_driver::get_name() {
 //#driver_manager::driver_manager-doc: driver_manager constructor.
 driver_manager::driver_manager() {
 	this->num_drivers = 0;
+	memset(this->drivers, 0, sizeof(this->drivers));
 }
 
 //#driver_manager::add_driver-doc: Add a driver to the driver manager.
@@ -75,6 +76,7 @@ void driver_manager::activate_driver(bool force, device_driver* driver) {
 //#driver_manager::activate_all-doc: Activate all drivers.
 void driver_manager::activate_all(bool force) {
 	for(int i = 0; i < this->num_drivers; i++) {
+		debugf("Driver located at 0x%x\n", this->drivers[i]);
 		printf("Loading driver for device: %s... ", this->drivers[i]->get_name());
 		activate_driver(force, this->drivers[i]);
 	}

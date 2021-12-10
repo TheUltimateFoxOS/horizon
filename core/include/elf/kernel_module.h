@@ -13,6 +13,8 @@ namespace elf {
 		uint64_t loaded_pages;
 	};
 
+	#define null_ptr_func ((void (*)())0)
+
 	#define define_module(name, init, device_init, fs_init) elf::module_t __module__ { name, init, device_init, fs_init, 0, 0 }
 
 	void load_kernel_module(char* path, bool announce);
