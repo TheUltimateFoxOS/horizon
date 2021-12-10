@@ -11,8 +11,8 @@
 using namespace apic;
 
 namespace apic {
-	bool cpu_started[256];
-	int bsp_id;
+	bool cpu_started[256] = { false };
+	int bsp_id = 0;
 }
 
 void apic::smp_spinup(stivale2_struct* bootinfo) {
@@ -78,4 +78,6 @@ void apic::smp_spinup(stivale2_struct* bootinfo) {
 
 		debugf("CPU %d spinup complete!\n", i);
 	}
+
+	cpu_started[bsp_id] = true;
 }
