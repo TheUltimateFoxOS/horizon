@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <interrupts/idt.h>
 
 #define PIC_EOI 0x20
 
@@ -41,6 +42,8 @@ namespace interrupts {
 
 	void set_idt_gate(void* handler, uint8_t entry_offset, uint8_t type_attr, uint8_t selector);
 	void prepare_interrupts();
+
+	extern idt_t idtr;
 }
 
 extern "C" void intr_stub_0(void);

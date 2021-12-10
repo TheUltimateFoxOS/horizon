@@ -10,7 +10,9 @@
 
 using namespace interrupts;
 
-interrupts::idt_t idtr;
+namespace interrupts {
+	interrupts::idt_t idtr;
+}
 
 //#interrupts::get_panic_message-doc: Converts a exception number in a string.
 char* interrupts::get_interrupt_name(int interrupt_number) {

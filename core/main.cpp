@@ -25,6 +25,7 @@
 #include <pci/pci.h>
 
 #include <acpi/madt.h>
+#include <apic/apic.h>
 
 #include <memory/memory.h>
 
@@ -64,6 +65,7 @@ extern "C" void main() {
 	driver::global_disk_manager = new driver::disk_driver_manager();
 
 	acpi::madt::parse_madt(global_bootinfo);
+	apic::smp_spinup(global_bootinfo);
 
 	setup_global_argparser(global_bootinfo);
 
