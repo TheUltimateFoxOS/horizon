@@ -24,6 +24,8 @@
 
 #include <pci/pci.h>
 
+#include <acpi/madt.h>
+
 #include <memory/memory.h>
 
 #include <utils/log.h>
@@ -60,6 +62,8 @@ extern "C" void main() {
 	fs::global_vfs->register_mount((char*) "stivale", stivale_mount);
 
 	driver::global_disk_manager = new driver::disk_driver_manager();
+
+	acpi::madt::parse_madt(global_bootinfo);
 
 	setup_global_argparser(global_bootinfo);
 
