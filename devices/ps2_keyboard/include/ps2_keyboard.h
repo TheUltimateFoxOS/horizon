@@ -4,6 +4,7 @@
 #include <input/input.h>
 #include <interrupts/interrupt_handler.h>
 #include <utils/port.h>
+#include <ps2_layout.h>
 
 namespace ps2 {
 	enum special_key {
@@ -43,6 +44,8 @@ namespace ps2 {
 			virtual void handle();
 
 			char current_char;
+
+			keymap_layout current_layout;
 		
 		private:
 			bool l_shift = false;

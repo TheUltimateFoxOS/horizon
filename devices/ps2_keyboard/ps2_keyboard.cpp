@@ -6,7 +6,9 @@
 
 using namespace ps2;
 
-ps2_keyboard::ps2_keyboard() : interrupts::interrupt_handler(0x21), dataport(0x60), commandport(0x64) {}
+ps2_keyboard::ps2_keyboard() : interrupts::interrupt_handler(0x21), dataport(0x60), commandport(0x64) {
+	current_layout = keymap_layout::keymap_us_e;
+}
 
 void ps2_keyboard::activate() {
 	while(commandport.Read() & 0x1) {
@@ -73,7 +75,7 @@ void ps2_keyboard::handle() {
 		break;
 	
 	default:
-		current_char = keymap_de(key, l_shift, r_shift, caps_lock);
+		current_char = keymap(current_layout, key, l_shift, r_shift, caps_lock);
 		printf("%c", current_char);
 		break;
 	}
