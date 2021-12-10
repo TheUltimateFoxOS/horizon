@@ -56,7 +56,7 @@ void* acpi::find_table(stivale2_struct* bootinfo, char* signature, int idx) {
 		result = find_table_rsdt(rsdt, (char*) signature, idx);
 	}
 
-	debugf("WARNING: search result for %s:%d is %x\n", signature, idx, result);
+	debugf("DEBUG: search result for %s:%d is %x\n", signature, idx, result);
 
 	return result;
 }

@@ -22,6 +22,8 @@
 #include <fs/vfs.h>
 #include <fs/stivale_modules.h>
 
+#include <timer/timer.h>
+
 #include <pci/pci.h>
 
 #include <acpi/madt.h>
@@ -56,6 +58,7 @@ extern "C" void main() {
 	renderer::global_font_renderer->clear(0);
 	renderer::global_renderer_2d->load_bitmap(logo, 0);
 
+	timer::setup();
 	fs::vfs::setup();
 
 	debugf("Mounting stivale modules vfs mount...\n");
