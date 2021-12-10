@@ -65,7 +65,7 @@ extern "C" void main() {
 	driver::global_disk_manager = new driver::disk_driver_manager();
 
 	acpi::madt::parse_madt(global_bootinfo);
-	apic::smp_spinup(global_bootinfo);
+	// apic::smp_spinup(global_bootinfo);
 
 	setup_global_argparser(global_bootinfo);
 
@@ -73,6 +73,10 @@ extern "C" void main() {
 		debugf("Redirecting serial port to screen\n");
 		log::debug_device = renderer::global_font_renderer;
 	}
+
+	if (!global_argparser->is_arg("--no_smp")) {
+		apic::smp_spinup(global_bootinfo);
+    	}
 
 	char* kernel_module_path = nullptr;
 	while ((kernel_module_path = global_argparser->get_arg("--load_module"))) {
