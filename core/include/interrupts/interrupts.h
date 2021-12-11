@@ -82,3 +82,5 @@ extern "C" void intr_stub_44(void);
 extern "C" void intr_stub_45(void);
 extern "C" void intr_stub_46(void);
 extern "C" void intr_stub_47(void);
+
+extern "C" void intr_stub_255(void);

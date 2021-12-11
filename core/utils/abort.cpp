@@ -8,11 +8,24 @@
 #include <elf/unwind.h>
 #include <elf/elf_resolver.h>
 
+#include <apic/apic.h>
+#include <acpi/madt.h>
+
 #include <stdint.h>
 
 extern uint8_t screen_of_death[];
 
 __attribute__((noreturn)) void abortf(const char* fmt, ...) {
+	__asm__ volatile("cli");
+
+	LAPIC_ID(core_id);
+	for (int i = 0; i < acpi::madt::lapic_count; i++) {
+		if (apic::cpu_started[i] && i != core_id) {
+			debugf("Sending halt to CPU %d\n", i);
+			apic::lapic_ipi(i, 0xff);
+		}
+	}
+
 	uint64_t rbp;
 	__asm__ __volatile__ ("movq %%rbp, %0" : "=r" (rbp));
 	renderer::point_t bmp_info = renderer::global_renderer_2d->get_bitmap_info(screen_of_death);

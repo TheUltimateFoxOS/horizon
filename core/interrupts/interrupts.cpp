@@ -8,6 +8,8 @@
 #include <utils/abort.h>
 #include <utils/log.h>
 
+#include <apic/apic.h>
+
 using namespace interrupts;
 
 namespace interrupts {
@@ -133,6 +135,8 @@ void interrupts::prepare_interrupts() {
 	set_idt_gate((void*) intr_stub_46, 46, idt_ta_interrupt_gate, 0x08);
 	set_idt_gate((void*) intr_stub_47, 47, idt_ta_interrupt_gate, 0x08);
 
+	set_idt_gate((void*) intr_stub_255, 255, idt_ta_interrupt_gate, 0x08);
+
 	asm ("lidt %0" : : "m" (idtr));
 
 	Port8Bit pic1_data(0x21);
@@ -181,21 +185,36 @@ extern "C" void intr_common_handler_c(s_registers* regs) {
 		abortf(get_interrupt_name(regs->interrupt_number));
 	}
 
+	if (regs->interrupt_number == 0xff) {
+		LAPIC_ID(core_id);
+		debugf("Halting core %d\n", core_id);
+
+		while (true) {
+			__asm__ __volatile__ ("cli; hlt");
+		}
+	}
+
 	if(regs->interrupt_number >= 0x20 && regs->interrupt_number <= 0x2f) {
+		LAPIC_ID(core_id);
+
 		if(handlers[regs->interrupt_number] != NULL) {
 			handlers[regs->interrupt_number]->handle();
 		}
 
 		if(static_handlers[regs->interrupt_number] != NULL) {
-			(*(static_handlers[regs->interrupt_number]))(regs->interrupt_number);
+			(*(static_handlers[regs->interrupt_number]))(regs);
 		}
 
-		if (regs->interrupt_number >= 0x28) {
-			Port8Bit p(0xa0);
+		if (apic::bsp_id == core_id) {		
+			if (regs->interrupt_number >= 0x28) {
+				Port8Bit p(0xa0);
+				p.Write(0x20);
+			}
+
+			Port8Bit p(0x20);
 			p.Write(0x20);
+		} else {
+			apic::lapic_eoi();
 		}
-
-		Port8Bit p(0x20);
-		p.Write(0x20);
 	}
 }

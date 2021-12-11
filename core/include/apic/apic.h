@@ -34,6 +34,7 @@ namespace apic {
 	void ap_trampoline_c();
 
 	void smp_spinup(stivale2_struct* bootinfo);
+	void setup();
 
 	#define LAPIC_ID(vaiable_name) \
 		volatile unsigned char vaiable_name = 0; \

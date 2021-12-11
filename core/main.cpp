@@ -29,6 +29,8 @@
 #include <acpi/madt.h>
 #include <apic/apic.h>
 
+#include <scheduler/scheduler.h>
+
 #include <memory/memory.h>
 
 #include <utils/log.h>
@@ -69,6 +71,7 @@ extern "C" void main() {
 	driver::global_disk_manager = new driver::disk_driver_manager();
 
 	acpi::madt::parse_madt(global_bootinfo);
+	apic::setup();
 	// apic::smp_spinup(global_bootinfo);
 
 	setup_global_argparser(global_bootinfo);
@@ -81,6 +84,8 @@ extern "C" void main() {
 	if (!global_argparser->is_arg("--no_smp")) {
 		apic::smp_spinup(global_bootinfo);
     }
+
+	scheduler::setup();
 
 	char* kernel_module_path = nullptr;
 	while ((kernel_module_path = global_argparser->get_arg("--load_module"))) {
@@ -107,6 +112,58 @@ extern "C" void main() {
 	elf::fs_init_all();
 
 	printf("\nWelcome to FoxOS Horizon!\n");
+
+	// scheduler::create_task((void*) (void (*)()) []() {
+	// 	int i = 1000;
+	// 	while (i--) {
+	// 		debugf("A");
+	// 	}
+	// });
+
+	// scheduler::create_task((void*) (void (*)()) []() {
+	// 	int i = 1000;
+	// 	while (i--) {
+	// 		debugf("B");
+	// 	}
+	// });
+
+	// scheduler::create_task((void*) (void (*)()) []() {
+	// 	int i = 1000;
+	// 	while (i--) {
+	// 		debugf("C");
+	// 	}
+	// });
+
+
+	// scheduler::create_task((void*) (void (*)()) []() {
+	// 	int i = 1000;
+	// 	while (i--) {
+	// 		debugf("D");
+	// 	}
+	// });
+
+	// scheduler::create_task((void*) (void (*)()) []() {
+	// 	int i = 1000;
+	// 	while (i--) {
+	// 		debugf("E");
+	// 	}
+	// });
+
+	// scheduler::create_task((void*) (void (*)()) []() {
+	// 	int i = 1000;
+	// 	while (i--) {
+	// 		debugf("F");
+	// 	}
+	// });
+
+	// scheduler::create_task((void*) (void (*)()) []() {
+	// 	int i = 1000;
+	// 	while (i--) {
+	// 		debugf("G");
+	// 	}
+	// });
+
+	scheduler::start();
 
 	while(1) {
 		__asm__ __volatile__("hlt");

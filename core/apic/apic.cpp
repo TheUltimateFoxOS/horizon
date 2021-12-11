@@ -15,10 +15,13 @@ namespace apic {
 	int bsp_id = 0;
 }
 
-void apic::smp_spinup(stivale2_struct* bootinfo) {
+void apic::setup() {
 	LAPIC_ID(bspid);
 	bsp_id = bspid;
+	cpu_started[bsp_id] = true;
+}
 
+void apic::smp_spinup(stivale2_struct* bootinfo) {
 	memory::global_page_table_manager.map_memory((void*) acpi::madt::lapic_base_addr, (void*) acpi::madt::lapic_base_addr);
 	
 	memory::global_page_table_manager.map_memory((void*) 0x8000, (void*) 0x8000);
@@ -78,6 +81,4 @@ void apic::smp_spinup(stivale2_struct* bootinfo) {
 
 		debugf("CPU %d spinup complete!\n", i);
 	}
-
-	cpu_started[bsp_id] = true;
 }

@@ -4,7 +4,7 @@
 
 #include <interrupts/interrupts.h>
 
-typedef void (*intr_handler_ptr)(uint8_t);
+typedef void (*intr_handler_ptr)(interrupts::s_registers*);
 
 namespace interrupts {
 	class interrupt_handler {
