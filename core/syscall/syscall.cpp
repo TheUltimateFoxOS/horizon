@@ -53,7 +53,10 @@ void syscall::setup() {
 	register_syscall(sys_memory_free, "sys_memory_free");
 	register_syscall(sys_write, "sys_write");
 	register_syscall(sys_read, "sys_read");
+	register_syscall(sys_open, "sys_open");
+	register_syscall(sys_close, "sys_close");
 	register_syscall(sys_exit, "sys_exit");
+	register_syscall(sys_spawn, "sys_spawn");
 }
 
 void syscall::register_syscall(void (*handler)(interrupts::s_registers*), const char* name) {

@@ -3,6 +3,7 @@
 #include <utils/log.h>
 #include <utils/lock.h>
 #include <utils/abort.h>
+#include <fs/fd.h>
 
 using namespace syscall;
 
@@ -38,7 +39,13 @@ void syscall::sys_write(interrupts::s_registers* regs) {
 		default:
 			{
 				// Write to file from fd
-				abortf("sys_write: writing to file from fd not implemented");
+				fs::file_descriptor* fd = fs::global_fd_manager->get_fd(regs->rbx);
+				if (fd == nullptr) {
+					regs->rax = -1;
+					return;
+				}
+
+				fd->write((void*) regs->rcx, regs->rdx, regs->rsi);
 			}
 			break;
 	}

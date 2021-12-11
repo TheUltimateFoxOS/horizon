@@ -28,5 +28,8 @@ namespace syscall {
 	void sys_memory_free(interrupts::s_registers* regs);
 	void sys_write(interrupts::s_registers* regs);
 	void sys_read(interrupts::s_registers* regs);
+	void sys_open(interrupts::s_registers* regs);
+	void sys_close(interrupts::s_registers* regs);
 	void sys_exit(interrupts::s_registers* regs);
+	void sys_spawn(interrupts::s_registers* regs);
 }

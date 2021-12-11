@@ -21,6 +21,7 @@
 #include <elf/elf_loader.h>
 #include <elf/kernel_module.h>
 #include <fs/vfs.h>
+#include <fs/fd.h>
 #include <fs/dev_fs.h>
 #include <fs/stivale_modules.h>
 
@@ -75,6 +76,8 @@ extern "C" void main() {
 	fs::dev_fs* dev_fs_mount = new fs::dev_fs();
 	fs::global_devfs = dev_fs_mount;
 	fs::global_vfs->register_mount((char*) "dev", dev_fs_mount);
+
+	fs::global_fd_manager = new fs::file_descriptor_manager();
 
 	driver::global_driver_manager = new driver::driver_manager();
 	driver::global_disk_manager = new driver::disk_driver_manager();
