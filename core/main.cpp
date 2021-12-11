@@ -21,6 +21,7 @@
 #include <elf/elf_loader.h>
 #include <elf/kernel_module.h>
 #include <fs/vfs.h>
+#include <fs/dev_fs.h>
 #include <fs/stivale_modules.h>
 
 #include <timer/timer.h>
@@ -69,6 +70,11 @@ extern "C" void main() {
 	debugf("Mounting stivale modules vfs mount...\n");
 	fs::stivale_mount* stivale_mount = new fs::stivale_mount(global_bootinfo);
 	fs::global_vfs->register_mount((char*) "stivale", stivale_mount);
+
+	debugf("Creating devfs mount...\n");
+	fs::dev_fs* dev_fs_mount = new fs::dev_fs();
+	fs::global_devfs = dev_fs_mount;
+	fs::global_vfs->register_mount((char*) "dev", dev_fs_mount);
 
 	driver::global_driver_manager = new driver::driver_manager();
 	driver::global_disk_manager = new driver::disk_driver_manager();
@@ -181,6 +187,11 @@ extern "C" void main() {
 			abortf("Failed to load autoexec: %s\n", autoexec_path);
 		}
 	}
+
+	// fs::vfs::file_t* ps2_device = fs::global_vfs->open("dev:ps2_keyboard");
+	// char buffer[] = {0x1, 0x0};
+	// fs::global_vfs->write(ps2_device, buffer, 2, 0);
+	// fs::global_vfs->close(ps2_device);
 
 	scheduler::start();
 

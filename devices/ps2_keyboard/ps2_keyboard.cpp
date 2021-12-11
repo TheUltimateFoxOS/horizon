@@ -29,7 +29,7 @@ bool ps2_keyboard::is_presend() {
 }
 
 char* ps2_keyboard::get_name() {
-	return (char*) "ps2 keyboard";
+	return (char*) "ps2_keyboard";
 }
 
 char ps2_keyboard::getchar() {
@@ -80,4 +80,25 @@ void ps2_keyboard::handle() {
 		break;
 	}
 
+}
+
+void ps2_keyboard::write(fs::vfs::file_t* file, void* buffer, size_t size, size_t offset) {
+	char* buf = (char*) buffer;
+
+	switch (buf[0]) {
+		case 1: // opcode change layout
+			{
+				uint8_t layout = buf[1];
+				this->current_layout = (keymap_layout) layout;
+			}
+			break;
+		
+		default:
+			debugf("ps2_keyboard::read: unknown opcode %d", buf[0]);
+			break;
+	}
+}
+
+void ps2_keyboard::read(fs::vfs::file_t* file, void* buffer, size_t size, size_t offset) {
+	debugf("ps2_keyboard::read not implemented");
 }
