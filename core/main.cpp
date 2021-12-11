@@ -31,6 +31,8 @@
 
 #include <scheduler/scheduler.h>
 
+#include <syscall/syscall.h>
+
 #include <memory/memory.h>
 
 #include <utils/log.h>
@@ -86,6 +88,7 @@ extern "C" void main() {
     }
 
 	scheduler::setup();
+	syscall::setup();
 
 	char* kernel_module_path = nullptr;
 	while ((kernel_module_path = global_argparser->get_arg("--load_module"))) {

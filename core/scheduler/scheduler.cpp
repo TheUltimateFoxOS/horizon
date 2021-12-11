@@ -34,7 +34,7 @@ void scheduler_interrupt(interrupts::s_registers* registers) {
 	current_task = task_queue[id]->list[0];
 
 
-	if (current_task->first_sched) {
+	if (!current_task->first_sched) {
 		current_task->registers.rax = registers->rax;
 		current_task->registers.rbx = registers->rbx;
 		current_task->registers.rcx = registers->rcx;
@@ -150,7 +150,9 @@ void scheduler::kill_self() {
 
 	atomic_release_spinlock(task_queue_lock);
 
-	__asm__ __volatile__ ("sti; hlt");
+	while (true) {
+		__asm__ __volatile__ ("sti; hlt");
+	}
 }
 
 task_t* scheduler::create_task(void* entry) {
