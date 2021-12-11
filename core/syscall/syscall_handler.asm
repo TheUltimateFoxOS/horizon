@@ -54,7 +54,7 @@ syscall_interrupt_stub:
 
 	mov rdi, rsp
 
-	cmp rax, syscall_table_size
+	cmp rax, [syscall_table_size]
 	ja .skip
 
 	lea r15, [syscall_table + rax * 8]

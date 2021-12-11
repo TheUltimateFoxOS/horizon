@@ -18,6 +18,7 @@
 #include <utils/argparse.h>
 
 #include <elf/elf_resolver.h>
+#include <elf/elf_loader.h>
 #include <elf/kernel_module.h>
 #include <fs/vfs.h>
 #include <fs/stivale_modules.h>
@@ -165,6 +166,21 @@ extern "C" void main() {
 	// 		debugf("G");
 	// 	}
 	// });
+
+	if (global_argparser->is_arg("--autoexec")) {
+		char* autoexec_path = global_argparser->get_arg("--autoexec");
+		
+		const char* autoexec_args[] = {
+			autoexec_path
+		};
+
+		const char* autoexec_envp[] = {};
+
+		scheduler::task_t* task = elf::load_elf(autoexec_path, autoexec_args, autoexec_envp);
+		if (task == nullptr) {
+			abortf("Failed to load autoexec: %s\n", autoexec_path);
+		}
+	}
 
 	scheduler::start();
 

@@ -15,6 +15,13 @@ namespace scheduler {
 		bool first_sched; // is true if the task just got created
 		bool kill_me; // if true task gets killed
 		bool lock; // if true task is locked and doesent get scheduled
+
+		bool is_elf; // if true task is started from an elf
+		char** argv;
+		char** envp;
+
+		void* offset; // offset of the elf
+		int page_count; // number of pages the elf needs
 	};
 
 	void setup();

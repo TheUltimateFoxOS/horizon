@@ -49,6 +49,11 @@ void syscall::setup() {
 	interrupts::set_idt_gate((void*) syscall_interrupt_stub, 0x30, idt_ta_interrupt_gate, 0x08);
 
 	// register_syscall(test_syscall, "test_syscall");
+	register_syscall(sys_memory_alloc, "sys_memory_alloc");
+	register_syscall(sys_memory_free, "sys_memory_free");
+	register_syscall(sys_write, "sys_write");
+	register_syscall(sys_read, "sys_read");
+	register_syscall(sys_exit, "sys_exit");
 }
 
 void syscall::register_syscall(void (*handler)(interrupts::s_registers*), const char* name) {

@@ -60,6 +60,10 @@ next_task:
 
 	if (current_task->kill_me) {
 		memory::global_allocator.free_pages((void*) current_task->stack, TASK_STACK_PAGES);
+		if (current_task->is_elf) {
+			memory::global_allocator.free_pages((void*) current_task->offset, current_task->page_count);
+		}
+
 		delete current_task;
 
 		task_queue[id]->remove_first();

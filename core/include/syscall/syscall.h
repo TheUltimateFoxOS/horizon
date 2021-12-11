@@ -23,4 +23,10 @@ namespace syscall {
 	extern "C" uint64_t syscall_table[];
 	extern "C" uint64_t syscall_table_size;
 	extern "C" void syscall_interrupt_stub();
+
+	void sys_memory_alloc(interrupts::s_registers* regs);
+	void sys_memory_free(interrupts::s_registers* regs);
+	void sys_write(interrupts::s_registers* regs);
+	void sys_read(interrupts::s_registers* regs);
+	void sys_exit(interrupts::s_registers* regs);
 }
