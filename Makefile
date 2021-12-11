@@ -5,6 +5,7 @@ build:
 	make -C core
 
 	make -C devices
+	make -C filesystems
 
 setup:
 	@mkdir $(BUILDDIR)

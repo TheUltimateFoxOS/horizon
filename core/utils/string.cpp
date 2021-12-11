@@ -1,5 +1,6 @@
-#include <utils/string.h>
+#include <stddef.h>
 
+#include <utils/string.h>
 #include <utils/vsprintf.h>
 
 #include <output/stivale2_terminal.h>
@@ -24,6 +25,19 @@ int strnlen(const char *s, int maxlen) {
 	if (s[i] == '\0')
 		break;
 	return i;
+}
+
+char* strchr(const char* str, int chr) {
+	if(str == NULL) {
+		return NULL;
+	}
+	while(*str) {
+		if(*str == (char) chr) {
+			return (char*) str;
+		}
+		str++;
+	}
+	return NULL;
 }
 
 int sprintf(char *buf, const char *fmt, ...) {
@@ -63,7 +77,6 @@ __attribute__((naked)) void* memset(void* start, uint8_t value, uint64_t num) {
 }
 
 int memcmp(const void * _s1, const void* _s2, int n) {
-
 	const unsigned char* s1 = (unsigned char*) _s1;
 	const unsigned char* s2 = (unsigned char*) _s2;
 
