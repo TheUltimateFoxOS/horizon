@@ -180,10 +180,11 @@ extern "C" void main() {
 		char* autoexec_path = global_argparser->get_arg("--autoexec");
 		
 		const char* autoexec_args[] = {
-			autoexec_path
+			autoexec_path,
+			nullptr
 		};
 
-		const char* autoexec_envp[] = {};
+		const char* autoexec_envp[] = { nullptr };
 
 		scheduler::task_t* task = elf::load_elf(autoexec_path, autoexec_args, autoexec_envp);
 		if (task == nullptr) {

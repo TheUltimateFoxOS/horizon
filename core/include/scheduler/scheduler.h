@@ -7,6 +7,8 @@
 namespace scheduler {
 	#define TASK_STACK_PAGES 4
 
+	typedef void (*signal_handler)(uint8_t signum);
+
 	struct task_t {
 		interrupts::s_registers registers;
 		char fxsr_state[512] __attribute__((aligned(16)));
@@ -22,6 +24,10 @@ namespace scheduler {
 
 		void* offset; // offset of the elf
 		int page_count; // number of pages the elf needs
+
+		bool* on_exit; // if it isn't a nullptr gets set to true when the task exits
+
+		signal_handler signals[32];
 	};
 
 	void setup();
@@ -33,6 +39,9 @@ namespace scheduler {
 
 	extern queue<task_t*>* task_queue[128];
 	extern bool is_scheduler_running;
+
+	bool handle_signal(int signum);
+	void register_signal_handler_self(int signum, uint64_t handler);
 
 	extern "C" void task_entry();
 }

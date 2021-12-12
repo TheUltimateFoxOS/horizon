@@ -47,6 +47,7 @@ namespace ps2 {
 			char current_char;
 
 			keymap_layout current_layout;
+			bool keyboard_debug = false;
 
 			virtual void read(fs::vfs::file_t* file, void* buffer, size_t size, size_t offset);
 			virtual void write(fs::vfs::file_t* file, void* buffer, size_t size, size_t offset);

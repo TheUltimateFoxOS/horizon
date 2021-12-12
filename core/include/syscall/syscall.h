@@ -32,4 +32,5 @@ namespace syscall {
 	void sys_close(interrupts::s_registers* regs);
 	void sys_exit(interrupts::s_registers* regs);
 	void sys_spawn(interrupts::s_registers* regs);
+	void sys_env(interrupts::s_registers* regs);
 }

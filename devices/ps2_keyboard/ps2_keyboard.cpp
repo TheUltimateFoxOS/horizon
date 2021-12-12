@@ -52,6 +52,10 @@ void ps2_keyboard::special_key_up(special_key key) {
 
 void ps2_keyboard::handle() {
 	uint8_t key = dataport.Read();
+
+	if (this->keyboard_debug) {
+		debugf("KEY EVENT: %x\n", key);
+	}
 	
 	switch (key)
 	{
@@ -90,6 +94,15 @@ void ps2_keyboard::write(fs::vfs::file_t* file, void* buffer, size_t size, size_
 			{
 				uint8_t layout = buf[1];
 				this->current_layout = (keymap_layout) layout;
+				debugf("Keyboard layout changed to %d\n", layout);
+			}
+			break;
+		
+		case 2: // opcode set debug mode
+			{
+				uint8_t mode = buf[1];
+				this->keyboard_debug = mode;
+				debugf("Keyboard debug mode changed to %s\n", mode ? "true" : "false");
 			}
 			break;
 		

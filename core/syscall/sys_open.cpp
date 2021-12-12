@@ -11,5 +11,13 @@ void syscall::sys_open(interrupts::s_registers* regs) {
 
 	fd_obj->open((char*) regs->rbx);
 
+	if (fd_obj->file == nullptr) {
+		delete fd_obj;
+		fs::global_fd_manager->free_fd(fd);
+
+		regs->rdx = -1;
+		return;
+	}
+
 	regs->rdx = fd;
 }

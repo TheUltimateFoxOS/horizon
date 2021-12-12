@@ -64,6 +64,10 @@ next_task:
 			memory::global_allocator.free_pages((void*) current_task->offset, current_task->page_count);
 		}
 
+		if (current_task->on_exit != nullptr) {
+			*current_task->on_exit = true;
+		}
+
 		delete current_task;
 
 		task_queue[id]->remove_first();
@@ -188,4 +192,25 @@ task_t* scheduler::create_task(void* entry) {
 	atomic_release_spinlock(task_queue_lock);
 
 	return task;
+}
+
+bool scheduler::handle_signal(int signum) {
+	LAPIC_ID(id);
+
+	task_t* task = task_queue[id]->list[0];
+
+	if (is_scheduler_running && task->signals[signum] != nullptr) {
+		task->signals[signum](signum);
+		return true;
+	} else {
+		return false;
+	}
+}
+
+void scheduler::register_signal_handler_self(int signum, uint64_t handler) {
+	LAPIC_ID(id);
+
+	task_t* task = task_queue[id]->list[0];
+
+	task->signals[signum] = (signal_handler) handler;
 }
