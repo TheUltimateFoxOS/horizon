@@ -6,6 +6,8 @@
 #include <memory/heap.h>
 
 #include <utils/log.h>
+#include <utils/assert.h>
+
 
 using namespace fs;
 using namespace fs::vfs;
@@ -52,13 +54,21 @@ void fat32_mount::close(file_t* file) {
 void fat32_mount::read(file_t* file, void* buffer, size_t size, size_t offset) {
 	debugf("Reading %d bytes from %d\n", size, offset);
 
+	f_lseek((FIL*) file->data, offset);
+
 	UINT has_read;
 	f_read((FIL*) file->data, buffer, size, &has_read);
+
+	assert(has_read == size);
 }
 
 void fat32_mount::write(file_t* file, void* buffer, size_t size, size_t offset) {
 	debugf("Writing %d bytes to %d\n", size, offset);
 
+	f_lseek((FIL*) file->data, offset);
+
 	unsigned int has_written;
 	f_write((FIL*) file->data, buffer, size, &has_written);
+
+	assert(has_written == size);
 }
