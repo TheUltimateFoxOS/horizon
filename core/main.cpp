@@ -128,7 +128,7 @@ extern "C" void main() {
 
 	elf::fs_init_all();
 
-	printf("\nWelcome to FoxOS Horizon!\n");
+	printf("\nWelcome to FoxOS Horizon!\n\n");
 
 	// scheduler::create_task((void*) (void (*)()) []() {
 	// 	int i = 1000;
@@ -188,7 +188,9 @@ extern "C" void main() {
 			nullptr
 		};
 
-		const char* autoexec_envp[] = { nullptr };
+		const char* autoexec_envp[] = {
+			nullptr
+		};
 
 		scheduler::task_t* task = elf::load_elf(autoexec_path, autoexec_args, autoexec_envp);
 		if (task == nullptr) {
