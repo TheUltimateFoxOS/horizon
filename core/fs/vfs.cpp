@@ -38,7 +38,7 @@ file_t* vfs_manager::open(char* path) {
 	}
 
 	if (found_device == nullptr) {
-		debugf("No device found for path: %s", path);
+		debugf("No device found for path: %s\n", path);
 		return nullptr;
 	}
 

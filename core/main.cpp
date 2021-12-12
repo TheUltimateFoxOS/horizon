@@ -17,6 +17,7 @@
 #include <utils/abort.h>
 #include <utils/string.h>
 #include <utils/argparse.h>
+#include <utils/log.h>
 
 #include <elf/elf_resolver.h>
 #include <elf/elf_loader.h>
@@ -38,8 +39,6 @@
 #include <syscall/syscall.h>
 
 #include <memory/memory.h>
-
-#include <utils/log.h>
 
 extern uint8_t logo[];
 
@@ -102,6 +101,7 @@ extern "C" void main() {
 	scheduler::setup();
 	syscall::setup();
 
+	printf("Loading kernel modules...\n");
 	char* kernel_module_path = nullptr;
 	while ((kernel_module_path = global_argparser->get_arg("--load_module"))) {
 		debugf("Loading module: %s\n", kernel_module_path);
@@ -122,6 +122,7 @@ extern "C" void main() {
 	elf::device_init_all();
 	// driver::global_driver_manager->add_driver(new driver::device_driver());
 	//init drivers here
+	printf("\nLoading drivers...\n");
 	driver::global_driver_manager->activate_all(false);
 
 	driver::load_network_stack();
