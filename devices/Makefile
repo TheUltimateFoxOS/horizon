@@ -3,3 +3,4 @@ all:
 	make -C ahci
 	make -C ata
 	make -C cmos
+	make -C am79C973

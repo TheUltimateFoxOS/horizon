@@ -3,6 +3,7 @@
 
 #include <driver/driver.h>
 #include <driver/disk.h>
+#include <driver/nic.h>
 
 #include <interrupts/interrupts.h>
 
@@ -81,6 +82,7 @@ extern "C" void main() {
 
 	driver::global_driver_manager = new driver::driver_manager();
 	driver::global_disk_manager = new driver::disk_driver_manager();
+	driver::global_nic_manager = new driver::nic_driver_manager();
 
 	acpi::madt::parse_madt(global_bootinfo);
 	apic::setup();
@@ -121,6 +123,8 @@ extern "C" void main() {
 	// driver::global_driver_manager->add_driver(new driver::device_driver());
 	//init drivers here
 	driver::global_driver_manager->activate_all(false);
+
+	driver::load_network_stack();
 
 	elf::fs_init_all();
 

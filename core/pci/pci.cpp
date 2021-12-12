@@ -46,7 +46,7 @@ void enumerate_function(uint64_t address, uint64_t function, uint16_t bus, uint1
 
 		if (driver != nullptr) {
 			debugf("Found driver. Init function: 0x%x\n", driver->data.load_driver);
-			driver->data.load_driver((pci::pci_header_0_t*) pci_device_header);
+			driver->data.load_driver((pci::pci_header_0_t*) pci_device_header, bus, device, function);
 		} else {
 			debugf("No driver found\n");
 		}
@@ -140,7 +140,7 @@ void enumerate_legacy() {
 
 					if (driver != nullptr) {
 						debugf("Found driver. Init function: 0x%x\n", driver->data.load_driver);
-						driver->data.load_driver(header_copy);
+						driver->data.load_driver(header_copy, bus, device, function);
 					} else {
 						debugf("No driver found\n");
 					}
@@ -162,7 +162,7 @@ void pci::enumerate_pci() {
 	}
 }
 
-void pci::register_pci_driver(uint8_t _class, uint8_t subclass, uint8_t prog_IF, void (*load_driver)(pci_header_0_t* header)) {
+void pci::register_pci_driver(uint8_t _class, uint8_t subclass, uint8_t prog_IF, void (*load_driver)(pci_header_0_t* header, uint16_t bus, uint16_t device, uint16_t function)) {
 	debugf("Registering pci driver for class: %d, subclass: %d, prog_IF: %d\n", _class, subclass, prog_IF);
 	pci_driver driver = {
 		._class = _class,
@@ -179,7 +179,7 @@ void pci::register_pci_driver(uint8_t _class, uint8_t subclass, uint8_t prog_IF,
 	pci_drivers->add(driver);
 }
 
-void pci::register_pci_driver(uint16_t vendor_id, uint16_t device_id, void (*load_driver)(pci_header_0_t* header)) {
+void pci::register_pci_driver(uint16_t vendor_id, uint16_t device_id, void (*load_driver)(pci_header_0_t* header, uint16_t bus, uint16_t device, uint16_t function)) {
 	debugf("Registering pci driver for vendor: 0x%x, device: 0x%x\n", vendor_id, device_id);
 	pci_driver driver = {
 		.vendor_id = vendor_id,

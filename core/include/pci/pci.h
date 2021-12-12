@@ -86,11 +86,11 @@ namespace pci {
 		uint16_t device_id;
 		bool use_vendor_device_id;
 
-		void (*load_driver)(pci_header_0_t* header);
+		void (*load_driver)(pci_header_0_t* header, uint16_t bus, uint16_t device, uint16_t function);
 	};
 
-	void register_pci_driver(uint8_t _class, uint8_t subclass, uint8_t prog_IF, void (*load_driver)(pci_header_0_t* header));
-	void register_pci_driver(uint16_t vendor_id, uint16_t device_id, void (*load_driver)(pci_header_0_t* header));
+	void register_pci_driver(uint8_t _class, uint8_t subclass, uint8_t prog_IF, void (*load_driver)(pci_header_0_t* header, uint16_t bus, uint16_t device, uint16_t function));
+	void register_pci_driver(uint16_t vendor_id, uint16_t device_id, void (*load_driver)(pci_header_0_t* header, uint16_t bus, uint16_t device, uint16_t function));
 
 	extern list<pci_driver>* pci_drivers;
 }

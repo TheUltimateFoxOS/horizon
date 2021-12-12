@@ -6,7 +6,7 @@
 
 #include <ahci.h>
 
-void ahci_pci_device_found(pci::pci_header_0_t* header) {
+void ahci_pci_device_found(pci::pci_header_0_t* header, uint16_t bus, uint16_t device, uint16_t function) {
 	driver::global_driver_manager->add_driver(new ahci::ahci_driver(header));
 }
 

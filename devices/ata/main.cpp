@@ -7,7 +7,7 @@
 
 #include <ata.h>
 
-void ata_pci_device_found(pci::pci_header_0_t* header) {
+void ata_pci_device_found(pci::pci_header_0_t* header, uint16_t bus, uint16_t device, uint16_t function) {
 	driver::global_driver_manager->add_driver(new driver::advanced_technology_attachment(true, 0x1F0, (char*) "ata0 master"));
 	driver::global_driver_manager->add_driver(new driver::advanced_technology_attachment(false, 0x1F0, (char*) "ata0 slave"));
 	driver::global_driver_manager->add_driver(new driver::advanced_technology_attachment(true, 0x170, (char*) "ata1 master"));
