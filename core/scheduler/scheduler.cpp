@@ -6,6 +6,7 @@
 #include <utils/lock.h>
 #include <utils/string.h>
 #include <utils/log.h>
+#include <utils/fxsr.h>
 
 #include <interrupts/interrupt_handler.h>
 
@@ -55,6 +56,8 @@ void scheduler_interrupt(interrupts::s_registers* registers) {
 		current_task->registers.rflags = registers->rflags;
 	}
 
+	fxsave_if_supported(current_task->fxsr_state);
+
 next_task:
 	current_task = task_queue[id]->next();
 
@@ -96,6 +99,8 @@ next_task:
 	registers->rsi = current_task->registers.rsi;
 	registers->rdi = current_task->registers.rdi;
 	registers->rflags = current_task->registers.rflags;
+
+	fxrstor_if_supported(current_task->fxsr_state);
 
 	current_task->first_sched = false;
 
