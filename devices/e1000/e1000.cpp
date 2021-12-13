@@ -12,7 +12,7 @@
 
 using namespace driver;
 
-#define DEBUG
+//#define DEBUG
 
 e1000_driver::e1000_driver(pci::pci_header_0_t* header, uint16_t bus, uint16_t device, uint16_t function) : interrupt_handler(header->interrupt_line + 0x20) {
 	this->header = header;

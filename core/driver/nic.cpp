@@ -2,6 +2,7 @@
 
 #include <net/network_stack.h>
 #include <net/etherframe.h>
+#include <net/arp.h>
 
 #include <renderer/font_renderer.h>
 
@@ -30,7 +31,8 @@ void driver::load_network_stack() {
 			continue;
 		}
 
-		net::ether_frame_provider* ether_frame_provider = new net::ether_frame_provider(i);
+		net::ether_frame_provider* ether = new net::ether_frame_provider(i);
+		net::address_resolution_protocol* arp = new net::address_resolution_protocol(ether);
 
 		driver::ip_u ip;
 		ip.ip = nic->get_ip();
@@ -46,8 +48,8 @@ void driver::load_network_stack() {
 
 		net::network_stack_t* network_stack = new net::network_stack_t;
 		*network_stack = {
-			.ether = ether_frame_provider,
-			.arp = nullptr,
+			.ether = ether,
+			.arp = arp,
 			.ipv4 = nullptr,
 			.icmp = nullptr,
 			.udp = nullptr,
