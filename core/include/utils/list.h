@@ -62,7 +62,7 @@ class list {
 				}
 			}
 
-			data = (node*) memory::realloc(data, sizeof(node) * (length + 1), length * sizeof(node));
+			data = (node*) memory::realloc(data, sizeof(node) * length, (length + 1) * sizeof(node));
 			length++;
 			goto retry;
 		}
