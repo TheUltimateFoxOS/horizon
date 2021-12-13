@@ -2,6 +2,10 @@
 
 #include <stdint.h>
 
+namespace net {
+	struct network_stack_t;
+}
+
 namespace driver {
 	#define NIC_NUM 265
 
@@ -42,6 +46,9 @@ namespace driver {
 			virtual void set_ip(uint32_t ip);
 
 			nic_data_manager* _nic_data_manager;
+
+			net::network_stack_t* network_stack;
+			void load_network_stack(net::network_stack_t* network_stack);
 	};
 
 	class nic_driver_manager {

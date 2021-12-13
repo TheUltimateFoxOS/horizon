@@ -125,6 +125,7 @@ extern "C" void main() {
 	printf("\nLoading drivers...\n");
 	driver::global_driver_manager->activate_all(false);
 
+	printf("\nLoading network stack...\n");
 	driver::load_network_stack();
 
 	elf::fs_init_all();

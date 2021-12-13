@@ -1,5 +1,10 @@
 #include <driver/nic.h>
 
+#include <net/network_stack.h>
+#include <net/etherframe.h>
+
+#include <renderer/font_renderer.h>
+
 #include <utils/log.h>
 
 using namespace driver;
@@ -9,7 +14,59 @@ namespace driver {
 }
 
 void driver::load_network_stack() {
-	debugf("driver::load_network_stack not implemented\n");
+	for (int i = 0; i < driver::global_nic_manager->num_nics; i++) {
+		printf("Loading NIC %d...", i);
+
+		driver::nic_device* nic = driver::global_nic_manager->get_nic(i);
+		if (nic == nullptr) {
+			renderer::global_font_renderer->cursor_position.x = renderer::global_font_renderer->target_frame_buffer->width - 8 * 13;
+			uint64_t old_color = renderer::global_font_renderer->color;
+			printf("[");
+			renderer::global_font_renderer->color = 0xff00ff00;
+			printf("no device");
+			renderer::global_font_renderer->color = old_color;
+			printf("]\n");
+
+			continue;
+		}
+
+		net::ether_frame_provider* ether_frame_provider = new net::ether_frame_provider(i);
+
+		driver::ip_u ip;
+		ip.ip = nic->get_ip();
+
+		driver::ip_u gateway;
+		gateway.ip = 0;
+
+		driver::ip_u subnet;
+		subnet.ip = 0;
+
+		driver::ip_u dns_ip;
+		dns_ip.ip = 0;
+
+		net::network_stack_t* network_stack = new net::network_stack_t;
+		*network_stack = {
+			.ether = ether_frame_provider,
+			.arp = nullptr,
+			.ipv4 = nullptr,
+			.icmp = nullptr,
+			.udp = nullptr,
+			.tcp = nullptr,
+			.dns = nullptr
+		};
+
+		nic->load_network_stack(network_stack);
+
+		renderer::global_font_renderer->cursor_position.x = renderer::global_font_renderer->target_frame_buffer->width - 8 * 6;
+		uint64_t old_color = renderer::global_font_renderer->color;
+		printf("[");
+		renderer::global_font_renderer->color = 0xff00ff00;
+		printf("ok");
+		renderer::global_font_renderer->color = old_color;
+		printf("]\n");
+
+		printf("ip: %d.%d.%d.%d, gateway: %d.%d.%d.%d, dns: %d.%d.%d.%d\n", ip.ip_p[0], ip.ip_p[1], ip.ip_p[2], ip.ip_p[3], gateway.ip_p[0], gateway.ip_p[1], gateway.ip_p[2], gateway.ip_p[3], dns_ip.ip_p[0], dns_ip.ip_p[1], dns_ip.ip_p[2], dns_ip.ip_p[3]);
+	}
 }
 
 nic_device::nic_device() {};
@@ -36,6 +93,19 @@ uint32_t nic_device::get_ip() {
 
 void nic_device::set_ip(uint32_t ip) {
 	debugf("driver::nic_device::set_ip not implemented\n");
+}
+
+void nic_device::load_network_stack(net::network_stack_t* network_stack) {
+	this->network_stack = network_stack;
+
+	debugf("[NIC] Network stack loaded.\n");
+	debugf("      etherframe: %x\n", network_stack->ether);
+	debugf("      arp: %x\n", network_stack->arp);
+	debugf("      ipv4: %x\n", network_stack->ipv4);
+	debugf("      icmp: %x\n", network_stack->icmp);
+	debugf("      udp: %x\n", network_stack->udp);
+	debugf("      tcp: %x\n", network_stack->tcp);
+	debugf("      dns: %x\n", network_stack->dns);
 }
 
 nic_data_manager::nic_data_manager(int id) {

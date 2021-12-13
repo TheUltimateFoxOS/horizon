@@ -208,7 +208,7 @@ void e1000_driver::activate() {
 	rx_init();
 	tx_init();
 
-	debugf("e1000Driver: successfully activated!\n");
+	debugf("e1000_driver: successfully activated!\n");
 
 	this->set_ip(0);
 
@@ -224,7 +224,7 @@ void e1000_driver::receive() {
 		uint16_t size = this->rx_descs[this->rx_cur]->length;
 
 #ifdef DEBUG
-		debugf("e1000Driver: receiveing packet: ");
+		debugf("e1000_driver: receiveing packet: ");
 		for(int i = 0; i < (size > 64 ? 64 : size); i++) {
 			debugf("%x ", data[i]);
 		}
@@ -234,7 +234,7 @@ void e1000_driver::receive() {
 		if (_nic_data_manager) {
 			_nic_data_manager->recv(data, size);
 		} else {
-			debugf("e1000Driver: no handler\n");
+			debugf("e1000_driver: no handler\n");
 		}
  
 		this->rx_descs[this->rx_cur]->status = 0;
@@ -251,7 +251,7 @@ void e1000_driver::send(uint8_t* data, int32_t length) {
 	this->tx_descs[this->tx_cur]->status = 0;
 
 #ifdef DEBUG
-	debugf("e1000Driver: sending packet: ");
+	debugf("e1000_driver: sending packet: ");
 	for(int i = 0; i < (length > 64 ? 64 : length); i++) {
 		debugf("%x ", data[i]);
 	}
@@ -273,7 +273,7 @@ void e1000_driver::handle() {
 		start_link();
 	} else if(status & 0x10) {
 #ifdef DEBUG
-		debugf("e1000Driver: Good threshold\n");
+		debugf("e1000_driver: Good threshold\n");
 #endif
 	} else if(status & 0x80) {
 		receive();
