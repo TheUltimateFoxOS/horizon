@@ -35,6 +35,7 @@ void driver::load_network_stack() {
 		net::ether_frame_provider* ether = new net::ether_frame_provider(i);
 		net::address_resolution_protocol* arp = new net::address_resolution_protocol(ether);
 		net::ipv4_provider* ipv4 = new net::ipv4_provider(ether, arp, 0xffffffff, 0xffffffff);
+		net::icmp_provider* icmp = new net::icmp_provider(ipv4);
 
 		//arp->broadcast_mac(ipv4->gateway_ip_be); dhcp needed to get the ip
 
@@ -55,7 +56,7 @@ void driver::load_network_stack() {
 			.ether = ether,
 			.arp = arp,
 			.ipv4 = ipv4,
-			.icmp = nullptr,
+			.icmp = icmp,
 			.udp = nullptr,
 			.tcp = nullptr,
 			.dns = nullptr
