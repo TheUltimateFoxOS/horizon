@@ -32,7 +32,7 @@ void syscall::get_id_syscall(interrupts::s_registers* regs) {
 
 void syscall::setup() {
 	debugf("Setting up syscall's...\n");
-	syscall_id_list = new list<syscall_entry_t>(10);
+	syscall_id_list = new list<syscall_entry_t>(20);
 
 	syscall_table[0] = (uint64_t) get_id_syscall;
 	syscall_table_size++;
@@ -55,6 +55,9 @@ void syscall::setup() {
 	register_syscall(sys_read, "sys_read");
 	register_syscall(sys_open, "sys_open");
 	register_syscall(sys_close, "sys_close");
+	register_syscall(sys_delete, "sys_delete");
+	register_syscall(sys_mkdir, "sys_mkdir");
+	register_syscall(sys_dir_at, "sys_dir_at");
 	register_syscall(sys_get_file_size, "sys_get_file_size");
 	register_syscall(sys_exit, "sys_exit");
 	register_syscall(sys_spawn, "sys_spawn");

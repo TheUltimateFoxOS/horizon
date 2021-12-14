@@ -16,6 +16,10 @@ namespace fs {
 			virtual void read(file_t* file, void* buffer, size_t size, size_t offset);
 			virtual void write(file_t* file, void* buffer, size_t size, size_t offset);
 
+			virtual void delete_(file_t* file);
+			virtual void mkdir(char* path);
+			virtual dir_t dir_at(int idx, char* path);
+
 			fat32_mount(int disk_id, char* name);
 			~fat32_mount();
 

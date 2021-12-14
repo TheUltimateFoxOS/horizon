@@ -16,6 +16,7 @@ namespace fs {
 			void close();
 			void read(void* buffer, size_t size, size_t offset);
 			void write(void* buffer, size_t size, size_t offset);
+			void delete_();
 
 			file_t* file;
 	};

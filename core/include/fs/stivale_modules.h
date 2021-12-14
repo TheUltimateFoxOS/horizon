@@ -11,7 +11,8 @@ namespace fs {
 			virtual file_t* open(char* path);
 			virtual void close(file_t* file);
 			virtual void read(file_t* file, void* buffer, size_t size, size_t offset);
-			virtual void write(file_t* file, void* buffer, size_t size, size_t offset);
+			
+			virtual dir_t dir_at(int idx, char* path);
 
 			stivale_mount(stivale2_struct* bootinfo);
 

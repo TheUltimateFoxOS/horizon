@@ -1,5 +1,7 @@
 #include <fs/stivale_modules.h>
 
+#include <utils/log.h>
+
 using namespace fs;
 using namespace fs::vfs;
 
@@ -34,6 +36,24 @@ void stivale_mount::read(file_t* file, void* buffer, size_t size, size_t offset)
 	memcpy(buffer, (char*) file->data + offset, size);
 }
 
-void stivale_mount::write(file_t* file, void* buffer, size_t size, size_t offset) {
-	memcpy((char*) file->data + offset, buffer, size);
+
+dir_t stivale_mount::dir_at(int idx, char* path) {
+	if (idx >= modules->module_count) {
+		debugf("stivale_mount::dir_at: idx out of bounds\n");
+
+		return {
+			.is_none = true
+		};
+	}
+
+	stivale2_module* module = &modules->modules[idx];
+
+	dir_t dir;
+	memset(&dir, 0, sizeof(dir));
+	
+	strcpy(dir.name, module->string);
+	dir.idx = idx;
+	dir.is_none = false;
+
+	return dir;
 }

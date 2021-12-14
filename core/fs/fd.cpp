@@ -36,6 +36,13 @@ void file_descriptor::write(void* buffer, size_t size, size_t offset) {
 	}
 }
 
+void file_descriptor::delete_() {
+	if (this->file != nullptr) {
+		global_vfs->delete_(this->file);
+	}
+}
+
+
 file_descriptor_manager::file_descriptor_manager() : fds(10) {
 	this->curr_fd = 10;
 }

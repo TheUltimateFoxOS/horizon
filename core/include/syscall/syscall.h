@@ -31,6 +31,9 @@ namespace syscall {
 	void sys_open(interrupts::s_registers* regs);
 	void sys_close(interrupts::s_registers* regs);
 	void sys_get_file_size(interrupts::s_registers* regs);
+	void sys_delete(interrupts::s_registers* regs);
+	void sys_mkdir(interrupts::s_registers* regs);
+	void sys_dir_at(interrupts::s_registers* regs);
 	void sys_exit(interrupts::s_registers* regs);
 	void sys_spawn(interrupts::s_registers* regs);
 	void sys_env(interrupts::s_registers* regs);

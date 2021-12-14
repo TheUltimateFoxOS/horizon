@@ -205,6 +205,31 @@ extern "C" void main() {
 	// fs::global_vfs->write(ps2_device, buffer, 2, 0);
 	// fs::global_vfs->close(ps2_device);
 
+	// printf("Rot dir:\n");
+	// fs::vfs::dir_t root_dir = fs::global_vfs->dir_at(0, "fat32_0:/");
+	// while(!root_dir.is_none) {
+	// 	printf("Root dir file %d: %s\n", root_dir.idx, root_dir.name);
+	// 	root_dir = fs::global_vfs->dir_at(root_dir.idx + 1, "fat32_0:/");
+	// }
+
+	// fs::global_vfs->delete_(fs::vfs::global_vfs->open("fat32_0:/limine.cfg"));
+
+	// printf("Rot dir (deleted limine.cfg):\n");
+	// fs::vfs::dir_t root_dir2 = fs::global_vfs->dir_at(0, "fat32_0:/");
+	// while(!root_dir2.is_none) {
+	// 	printf("Root dir file %d: %s\n", root_dir2.idx, root_dir2.name);
+	// 	root_dir2 = fs::global_vfs->dir_at(root_dir2.idx + 1, "fat32_0:/");
+	// }
+
+	// fs::global_vfs->mkdir("fat32_0:/test");
+
+	// printf("Rot dir (created test dir):\n");
+	// fs::vfs::dir_t root_dir3 = fs::global_vfs->dir_at(0, "fat32_0:/");
+	// while(!root_dir3.is_none) {
+	// 	printf("Root dir file %d: %s\n", root_dir3.idx, root_dir3.name);
+	// 	root_dir3 = fs::global_vfs->dir_at(root_dir3.idx + 1, "fat32_0:/");
+	// }
+
 	scheduler::start();
 
 	while(1) {
