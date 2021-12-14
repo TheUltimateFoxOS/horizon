@@ -4,6 +4,9 @@
 #include <net/arp.h>
 #include <net/ipv4.h>
 #include <net/icmp.h>
+#include <net/udp.h>
+
+#define HOSTNAME (char*) "FoxOS"
 
 namespace net {
 	struct network_stack_t {
@@ -11,7 +14,7 @@ namespace net {
 		net::address_resolution_protocol* arp;
 		net::ipv4_provider* ipv4;
 		net::icmp_provider* icmp;
-		void* udp;
+		net::udp_provider* udp;
 		void* tcp;
 		void* dns;
 	};

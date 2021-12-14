@@ -27,6 +27,7 @@ void fs_init() {
 		}
 
 		char* name = new char[64];
+		memset(name, 0, 64);
 		sprintf(name, "fat32_%d", i);
 
 		fs::fat32_mount* fat32_mount = new fs::fat32_mount(i, name);

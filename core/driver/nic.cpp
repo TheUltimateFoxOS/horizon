@@ -4,6 +4,8 @@
 #include <net/etherframe.h>
 #include <net/arp.h>
 #include <net/ipv4.h>
+#include <net/udp.h>
+#include <net/dhcp.h>
 
 #include <renderer/font_renderer.h>
 
@@ -36,8 +38,21 @@ void driver::load_network_stack() {
 		net::address_resolution_protocol* arp = new net::address_resolution_protocol(ether);
 		net::ipv4_provider* ipv4 = new net::ipv4_provider(ether, arp, 0xffffffff, 0xffffffff);
 		net::icmp_provider* icmp = new net::icmp_provider(ipv4);
+		net::udp_provider* udp = new net::udp_provider(ipv4);
 
-		//arp->broadcast_mac(ipv4->gateway_ip_be); dhcp needed to get the ip
+		net::udp_socket* dhcp_socket = udp->connect(0xffffffff, 67);
+		net::dhcp_protocol* dhcp = new net::dhcp_protocol(dhcp_socket);
+		udp->bind(dhcp_socket, dhcp);
+
+		dhcp->request();
+		nic->set_ip(dhcp->ip);
+		ipv4->gateway_ip_be = dhcp->gateway;
+		ipv4->subnet_mask_be = dhcp->subnet;
+
+		delete dhcp;
+		delete dhcp_socket;
+
+		arp->broadcast_mac(ipv4->gateway_ip_be);
 
 		driver::ip_u ip;
 		ip.ip = nic->get_ip();
@@ -57,7 +72,7 @@ void driver::load_network_stack() {
 			.arp = arp,
 			.ipv4 = ipv4,
 			.icmp = icmp,
-			.udp = nullptr,
+			.udp = udp,
 			.tcp = nullptr,
 			.dns = nullptr
 		};
