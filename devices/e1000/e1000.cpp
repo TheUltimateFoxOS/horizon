@@ -12,7 +12,7 @@
 
 using namespace driver;
 
-//#define DEBUG
+#define DEBUG
 
 e1000_driver::e1000_driver(pci::pci_header_0_t* header, uint16_t bus, uint16_t device, uint16_t function) : interrupt_handler(header->interrupt_line + 0x20) {
 	this->header = header;
@@ -27,6 +27,7 @@ e1000_driver::e1000_driver(pci::pci_header_0_t* header, uint16_t bus, uint16_t d
 		pci::pci_bar_t pci_bar = pci::get_bar(&header->BAR0, i, bus, device, function);
 
 		if (pci_bar.type == pci::pci_bar_type_t::MMIO32 || pci_bar.type == pci::pci_bar_type_t::MMIO64) {
+			this->bar_type = 0;
 			this->mem_base = pci_bar.mem_address;
 			memory::global_page_table_manager.map_range((void*) this->mem_base, (void*) this->mem_base, pci_bar.size);
 			debugf("e1000_driver: MMIO address: 0x%x\n", this->mem_base);
@@ -35,6 +36,7 @@ e1000_driver::e1000_driver(pci::pci_header_0_t* header, uint16_t bus, uint16_t d
 #endif
 			break;
 		} else if (pci_bar.type == pci::pci_bar_type_t::IO) {
+			this->bar_type = 1;
 			this->io_port = pci_bar.io_address;
 			debugf("e1000_driver: IO port: %d\n", this->io_port);
 #ifdef DEBUG
@@ -61,7 +63,7 @@ e1000_driver::~e1000_driver() {
 }
 
 void e1000_driver::write_command(uint16_t address, uint32_t value) {
-	if (bar_type == 0) {
+	if (this->bar_type == 0) {
 		MMIO::write32(this->mem_base + address, value);
 	} else {
 		outl(this->io_port, address);
@@ -70,7 +72,7 @@ void e1000_driver::write_command(uint16_t address, uint32_t value) {
 }
 
 uint32_t e1000_driver::read_command(uint16_t address) {
-	if (bar_type == 0) {
+	if (this->bar_type == 0) {
 		return MMIO::read32(this->mem_base + address);
 	} else {
 		outl(this->io_port, address);

@@ -112,11 +112,7 @@ uint64_t address_resolution_protocol::resolve(uint32_t ip_be) {
 			return 0;
 		}
 
-		if (timer::global_hpet_timer->is_available()) {
-			timer::global_hpet_timer->sleep(10);
-		} else {
-			timer::global_pit_timer->sleep(10);
-		}
+		timer::global_timer->sleep(10);
 	}
 
 	return result;
