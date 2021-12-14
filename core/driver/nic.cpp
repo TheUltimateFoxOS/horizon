@@ -3,6 +3,7 @@
 #include <net/network_stack.h>
 #include <net/etherframe.h>
 #include <net/arp.h>
+#include <net/ipv4.h>
 
 #include <renderer/font_renderer.h>
 
@@ -33,15 +34,18 @@ void driver::load_network_stack() {
 
 		net::ether_frame_provider* ether = new net::ether_frame_provider(i);
 		net::address_resolution_protocol* arp = new net::address_resolution_protocol(ether);
+		net::ipv4_provider* ipv4 = new net::ipv4_provider(ether, arp, 0xffffffff, 0xffffffff);
+
+		//arp->broadcast_mac(ipv4->gateway_ip_be); dhcp needed to get the ip
 
 		driver::ip_u ip;
 		ip.ip = nic->get_ip();
 
 		driver::ip_u gateway;
-		gateway.ip = 0;
+		gateway.ip = ipv4->gateway_ip_be;
 
 		driver::ip_u subnet;
-		subnet.ip = 0;
+		subnet.ip = ipv4->subnet_mask_be;
 
 		driver::ip_u dns_ip;
 		dns_ip.ip = 0;
@@ -50,7 +54,7 @@ void driver::load_network_stack() {
 		*network_stack = {
 			.ether = ether,
 			.arp = arp,
-			.ipv4 = nullptr,
+			.ipv4 = ipv4,
 			.icmp = nullptr,
 			.udp = nullptr,
 			.tcp = nullptr,
