@@ -62,6 +62,7 @@ void syscall::setup() {
 	register_syscall(sys_exit, "sys_exit");
 	register_syscall(sys_spawn, "sys_spawn");
 	register_syscall(sys_env, "sys_env");
+	register_syscall(sys_time, "sys_time");
 }
 
 void syscall::register_syscall(void (*handler)(interrupts::s_registers*), const char* name) {
