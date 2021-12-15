@@ -79,8 +79,9 @@ void ps2_keyboard::handle() {
 		break;
 	
 	default:
-		current_char = keymap(current_layout, key, l_shift, r_shift, caps_lock);
-		printf("%c", current_char);
+		char tmp = keymap(current_layout, key, l_shift, r_shift, caps_lock);
+		printf("%c", tmp);
+		current_char = tmp;
 		break;
 	}
 
