@@ -6,6 +6,7 @@
 #include <net/ipv4.h>
 #include <net/udp.h>
 #include <net/dhcp.h>
+#include <net/ntp.h>
 
 #include <renderer/font_renderer.h>
 
@@ -66,6 +67,21 @@ void driver::load_network_stack() {
 		driver::ip_u dns_ip;
 		dns_ip.ip = 0;
 
+		driver::ip_u ntp_ip;
+		// 129.6.15.28	(time-a-g.nist.gov)
+		ntp_ip.ip_p[0] = 129;
+		ntp_ip.ip_p[1] = 6;
+		ntp_ip.ip_p[2] = 15;
+		ntp_ip.ip_p[3] = 28;
+
+		net::udp_socket* ntp_socket = udp->connect(ntp_ip.ip, 123);
+		net::network_time_protocol* ntp = new net::network_time_protocol(ntp_socket);
+		udp->bind(ntp_socket, ntp);
+
+		driver::clock_device::clock_result_t ntp_res = ntp->time();
+		debugf("ntp: %d %d %d %d:%d:%d\n", ntp_res.year, ntp_res.month, ntp_res.day, ntp_res.hours, ntp_res.minutes, ntp_res.seconds);
+		driver::default_clock_device = ntp;
+
 		net::network_stack_t* network_stack = new net::network_stack_t;
 		*network_stack = {
 			.ether = ether,
@@ -73,6 +89,7 @@ void driver::load_network_stack() {
 			.ipv4 = ipv4,
 			.icmp = icmp,
 			.udp = udp,
+			.ntp = ntp,
 			.tcp = nullptr,
 			.dns = nullptr
 		};
@@ -126,6 +143,7 @@ void nic_device::load_network_stack(net::network_stack_t* network_stack) {
 	debugf("      ipv4: %x\n", network_stack->ipv4);
 	debugf("      icmp: %x\n", network_stack->icmp);
 	debugf("      udp: %x\n", network_stack->udp);
+	debugf("      ntp: %x\n", network_stack->ntp);
 	debugf("      tcp: %x\n", network_stack->tcp);
 	debugf("      dns: %x\n", network_stack->dns);
 }
