@@ -34,5 +34,23 @@ void syscall::sys_env(interrupts::s_registers* regs) {
 				scheduler::register_signal_handler_self(regs->rcx, regs->rdx);
 			}
 			break;
+		
+		case 4: // set cwd
+			{
+				scheduler::set_cwd_self((char*) regs->rcx);
+			}
+			break;
+		
+		case 5: // get cwd
+			{
+				regs->rcx = (uint64_t) scheduler::get_cwd_self();
+			}
+			break;
+		
+		default:
+			{
+				debugf("sys_env: unknown syscall\n");
+			}
+			break;
 	}
 }

@@ -219,3 +219,20 @@ void scheduler::register_signal_handler_self(int signum, uint64_t handler) {
 
 	task->signals[signum] = (signal_handler) handler;
 }
+
+void scheduler::set_cwd_self(const char* cwd) {
+	LAPIC_ID(id);
+
+	task_t* task = task_queue[id]->list[0];
+
+	memset(task->cwd, 0, sizeof(task->cwd));
+	strcpy(task->cwd, cwd);
+}
+
+const char* scheduler::get_cwd_self() {
+	LAPIC_ID(id);
+
+	task_t* task = task_queue[id]->list[0];
+
+	return task->cwd;
+}

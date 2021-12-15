@@ -28,6 +28,8 @@ namespace scheduler {
 		bool* on_exit; // if it isn't a nullptr gets set to true when the task exits
 
 		signal_handler signals[32];
+
+		char cwd[128];
 	};
 
 	void setup();
@@ -42,6 +44,9 @@ namespace scheduler {
 
 	bool handle_signal(int signum);
 	void register_signal_handler_self(int signum, uint64_t handler);
+
+	void set_cwd_self(const char* cwd);
+	const char* get_cwd_self();
 
 	extern "C" void task_entry();
 }
