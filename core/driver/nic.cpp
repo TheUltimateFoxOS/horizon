@@ -78,9 +78,9 @@ void driver::load_network_stack() {
 		net::network_time_protocol* ntp = new net::network_time_protocol(ntp_socket);
 		udp->bind(ntp_socket, ntp);
 
-		driver::clock_device::clock_result_t ntp_res = ntp->time();
-		debugf("ntp: %d %d %d %d:%d:%d\n", ntp_res.year, ntp_res.month, ntp_res.day, ntp_res.hours, ntp_res.minutes, ntp_res.seconds);
-		driver::default_clock_device = ntp;
+		//driver::clock_device::clock_result_t ntp_res = ntp->time();
+		//debugf("ntp: %d %d %d %d:%d:%d\n", ntp_res.year, ntp_res.month, ntp_res.day, ntp_res.hours, ntp_res.minutes, ntp_res.seconds);
+		//driver::default_clock_device = ntp;
 
 		net::network_stack_t* network_stack = new net::network_stack_t;
 		*network_stack = {
