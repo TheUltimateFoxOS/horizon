@@ -147,12 +147,12 @@ uint32_t domain_name_service_provider::resolve_A(char* domain) {
 				return n->data.ipv4;
 			} else if (n->data.cname != 0) {
 				if (this->loop >= MAX_LOOP_COUNT) {
-					debugf("DNS: CACHE: Resolving \"%s\", following CNAME: \"%s\"\n", domain, n->data.cname);
-					return resolve_A(n->data.cname);
-				} else {
 					debugf("DNS: CACHE: looping CNAME: \"%s\"\n", n->data.cname);
 					results.remove(n);
 					return 0;
+				} else {
+					debugf("DNS: CACHE: Resolving \"%s\", following CNAME: \"%s\"\n", domain, n->data.cname);
+					return resolve_A(n->data.cname);
 				}
 			}
 		}
@@ -164,7 +164,7 @@ uint32_t domain_name_service_provider::resolve_A(char* domain) {
 	int timeout = 1000;
 	while (wait_for_response) {
 		if (timeout-- <= 0) {
-			printf("DNS: timeout\n");
+			printf("DNS: Request timeout for: \"%s\"\n", domain);
 			return 0;
 		}
 
@@ -248,9 +248,7 @@ void domain_name_service_provider::on_udp_message(udp_socket *socket, uint8_t* d
 
 			name = name + __builtin_bswap16(resource->data_len);
 		} else if (resource->type == __builtin_bswap16(5) && resource->_class == __builtin_bswap16(1)) {
-			debugf("DNS: PRINT 1\n");
 			char* out = resolv_hostname_to_domain((uint8_t*) name, (uint8_t*) dns, &stop);
-			debugf("DNS: PRINT 2\n");
 			strcpy(result.cname, out);
 
 			debugf("DNS: Response \"%s\" -> \"%s\"\n", qname, result.cname);
