@@ -5,6 +5,8 @@
 #include <utils/abort.h>
 #include <fs/fd.h>
 
+#include <renderer/font_renderer.h>
+
 using namespace syscall;
 
 define_spinlock(sys_write_lock);
@@ -29,9 +31,11 @@ void syscall::sys_write(interrupts::s_registers* regs) {
 			{
 				atomic_acquire_spinlock(sys_write_lock);
 				// Write to stderr
+				renderer::global_font_renderer->set_color(0xffff0000);
 				for (int i = 0; i < regs->rdx; i++) {
-					debugf("%c", *((char*)regs->rcx + i));
+					printf("%c", *((char*)regs->rcx + i));
 				}
+				renderer::global_font_renderer->reset_color();
 				atomic_release_spinlock(sys_write_lock);
 			}
 			break;
