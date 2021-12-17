@@ -5,6 +5,8 @@
 #include <net/ipv4.h>
 #include <net/icmp.h>
 #include <net/udp.h>
+//#include <net/tcp.h>
+#include <net/dns.h>
 
 #define HOSTNAME (char*) "FoxOS"
 
@@ -16,6 +18,6 @@ namespace net {
 		net::icmp_provider* icmp;
 		net::udp_provider* udp;
 		void* tcp;
-		void* dns;
+		net::domain_name_service_provider* dns;
 	};
 }

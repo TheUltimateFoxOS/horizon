@@ -39,6 +39,7 @@ void driver::load_network_stack() {
 		net::ipv4_provider* ipv4 = new net::ipv4_provider(ether, arp, 0xffffffff, 0xffffffff);
 		net::icmp_provider* icmp = new net::icmp_provider(ipv4);
 		net::udp_provider* udp = new net::udp_provider(ipv4);
+		//tcp
 
 		net::udp_socket* dhcp_socket = udp->connect(0xffffffff, 67);
 		net::dhcp_protocol* dhcp = new net::dhcp_protocol(dhcp_socket);
@@ -64,7 +65,11 @@ void driver::load_network_stack() {
 		subnet.ip = ipv4->subnet_mask_be;
 
 		driver::ip_u dns_ip;
-		dns_ip.ip = 0;
+		dns_ip.ip = dhcp->dns;
+
+		net::udp_socket* dns_socket = udp->connect(dns_ip.ip, 53);
+		net::domain_name_service_provider* dns = new net::domain_name_service_provider(dns_socket);
+		udp->bind(dns_socket, dns);
 
 		net::network_stack_t* network_stack = new net::network_stack_t;
 		*network_stack = {
@@ -74,7 +79,7 @@ void driver::load_network_stack() {
 			.icmp = icmp,
 			.udp = udp,
 			.tcp = nullptr,
-			.dns = nullptr
+			.dns = dns
 		};
 
 		nic->load_network_stack(network_stack);
@@ -88,6 +93,10 @@ void driver::load_network_stack() {
 		printf("]\n");
 
 		printf("ip: %d.%d.%d.%d, gateway: %d.%d.%d.%d, dns: %d.%d.%d.%d\n", ip.ip_p[0], ip.ip_p[1], ip.ip_p[2], ip.ip_p[3], gateway.ip_p[0], gateway.ip_p[1], gateway.ip_p[2], gateway.ip_p[3], dns_ip.ip_p[0], dns_ip.ip_p[1], dns_ip.ip_p[2], dns_ip.ip_p[3]);
+	
+		driver::ip_u google_ip;
+		google_ip.ip = dns->resolve_A("mail.google.com");
+		printf("DNS req ip: %d.%d.%d.%d\n", google_ip.ip_p[0], google_ip.ip_p[1], google_ip.ip_p[2], google_ip.ip_p[3]);
 	}
 }
 
