@@ -11,7 +11,7 @@ namespace log {
 	output::output_device* stdout_device;
 }
 
-void debugf(const char *fmt, ...) {
+void debugf_intrnl(const char *fmt, ...) {
 	va_list args;
 	char buf[1024] = {0};
 

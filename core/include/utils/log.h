@@ -2,10 +2,19 @@
 
 #include <output/output.h>
 
+#include <config.h>
+
 namespace log {
 	extern output::output_device* debug_device;
 	extern output::output_device* stdout_device;
 }
 
-void debugf(const char* fmt, ...);
+void debugf_intrnl(const char* fmt, ...);
+
+#ifdef DEBUG
+#define debugf(fmt, ...) debugf_intrnl("[%s:%d] ", __FILE__, __LINE__); debugf_intrnl(fmt, ##__VA_ARGS__)
+#else
+#define debugf(fmt, ...)
+#endif
+
 void printf(const char *fmt, ...);

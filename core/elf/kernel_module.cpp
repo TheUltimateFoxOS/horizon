@@ -12,11 +12,14 @@
 
 #include <memory/page_frame_allocator.h>
 
+#include <config.h>
+
 using namespace elf;
 
 list<module_t*>* modules = nullptr;
 
 void kernel_module_render_status(char* status, uint64_t color) {
+#ifndef NICE_BOOT_ANIMATION
 	renderer::global_font_renderer->cursor_position.x = renderer::global_font_renderer->target_frame_buffer->width - 8 * (strlen(status) + 4);
 	
 	uint64_t old_color = renderer::global_font_renderer->color;
@@ -25,6 +28,7 @@ void kernel_module_render_status(char* status, uint64_t color) {
 	printf("%s", status);
 	renderer::global_font_renderer->color = old_color;
 	printf("]\n");
+#endif
 }
 
 void elf::load_kernel_module(char* path, bool announce) {

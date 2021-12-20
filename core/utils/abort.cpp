@@ -28,6 +28,7 @@ __attribute__((noreturn)) void abortf(const char* fmt, ...) {
 
 	uint64_t rbp;
 	__asm__ __volatile__ ("movq %%rbp, %0" : "=r" (rbp));
+	log::stdout_device = renderer::global_font_renderer;
 	renderer::point_t bmp_info = renderer::global_renderer_2d->get_bitmap_info(screen_of_death);
 
 	va_list args;

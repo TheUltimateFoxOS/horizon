@@ -5,6 +5,8 @@
 #include <utils/log.h>
 #include <utils/string.h>
 
+#include <config.h>
+
 using namespace driver;
 
 driver_manager* driver::global_driver_manager;
@@ -48,6 +50,7 @@ void driver_manager::add_driver(device_driver* driver) {
 
 //#driver_manager::set_status-doc: Print the device status onto the screen.
 void driver_manager::set_status(char* status, uint64_t color) {
+#ifndef NICE_BOOT_ANIMATION
 	renderer::global_font_renderer->cursor_position.x = renderer::global_font_renderer->target_frame_buffer->width - 8 * (strlen(status) + 4);
 	
 	uint64_t old_color = renderer::global_font_renderer->color;
@@ -56,6 +59,7 @@ void driver_manager::set_status(char* status, uint64_t color) {
 	printf("%s", status);
 	renderer::global_font_renderer->color = old_color;
 	printf("]\n");
+#endif
 }
 
 //#driver_manager::activate_driver-doc: Activate a driver.

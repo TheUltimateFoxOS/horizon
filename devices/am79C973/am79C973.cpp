@@ -181,9 +181,9 @@ void am79C973_driver::send(uint8_t* data, int32_t length) {
 #ifdef DEBUG
 	debugf("Am79C973Driver: sending packet: ");
 	for(int i = 0; i < (length > 64 ? 64 : length); i++) {
-		debugf("%x ", data[i]);
+		debugf_intrnl("%x ", data[i]);
 	}
-	debugf("\n");
+	debugf_intrnl("\n");
 #endif
 
 	sendBufferDescr[send_descriptor].avail = 0;
@@ -212,9 +212,9 @@ void am79C973_driver::receive() {
 		#ifdef DEBUG
 			debugf("am79C973_driver: receiveing packet: ");
 			for(int i = 0; i < (size > 64 ? 64 : size); i++) {
-				debugf("%x ", data[i]);
+				debugf_intrnl("%x ", data[i]);
 			}
-			debugf("\n");
+			debugf_intrnl("\n");
 		#endif
 
 			if (_nic_data_manager) {

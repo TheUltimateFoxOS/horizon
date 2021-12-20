@@ -228,9 +228,9 @@ void e1000_driver::receive() {
 #ifdef DEBUG
 		debugf("e1000_driver: receiveing packet: ");
 		for(int i = 0; i < (size > 64 ? 64 : size); i++) {
-			debugf("%x ", data[i]);
+			debugf_intrnl("%x ", data[i]);
 		}
-		debugf("\n");
+		debugf_intrnl("\n");
 #endif
  
 		if (_nic_data_manager) {
@@ -255,9 +255,9 @@ void e1000_driver::send(uint8_t* data, int32_t length) {
 #ifdef DEBUG
 	debugf("e1000_driver: sending packet: ");
 	for(int i = 0; i < (length > 64 ? 64 : length); i++) {
-		debugf("%x ", data[i]);
+		debugf_intrnl("%x ", data[i]);
 	}
-	debugf("\n");
+	debugf_intrnl("\n");
 #endif
 
 	uint8_t old_cur = this->tx_cur;

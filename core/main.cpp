@@ -13,6 +13,7 @@
 #include <renderer/renderer.h>
 #include <renderer/render2d.h>
 #include <renderer/font_renderer.h>
+#include <renderer/boot_screen_renderer.h>
 
 #include <utils/abort.h>
 #include <utils/string.h>
@@ -40,6 +41,8 @@
 
 #include <memory/memory.h>
 
+#include <config.h>
+
 extern uint8_t logo[];
 
 extern "C" void main() {
@@ -62,10 +65,17 @@ extern "C" void main() {
 	elf::setup(global_bootinfo);
 	renderer::setup(global_bootinfo);
 
+#ifndef NICE_BOOT_ANIMATION
 	renderer::global_font_renderer->clear(0);
 	renderer::global_renderer_2d->load_bitmap(logo, 0);
+#endif
 
 	timer::setup();
+
+#ifdef NICE_BOOT_ANIMATION
+	renderer::boot_screen_renderer* boot_screen_renderer = new renderer::boot_screen_renderer(&renderer::default_framebuffer);
+#endif 
+
 	fs::vfs::setup();
 
 	debugf("Mounting stivale modules vfs mount...\n");
@@ -130,7 +140,6 @@ extern "C" void main() {
 
 	elf::fs_init_all();
 
-	printf("\nWelcome to FoxOS Horizon!\n\n");
 
 	// scheduler::create_task((void*) (void (*)()) []() {
 	// 	int i = 1000;
@@ -229,6 +238,13 @@ extern "C" void main() {
 	// 	printf("Root dir file %d: %s\n", root_dir3.idx, root_dir3.name);
 	// 	root_dir3 = fs::global_vfs->dir_at(root_dir3.idx + 1, "fat32_0:/");
 	// }
+
+	// while (true) {}
+#ifdef NICE_BOOT_ANIMATION
+	delete boot_screen_renderer;
+#endif
+
+	printf("\nWelcome to FoxOS Horizon!\n\n");
 
 	scheduler::start();
 

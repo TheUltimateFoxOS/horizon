@@ -12,6 +12,8 @@
 
 #include <utils/log.h>
 
+#include <config.h>
+
 using namespace driver;
 
 namespace driver {
@@ -96,6 +98,7 @@ void driver::load_network_stack() {
 
 		nic->load_network_stack(network_stack);
 
+	#ifndef NICE_BOOT_ANIMATION
 		renderer::global_font_renderer->cursor_position.x = renderer::global_font_renderer->target_frame_buffer->width - 8 * 6;
 		uint64_t old_color = renderer::global_font_renderer->color;
 		printf("[");
@@ -103,6 +106,7 @@ void driver::load_network_stack() {
 		printf("ok");
 		renderer::global_font_renderer->color = old_color;
 		printf("]\n");
+	#endif
 
 		printf("ip: %d.%d.%d.%d, gateway: %d.%d.%d.%d, dns: %d.%d.%d.%d\n", ip.ip_p[0], ip.ip_p[1], ip.ip_p[2], ip.ip_p[3], gateway.ip_p[0], gateway.ip_p[1], gateway.ip_p[2], gateway.ip_p[3], dns_ip.ip_p[0], dns_ip.ip_p[1], dns_ip.ip_p[2], dns_ip.ip_p[3]);
 	}
