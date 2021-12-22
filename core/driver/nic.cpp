@@ -114,10 +114,6 @@ void driver::load_network_stack() {
 	#endif
 
 		printf("ip: %d.%d.%d.%d, gateway: %d.%d.%d.%d, dns: %d.%d.%d.%d\n", ip.ip_p[0], ip.ip_p[1], ip.ip_p[2], ip.ip_p[3], gateway.ip_p[0], gateway.ip_p[1], gateway.ip_p[2], gateway.ip_p[3], dns_ip.ip_p[0], dns_ip.ip_p[1], dns_ip.ip_p[2], dns_ip.ip_p[3]);
-	
-		driver::ip_u google_ip;
-		google_ip.ip = dns->resolve_A("mail.google.com");
-		printf("DNS req ip: %d.%d.%d.%d\n", google_ip.ip_p[0], google_ip.ip_p[1], google_ip.ip_p[2], google_ip.ip_p[3]);
 	}
 }
 
