@@ -6,7 +6,7 @@
 #include <net/icmp.h>
 
 #include <net/udp.h>
-//#include <net/tcp.h>
+#include <net/tcp.h>
 
 #include <net/dns.h>
 #include <net/ntp.h>
@@ -21,7 +21,7 @@ namespace net {
 		net::icmp_provider* icmp;
 		net::udp_provider* udp;
 		net::network_time_protocol* ntp;
-		void* tcp;
+		net::tcp_provider* tcp;
 		net::domain_name_service_provider* dns;
 	};
 }

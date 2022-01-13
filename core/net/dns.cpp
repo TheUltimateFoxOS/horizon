@@ -105,6 +105,7 @@ void domain_name_service_provider::resolv_skip_name(uint8_t* reader, uint8_t* bu
 
 void domain_name_service_provider::dns_request(char* name) {
 	char* buffer = new char[2048];
+	memset(buffer, 0, 2048);
 	dnshdr_t* dns = (dnshdr_t*)buffer;
 	char* qname = (char*)(buffer + sizeof(dnshdr_t));
 
@@ -128,7 +129,7 @@ uint32_t domain_name_service_provider::resolve_A(char* domain) {
 	memset(qname, 0, 128);
 	resolv_domain_to_hostname(qname, domain);
 
-	bool didExpire;
+	//bool didExpire;
 	list<dns_result_t>::node* n = results.find<char*>([](char* qname, list<dns_result_t>::node* n) {
 		if (strcmp(qname, n->data.name) != 0) {
 			return false;

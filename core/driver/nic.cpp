@@ -7,6 +7,7 @@
 #include <net/udp.h>
 #include <net/dhcp.h>
 #include <net/ntp.h>
+#include <net/tcp.h>
 
 #include <renderer/font_renderer.h>
 
@@ -19,6 +20,7 @@ using namespace driver;
 namespace driver {
 	nic_driver_manager* global_nic_manager;
 }
+
 
 void driver::load_network_stack() {
 	for (int i = 0; i < driver::global_nic_manager->num_nics; i++) {
@@ -42,7 +44,7 @@ void driver::load_network_stack() {
 		net::ipv4_provider* ipv4 = new net::ipv4_provider(ether, arp, 0xffffffff, 0xffffffff);
 		net::icmp_provider* icmp = new net::icmp_provider(ipv4);
 		net::udp_provider* udp = new net::udp_provider(ipv4);
-		//tcp
+		net::tcp_provider* tcp = new net::tcp_provider(ipv4);
 
 		net::udp_socket* dhcp_socket = udp->connect(0xffffffff, 67);
 		net::dhcp_protocol* dhcp = new net::dhcp_protocol(dhcp_socket);
@@ -76,10 +78,11 @@ void driver::load_network_stack() {
 
 		driver::ip_u ntp_ip;
 		// 129.6.15.28	(time-a-g.nist.gov)
-		ntp_ip.ip_p[0] = 129;
-		ntp_ip.ip_p[1] = 6;
-		ntp_ip.ip_p[2] = 15;
-		ntp_ip.ip_p[3] = 28;
+		// ntp_ip.ip_p[0] = 129;
+		// ntp_ip.ip_p[1] = 6;
+		// ntp_ip.ip_p[2] = 15;
+		// ntp_ip.ip_p[3] = 28;
+		ntp_ip.ip = dns->resolve_A("time-a-g.nist.gov");
 
 		net::udp_socket* ntp_socket = udp->connect(ntp_ip.ip, 123);
 		net::network_time_protocol* ntp = new net::network_time_protocol(ntp_socket);
@@ -97,7 +100,7 @@ void driver::load_network_stack() {
 			.icmp = icmp,
 			.udp = udp,
 			.ntp = ntp,
-			.tcp = nullptr,
+			.tcp = tcp,
 			.dns = dns
 		};
 
@@ -115,9 +118,15 @@ void driver::load_network_stack() {
 
 		printf("ip: %d.%d.%d.%d, gateway: %d.%d.%d.%d, dns: %d.%d.%d.%d\n", ip.ip_p[0], ip.ip_p[1], ip.ip_p[2], ip.ip_p[3], gateway.ip_p[0], gateway.ip_p[1], gateway.ip_p[2], gateway.ip_p[3], dns_ip.ip_p[0], dns_ip.ip_p[1], dns_ip.ip_p[2], dns_ip.ip_p[3]);
 	
-		driver::ip_u google_ip;
-		google_ip.ip = dns->resolve_A("mail.google.com");
-		printf("DNS req ip: %d.%d.%d.%d\n", google_ip.ip_p[0], google_ip.ip_p[1], google_ip.ip_p[2], google_ip.ip_p[3]);
+		// driver::ip_u google_ip;
+		// google_ip.ip = dns->resolve_A("google.com");
+		// debugf("DNS req ip: %d.%d.%d.%d\n", google_ip.ip_p[0], google_ip.ip_p[1], google_ip.ip_p[2], google_ip.ip_p[3]);
+
+		// icmp->send_echo_request(google_ip.ip);
+
+		// char* http_request = "GET / HTTP/1.1\r\nHost: www.google.com\r\n\r\n";
+		// net::tcp_socket* http_socket = tcp->connect(google_ip.ip, 80);
+		// http_socket->send((uint8_t*) http_request, strlen(http_request));
 	}
 }
 
