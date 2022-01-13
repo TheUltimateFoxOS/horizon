@@ -14,6 +14,7 @@
 #include <renderer/render2d.h>
 #include <renderer/font_renderer.h>
 #include <renderer/boot_screen_renderer.h>
+#include <renderer/window_renderer.h>
 
 #include <utils/abort.h>
 #include <utils/string.h>
