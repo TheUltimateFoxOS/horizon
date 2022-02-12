@@ -13,10 +13,11 @@ using namespace fs;
 using namespace fs::vfs;
 
 fat32_mount::fat32_mount(int disk_id, char* name) {
-	this->fatfs = (FATFS*) memory::global_allocator.request_page();
-	this->fatfs->pdrv = disk_id;
+	FATFS* fs = (FATFS*) memory::global_allocator.request_page(); // dont ask why but fatfs doesent like heap addresses
+	fs->pdrv = disk_id;
+	f_mount(fs, name, 1);
 
-	f_mount(this->fatfs, name, 1);
+	this->fatfs = fs;
 }
 
 fat32_mount::~fat32_mount() {
@@ -26,10 +27,9 @@ fat32_mount::~fat32_mount() {
 file_t* fat32_mount::open(char* path) {
 	debugf("Opening file %s\n", path);
 
+	FIL fil;
 	file_t* file = new file_t;
 	memset(file, 0, sizeof(file_t));
-
-	FIL fil;
 
 	FRESULT fr = f_open(&fil, path, FA_READ | FA_WRITE);
 	if (fr != FR_OK) {
@@ -38,11 +38,10 @@ file_t* fat32_mount::open(char* path) {
 	}
 
 	file->mount = this;
-	file->size = f_size(&fil);
-	file->data = (void*) memory::malloc(sizeof(FIL));
-	memcpy(file->data, &fil, sizeof(FIL));
-
 	strcpy(file->buffer, path);
+	file->size = f_size(&fil);
+	file->data = (void*) memory::global_allocator.request_pages(sizeof(FIL) / 0x1000 + 1);
+	memcpy(file->data, &fil, sizeof(FIL));
 
 	return file;
 }
@@ -51,7 +50,7 @@ void fat32_mount::close(file_t* file) {
 	debugf("Closing file\n");
 
 	f_close((FIL*) file->data);
-	memory::free(file->data);
+	memory::global_allocator.free_pages(file->data, sizeof(FIL) / 0x1000 + 1);
 	delete file;
 }
 
@@ -60,7 +59,7 @@ void fat32_mount::read(file_t* file, void* buffer, size_t size, size_t offset) {
 
 	f_lseek((FIL*) file->data, offset);
 
-	UINT has_read;
+	unsigned int has_read;
 	f_read((FIL*) file->data, buffer, size, &has_read);
 
 	assert(has_read == size);
