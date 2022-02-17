@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <fs/vfs.h>
 
 #define DISK_NUM 265
 
@@ -11,6 +12,8 @@ namespace driver {
 			~disk_device();
 			virtual void read(uint64_t sector, uint32_t sector_count, void* buffer);
 			virtual void write(uint64_t sector, uint32_t sector_count, void* buffer);
+
+			static bool get_disk_label(char* out, fs::vfs::vfs_mount* mount);
 	};
 
 	class disk_driver_manager {

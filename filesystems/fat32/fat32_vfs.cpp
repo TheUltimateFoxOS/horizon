@@ -14,10 +14,16 @@ using namespace fs::vfs;
 
 fat32_mount::fat32_mount(int disk_id, char* name) {
 	FATFS* fs = (FATFS*) memory::global_allocator.request_page(); // dont ask why but fatfs doesent like heap addresses
-	fs->pdrv = disk_id;
-	f_mount(fs, name, 1);
+	
+	char new_path[3] = {0};
+	new_path[0] = '0' + disk_id;
+	new_path[1] = ':';
+	new_path[2] = 0;
+
+	f_mount(fs, new_path, 1);
 
 	this->fatfs = fs;
+	this->drive_number = disk_id;
 }
 
 fat32_mount::~fat32_mount() {
@@ -31,7 +37,14 @@ file_t* fat32_mount::open(char* path) {
 	file_t* file = new file_t;
 	memset(file, 0, sizeof(file_t));
 
-	FRESULT fr = f_open(&fil, path, FA_READ | FA_WRITE);
+	char new_path[256] = {0};
+	memset(new_path, 0, 256);
+	new_path[0] = '0' + drive_number;
+	new_path[1] = ':';
+	strcpy(new_path + 2, path);
+	new_path[strlen(path) + 2] = 0;
+
+	FRESULT fr = f_open(&fil, new_path, FA_READ | FA_WRITE);
 	if (fr != FR_OK) {
 		delete file;
 		return nullptr;
@@ -82,13 +95,28 @@ void fat32_mount::delete_(file_t* file) {
 }
 
 void fat32_mount::mkdir(char* path) {
-	f_mkdir(path);
+	char new_path[256] = {0};
+	memset(new_path, 0, 256);
+	new_path[0] = '0' + drive_number;
+	new_path[1] = ':';
+	strcpy(new_path + 2, path);
+	new_path[strlen(path) + 2] = 0;
+
+	f_mkdir(new_path);
 }
 
 dir_t fat32_mount::dir_at(int idx, char* path) {
 	DIR dir_;
 	FILINFO file_info;
-	f_opendir(&dir_, path);
+
+	char new_path[256] = {0};
+	memset(new_path, 0, 256);
+	new_path[0] = '0' + drive_number;
+	new_path[1] = ':';
+	strcpy(new_path + 2, path);
+	new_path[strlen(path) + 2] = 0;
+
+	f_opendir(&dir_, new_path);
 	
 	FRESULT fr = f_readdir(&dir_, &file_info);
 	assert(fr == FR_OK);
@@ -115,4 +143,17 @@ dir_t fat32_mount::dir_at(int idx, char* path) {
 	f_closedir(&dir_);
 
 	return dir;
+}
+
+void fat32_mount::touch(char* path) {
+	char new_path[256] = {0};
+	memset(new_path, 0, 256);
+	new_path[0] = '0' + drive_number;
+	new_path[1] = ':';
+	strcpy(new_path + 2, path);
+	new_path[strlen(path) + 2] = 0;
+
+	FIL file;
+	f_open(&file, new_path, FA_WRITE | FA_CREATE_ALWAYS);
+	f_close(&file);
 }

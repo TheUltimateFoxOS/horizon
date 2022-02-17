@@ -20,10 +20,13 @@ namespace fs {
 			virtual void mkdir(char* path);
 			virtual dir_t dir_at(int idx, char* path);
 
+			virtual void touch(char* path);
+
 			fat32_mount(int disk_id, char* name);
 			~fat32_mount();
 
 		private:
 			FATFS* fatfs;
+			int drive_number = 0;
 	};
 }

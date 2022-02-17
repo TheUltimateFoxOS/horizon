@@ -6,6 +6,7 @@ using namespace driver;
 
 disk_driver_manager* driver::global_disk_manager;
 
+
 disk_device::disk_device() {
 
 }
@@ -21,6 +22,24 @@ void disk_device::read(uint64_t sector, uint32_t sector_count, void* buffer) {
 void disk_device::write(uint64_t sector, uint32_t sector_count, void* buffer) {
 
 }
+
+bool disk_device::get_disk_label(char* out, fs::vfs::vfs_mount* mount) {
+	fs::vfs::file_t* file = mount->open("/dn.fox");
+
+	if (file == nullptr) {
+		debugf("Failed to open /dn.fox\n");
+		return false;
+	}
+
+	mount->read(file, out, file->size, 0);
+	out[file->size] = 0;
+
+	mount->close(file);
+	debugf("Disk label: %s\n", out);
+
+	return true;
+}
+
 
 disk_driver_manager::disk_driver_manager() {
 	this->num_disks = 0;

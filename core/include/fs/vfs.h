@@ -19,6 +19,7 @@ namespace fs {
 				void write(file_t* file, void* buffer, size_t size, size_t offset);
 				void delete_(file_t* file);
 				void mkdir(char* path);
+				void touch(char* path);
 				dir_t dir_at(int idx, char* path);
 
 				void register_mount(char* device, vfs_mount* vfs_mount_point);
@@ -41,6 +42,7 @@ namespace fs {
 				virtual void write(file_t* file, void* buffer, size_t size, size_t offset);
 				virtual void delete_(file_t* file);
 				virtual void mkdir(char* path);
+				virtual void touch(char* path);
 				virtual dir_t dir_at(int idx, char* path);
 		};
 

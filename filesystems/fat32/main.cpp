@@ -28,9 +28,13 @@ void fs_init() {
 
 		char* name = new char[64];
 		memset(name, 0, 64);
-		sprintf(name, "fat32_%d", i);
+
 
 		fs::fat32_mount* fat32_mount = new fs::fat32_mount(i, name);
+		if (!driver::disk_device::get_disk_label(name, fat32_mount)) {
+			sprintf(name, "fat32_%d", i);
+		}
+
 		fs::vfs::global_vfs->register_mount(name, fat32_mount);
 
 		debugf("Disk %d is FAT32! Registered as %s.\n", i, name);
