@@ -64,6 +64,8 @@ void syscall::setup() {
 	register_syscall(sys_env, "sys_env");
 	register_syscall(sys_time, "sys_time");
 	register_syscall(sys_touch, "sys_touch");
+	register_syscall(sys_dns_resolve, "sys_dns_resolve");
+	register_syscall(sys_icmp_echo_request, "sys_icmp_echo_request");
 }
 
 void syscall::register_syscall(void (*handler)(interrupts::s_registers*), const char* name) {

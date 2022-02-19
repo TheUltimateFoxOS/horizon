@@ -35,7 +35,6 @@ driver::clock_device::clock_result_t network_time_protocol::time() {
 
 	int timeout = 1000;
 	while(timeout--) {
-		timeout++;
 		timer::global_timer->sleep(10);
 		if(received_packet) {
 			debugf("ntp: got response\n");

@@ -1,7 +1,7 @@
 #include <net/icmp.h>
 
 #include <driver/nic.h>
-
+#include <timer/timer.h>
 #include <utils/log.h>
 
 using namespace net;
@@ -27,6 +27,8 @@ bool icmp_provider::on_internet_protocol_received(uint32_t srcIP_BE, uint32_t ds
 				// Echo reply
 				driver::ip_u ip;
 				ip.ip = srcIP_BE;
+
+				last_echo_reply_ip = ip.ip;
 
 				debugf("ICMP: Echo reply from %d.%d.%d.%d\n", ip.ip_p[0], ip.ip_p[1], ip.ip_p[2], ip.ip_p[3]);
 				return false;
@@ -57,4 +59,20 @@ void icmp_provider::send_echo_request(uint32_t dstIP_BE) {
 
 	icmp.checksum = backend->checksum((uint16_t*) &icmp, sizeof(icmp_message_t));
 	this->send(dstIP_BE, (uint8_t*) &icmp, sizeof(icmp_message_t));
+}
+
+bool icmp_provider::send_echo_reqest_and_wait(uint32_t dstIP_BE) {
+	send_echo_request(dstIP_BE);
+
+	last_echo_reply_ip = 0;
+
+	int timeout = 1000;
+	while(timeout--) {
+		timer::global_timer->sleep(10);
+		if (last_echo_reply_ip == dstIP_BE) {
+			return true;
+		}
+	}
+
+	return false;
 }

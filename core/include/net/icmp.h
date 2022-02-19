@@ -17,5 +17,8 @@ namespace net {
 
 			virtual bool on_internet_protocol_received(uint32_t srcIP_BE, uint32_t dstIP_BE, uint8_t* payload, uint32_t size);
 			void send_echo_request(uint32_t dstIP_BE);
+			bool send_echo_reqest_and_wait(uint32_t dstIP_BE);
+
+			uint32_t last_echo_reply_ip;
 	};
 }
