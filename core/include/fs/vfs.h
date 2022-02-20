@@ -46,10 +46,16 @@ namespace fs {
 				virtual dir_t dir_at(int idx, char* path);
 		};
 
+		enum dir_entry_type_e {
+			ENTRY_FILE,
+			ENTRY_DIR
+		};
+
 		struct dir_t {
 			char name[256];
 			int idx;
 			bool is_none;
+			dir_entry_type_e type;
 		};
 
 		struct file_t {

@@ -54,6 +54,7 @@ dir_t stivale_mount::dir_at(int idx, char* path) {
 	strcpy(dir.name, module->string);
 	dir.idx = idx;
 	dir.is_none = false;
+	dir.type = ENTRY_FILE;
 
 	return dir;
 }

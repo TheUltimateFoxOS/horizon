@@ -138,6 +138,12 @@ dir_t fat32_mount::dir_at(int idx, char* path) {
 	dir.idx = orig_idx;
 	dir.is_none = false;
 
+	if (file_info.fattrib & AM_DIR) {
+		dir.type = ENTRY_DIR;
+	} else {
+		dir.type = ENTRY_FILE;
+	}
+
 	strcpy(dir.name, file_info.fname);
 
 	f_closedir(&dir_);
