@@ -66,6 +66,10 @@ void syscall::setup() {
 	register_syscall(sys_touch, "sys_touch");
 	register_syscall(sys_dns_resolve, "sys_dns_resolve");
 	register_syscall(sys_icmp_echo_request, "sys_icmp_echo_request");
+	register_syscall(sys_socket_connect, "sys_socket_connect");
+	register_syscall(sys_socket_disconnect, "sys_socket_disconnect");
+	register_syscall(sys_socket_send, "sys_socket_send");
+	register_syscall(sys_socket_recv, "sys_socket_recv");
 }
 
 void syscall::register_syscall(void (*handler)(interrupts::s_registers*), const char* name) {

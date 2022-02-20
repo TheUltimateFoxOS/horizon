@@ -333,6 +333,8 @@ void tcp_provider::send(tcp_socket* socket, uint8_t* data, size_t size, uint16_t
 		expects_ack = true;
 	}
 
+	debugf("expects_ack: %d\n", expects_ack);
+
 	list<net::tcp_sent_packet_t>::node* list_node;
 	if (expects_ack) {
 		tcp_sent_packet_t sent_packet;
@@ -344,6 +346,7 @@ void tcp_provider::send(tcp_socket* socket, uint8_t* data, size_t size, uint16_t
 
 	ipv4_handler::send(socket->remote_ip, (uint8_t*) tcp, total_size);
 
+	debugf("expects_ack: %d\n", expects_ack);
 	bool retransmit = false;
 	if (expects_ack) {
 		int timeout = 1000;

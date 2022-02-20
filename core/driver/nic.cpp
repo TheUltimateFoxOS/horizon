@@ -8,6 +8,7 @@
 #include <net/dhcp.h>
 #include <net/ntp.h>
 #include <net/tcp.h>
+#include <net/socket_manager.h>
 
 #include <renderer/font_renderer.h>
 
@@ -127,7 +128,22 @@ void driver::load_network_stack() {
 		// char* http_request = "GET / HTTP/1.1\r\nHost: www.google.com\r\n\r\n";
 		// net::tcp_socket* http_socket = tcp->connect(google_ip.ip, 80);
 		// http_socket->send((uint8_t*) http_request, strlen(http_request));
+
+		// net::socket_manager_socket socket = net::socket_manager_socket(net::TCP_SOCKET);
+		// request http://www.gsz-zak.de/robots.txt
+		// char* http_request = "GET /robots.txt HTTP/1.1\r\nHost: www.gsz-zak.de\r\n\r\n";
+		// driver::ip_u ip_be;
+		// ip_be.ip = dns->resolve_A("www.gsz-zak.de");
+		// socket.connect(ip_be.ip, 80);
+		// socket.send((uint8_t*) http_request, strlen(http_request));
+
+		// char buffer[1024];
+		// size_t len = socket.receive((uint8_t*)buffer, 1024);
+
+		// debugf("%s\n", buffer);
 	}
+
+	net::global_socket_manager = new net::socket_manager();
 }
 
 nic_device::nic_device() {};

@@ -42,4 +42,9 @@ namespace syscall {
 
 	void sys_dns_resolve(interrupts::s_registers* regs);
 	void sys_icmp_echo_request(interrupts::s_registers* regs);
+
+	void sys_socket_connect(interrupts::s_registers* regs);
+	void sys_socket_disconnect(interrupts::s_registers* regs);
+	void sys_socket_send(interrupts::s_registers* regs);
+	void sys_socket_recv(interrupts::s_registers* regs);
 }

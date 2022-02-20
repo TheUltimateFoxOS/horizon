@@ -15,8 +15,8 @@ class list {
 
 		list(int initial_length) {
 			length = initial_length;
-			data = (node*) memory::malloc(length * sizeof(node));
-			memset(data, 0, length * sizeof(T));
+			data = (node*) memory::malloc((length + 1) * sizeof(node));
+			memset(data, 0, length * sizeof(node));
 		};
 
 		~list() {
@@ -62,7 +62,8 @@ class list {
 				}
 			}
 
-			data = (node*) memory::realloc(data, sizeof(node) * length, (length + 1) * sizeof(node));
+			data = (node*) memory::realloc(data, (length + 1) * sizeof(node), (length + 2) * sizeof(node));
+			memset(&data[length], 0, sizeof(node));
 			length++;
 			goto retry;
 		}
