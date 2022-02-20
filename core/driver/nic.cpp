@@ -83,7 +83,7 @@ void driver::load_network_stack() {
 		// ntp_ip.ip_p[1] = 6;
 		// ntp_ip.ip_p[2] = 15;
 		// ntp_ip.ip_p[3] = 28;
-		ntp_ip.ip = dns->resolve_A("time-a-g.nist.gov");
+		ntp_ip.ip = dns->resolve_A((char*) "time-a-g.nist.gov");
 
 		net::udp_socket* ntp_socket = udp->connect(ntp_ip.ip, 123);
 		net::network_time_protocol* ntp = new net::network_time_protocol(ntp_socket);
