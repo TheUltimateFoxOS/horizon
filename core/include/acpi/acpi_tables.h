@@ -56,6 +56,68 @@ namespace acpi {
 		uint32_t reserved;
 	} __attribute__((packed));
 
+	struct generic_address_structure_t {
+		uint8_t address_space;
+		uint8_t bit_width;
+		uint8_t bit_offset;
+		uint8_t access_size;
+		uint64_t address;
+	} __attribute__((packed));
+
+	struct fadt_table_t {
+		sdt_header_t header;
+		uint32_t firmware_ctrl;
+		uint32_t dsdt;
+		uint8_t reserved;
+		uint8_t preferred_power_management_profile;
+		uint16_t sci_interrupt;
+		uint32_t smi_command_port;
+		uint8_t acpi_enable;
+		uint8_t acpi_disable;
+		uint8_t S4BIOS_REQ;
+		uint8_t PSTATE_control;
+		uint32_t PM1a_event_block;
+		uint32_t PM1b_event_block;
+		uint32_t PM1a_control_block;
+		uint32_t PM1b_control_block;
+		uint32_t PM2_control_block;
+		uint32_t PM_timer_block;
+		uint32_t GPE0_block;
+		uint32_t GPE1_block;
+		uint8_t PM1_event_length;
+		uint8_t PM1_control_length;
+		uint8_t PM2_control_length;
+		uint8_t PM_timer_length;
+		uint8_t GPE0_length;
+		uint8_t GPE1_length;
+		uint8_t GPE1_base;
+		uint8_t c_state_control;
+		uint16_t worst_c2_latency;
+		uint16_t worst_c3_latency;
+		uint16_t flush_size;
+		uint16_t flush_stride;
+		uint8_t duty_offset;
+		uint8_t duty_width;
+		uint8_t day_alarm;
+		uint8_t month_alarm;
+		uint8_t century;
+		uint16_t boot_architecture_flags;
+		uint8_t reserved2;
+		uint32_t flags;
+		generic_address_structure_t reset_reg;
+		uint8_t reset_value;
+		uint8_t reserved3[3];
+		uint64_t X_firmware_control;
+		uint64_t X_dsdt;
+		generic_address_structure_t X_PM1a_event_block;
+		generic_address_structure_t X_PM1b_event_block;
+		generic_address_structure_t X_PM1a_control_block;
+		generic_address_structure_t X_PM1b_control_block;
+		generic_address_structure_t X_PM2_control_block;
+		generic_address_structure_t X_PM_timer_block;
+		generic_address_structure_t X_GPE0_block;
+		generic_address_structure_t X_GPE1_block;
+	} __attribute__((packed));
 
 	namespace madt {
 		struct madt_header_t {

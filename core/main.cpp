@@ -94,6 +94,7 @@ extern "C" void main() {
 	driver::global_disk_manager = new driver::disk_driver_manager();
 	driver::global_nic_manager = new driver::nic_driver_manager();
 
+	acpi::init();
 	acpi::madt::parse_madt(global_bootinfo);
 	apic::setup();
 	// apic::smp_spinup(global_bootinfo);

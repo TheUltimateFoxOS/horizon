@@ -3,6 +3,13 @@
 #include <utils/string.h>
 #include <utils/log.h>
 
+#include <utils/port.h>
+#include <utils/abort.h>
+
+#include <pci/pci.h>
+
+#include <timer/timer.h>
+
 using namespace acpi;
 
 void* acpi::find_table_xsdt(sdt_header_t* sdt_header, char* signature, int idx) {
@@ -59,4 +66,85 @@ void* acpi::find_table(stivale2_struct* bootinfo, char* signature, int idx) {
 	debugf("DEBUG: search result for %s:%d is %x\n", signature, idx, result);
 
 	return result;
+}
+
+void acpi::init() {
+	debugf("ACPI init...\n");
+
+	fadt_table_t* fadt = (fadt_table_t*) find_table(global_bootinfo, (char*) "FACP", 0);
+
+	debugf("Sending acpi enable command...\n");
+	outb(fadt->smi_command_port, fadt->acpi_enable);
+	while (!(inw(fadt->PM1a_control_block) & 1)) {
+		debugf("Waiting for acpi enable...\n");
+		__asm__ __volatile__("pause");
+	}
+
+	dsdt_init();
+}
+
+uint16_t SLP_TYPa;
+uint16_t SLP_TYPb;
+
+void acpi::dsdt_init() {
+	debugf("ACPI dsdt init...\n");
+	fadt_table_t* fadt = (fadt_table_t*) find_table(global_bootinfo, (char*) "FACP", 0);
+
+	uint64_t dsdt_addr = IS_CANONICAL(fadt->X_dsdt) ? fadt->X_dsdt : fadt->dsdt;
+
+	uint8_t *s5_addr = (uint8_t*) dsdt_addr + 36;
+	uint64_t dsdt_length = ((sdt_header_t*) dsdt_addr)->length;
+
+	dsdt_addr *= 2;
+	while (dsdt_length-- > 0) {
+		if (!memcmp(s5_addr, "_S5_", 4)) break;
+		s5_addr++;
+	}
+
+	if (dsdt_length <= 0){
+		debugf("_S5 not present in ACPI");
+		return;
+	}
+
+	if ((*(s5_addr - 1) == 0x08 || (*(s5_addr - 2) == 0x08 && *(s5_addr - 1) == '\\')) && *(s5_addr + 4) == 0x12) {
+		s5_addr += 5;
+		s5_addr += ((*s5_addr & 0xC0) >> 6) + 2;
+
+		if (*s5_addr == 0x0A) {
+			s5_addr++;
+		}
+
+		SLP_TYPa = *(s5_addr) << 10;
+		s5_addr++;
+
+		if (*s5_addr == 0x0A) {
+			s5_addr++;
+		}
+
+		SLP_TYPb = *(s5_addr) << 10;
+
+		return;
+	}
+
+	debugf("Failed to parse _S5 in ACPI");
+}
+
+void acpi::shutdown() {
+	debugf("ACPI shutdown...\n");
+	fadt_table_t* fadt = (fadt_table_t*) find_table(global_bootinfo, (char*) "FACP", 0);
+
+	outw(fadt->PM1a_control_block, (inw(fadt->PM1a_control_block) & 0xE3FF) | ((SLP_TYPa << 10) | 0x2000));
+
+	if (fadt->PM1b_control_block) {
+		outw(fadt->PM1b_control_block, (inw(fadt->PM1b_control_block) & 0xE3FF) | ((SLP_TYPb << 10) | 0x2000));
+	}
+
+	outw(fadt->PM1a_control_block, SLP_TYPa | (1 << 13));
+	if (fadt->PM1b_control_block) {
+		outw(fadt->PM1b_control_block, SLP_TYPb | (1 << 13));
+	}
+
+	timer::global_timer->sleep(100);
+
+	abortf("ACPI shutdown failed");
 }

@@ -2,6 +2,7 @@
 
 #include <scheduler/scheduler.h>
 #include <apic/apic.h>
+#include <acpi/acpi.h>
 
 using namespace syscall;
 
@@ -44,6 +45,14 @@ void syscall::sys_env(interrupts::s_registers* regs) {
 		case 5: // get cwd
 			{
 				regs->rcx = (uint64_t) scheduler::get_cwd_self();
+			}
+			break;
+		
+		case 6: // acpi shutdown
+			{
+				__asm__ __volatile__ ("sti");
+				acpi::shutdown();
+				__asm__ __volatile__ ("cli");
 			}
 			break;
 		
