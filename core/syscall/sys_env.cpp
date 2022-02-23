@@ -56,6 +56,12 @@ void syscall::sys_env(interrupts::s_registers* regs) {
 			}
 			break;
 		
+		case 7: // env set
+			{
+				task->envp = (char**) regs->rcx;
+			}
+			break;
+		
 		default:
 			{
 				debugf("sys_env: unknown syscall\n");
