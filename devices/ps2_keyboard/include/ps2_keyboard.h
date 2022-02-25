@@ -5,7 +5,6 @@
 #include <interrupts/interrupt_handler.h>
 #include <utils/port.h>
 #include <fs/dev_fs.h>
-#include <ps2_layout.h>
 
 namespace ps2 {
 	enum special_key {
