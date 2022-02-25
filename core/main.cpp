@@ -28,6 +28,7 @@
 #include <fs/fd.h>
 #include <fs/dev_fs.h>
 #include <fs/stivale_modules.h>
+#include <input/input.h>
 
 #include <timer/timer.h>
 
@@ -104,6 +105,10 @@ extern "C" void main() {
 	if (global_argparser->is_arg("--serial_to_screen_redirect")) {
 		debugf("Redirecting serial port to screen\n");
 		log::debug_device = renderer::global_font_renderer;
+	}
+
+	if (global_argparser->is_arg("--keymap_load_path")) {
+		strcpy(input::keymap_load_path, global_argparser->get_arg("--keymap_load_path"));
 	}
 
 	if (!global_argparser->is_arg("--no_smp")) {

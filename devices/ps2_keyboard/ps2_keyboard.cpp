@@ -1,13 +1,12 @@
 #include <ps2_keyboard.h>
 
-#include <ps2_layout.h>
 #include <utils/log.h>
 #include <stdint.h>
 
 using namespace ps2;
 
 ps2_keyboard::ps2_keyboard() : interrupts::interrupt_handler(0x21), dataport(0x60), commandport(0x64) {
-	current_layout = keymap_layout::keymap_us_e;
+	memcpy(keyboard_layout, "us", 3);
 }
 
 void ps2_keyboard::activate() {
@@ -143,7 +142,7 @@ void ps2_keyboard::handle() {
 				break;
 
 			default:
-				char tmp = keymap(current_layout, key, l_alt, r_alt, l_ctrl, r_ctrl, l_shift, r_shift, caps_lock);
+				char tmp = input::keymap(keyboard_layout, key, l_alt, r_alt, l_ctrl, r_ctrl, l_shift, r_shift, caps_lock);
 				printf("%c", tmp);
 				current_char = tmp;
 		}
@@ -157,9 +156,9 @@ void ps2_keyboard::write(fs::vfs::file_t* file, void* buffer, size_t size, size_
 	switch (buf[0]) {
 		case 1: // opcode change layout
 			{
-				uint8_t layout = buf[1];
-				this->current_layout = (keymap_layout) layout;
-				debugf("Keyboard layout changed to %d\n", layout);
+				strcpy(keyboard_layout, buf + 1);
+				
+				debugf("Keyboard layout changed to %s\n", keyboard_layout);
 			}
 			break;
 		

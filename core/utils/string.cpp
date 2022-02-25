@@ -40,6 +40,18 @@ char* strchr(const char* str, int chr) {
 	return NULL;
 }
 
+char* strcat(char* dest, const char* src) {
+	char* d = dest;
+	while(*d) {
+		d++;
+	}
+	while(*src) {
+		*d++ = *src++;
+	}
+	*d = 0;
+	return dest;
+}
+
 int sprintf(char *buf, const char *fmt, ...) {
 	va_list args;
 	int i;
