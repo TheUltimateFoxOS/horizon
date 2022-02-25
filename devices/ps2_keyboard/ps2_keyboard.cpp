@@ -57,32 +57,96 @@ void ps2_keyboard::handle() {
 		debugf("KEY EVENT: %x\n", key);
 	}
 	
-	switch (key)
-	{
-	case 0x2A: //Left shift up
-		this->l_shift = true;
-		special_key_down(special_key::left_shift);
-		break;
+	if (this->special_next) {
+		switch (this->special_code) {
+			case 0xE0:
+				switch (key) {
+					case 0x38: //Right alt down
+						this->r_alt = true;
+						special_key_down(special_key::right_alt);
+						break;
+					case 0xB8: //Right alt up
+						this->r_alt = false;
+						special_key_up(special_key::right_alt);
+						break;
 
-	case 0xAA: //Left shift up
-		this->l_shift = false;
-		special_key_up(special_key::left_shift);
-		break;
+					case 0x1D: //Right ctrl down
+						this->r_ctrl = true;
+						special_key_down(special_key::right_ctrl);
+						break;
+					case 0x9D: //Right ctrl up
+						this->r_ctrl = false;
+						special_key_up(special_key::right_ctrl);
+						break;
+				}
+				break;
 
-	case 0x36: //Right shift down
-		this->r_shift = true;
-		special_key_down(special_key::right_shift);
-		break; 
-	case 0xB6: //Right shift up
-		this->r_shift = false;
-		special_key_up(special_key::right_shift);
-		break;
-	
-	default:
-		char tmp = keymap(current_layout, key, l_shift, r_shift, caps_lock);
-		printf("%c", tmp);
-		current_char = tmp;
-		break;
+			case 0x3A:
+				switch (key) {
+					case 0xBA: //Caps lock toggle
+						this->caps_lock = !this->caps_lock;
+						if (this->caps_lock) {
+							special_key_down(special_key::caps_lock);
+						} else {
+							special_key_up(special_key::caps_lock);
+						}
+						break;
+				}
+				break;
+		}
+
+		this->special_next = false;
+	} else {
+		switch (key) {
+			case 0xE0:
+			case 0x3A:
+				this->special_next = true;
+				this->special_code = key;
+				break;
+			
+			case 0x38: //Left alt down
+				this->r_alt = true;
+				special_key_down(special_key::left_alt);
+				break;
+			case 0xB8: //Left alt up
+				this->r_alt = false;
+				special_key_up(special_key::left_alt);
+				break;
+
+			case 0x1D: //Left ctrl down
+				this->l_ctrl = true;
+				special_key_down(special_key::left_ctrl);
+				break;
+			
+			case 0x9D: //Left ctrl up
+				this->l_ctrl = false;
+				special_key_up(special_key::left_ctrl);
+				break;
+
+			case 0x2A: //Left shift up
+				this->l_shift = true;
+				special_key_down(special_key::left_shift);
+				break;
+
+			case 0xAA: //Left shift up
+				this->l_shift = false;
+				special_key_up(special_key::left_shift);
+				break;
+
+			case 0x36: //Right shift down
+				this->r_shift = true;
+				special_key_down(special_key::right_shift);
+				break; 
+			case 0xB6: //Right shift up
+				this->r_shift = false;
+				special_key_up(special_key::right_shift);
+				break;
+
+			default:
+				char tmp = keymap(current_layout, key, l_alt, r_alt, l_ctrl, r_ctrl, l_shift, r_shift, caps_lock);
+				printf("%c", tmp);
+				current_char = tmp;
+		}
 	}
 
 }

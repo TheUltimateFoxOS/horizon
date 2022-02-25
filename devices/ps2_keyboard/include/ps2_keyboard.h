@@ -15,7 +15,7 @@ namespace ps2 {
 			left_gui,
 
 			right_shift,
-			right_control,
+			right_ctrl,
 			right_alt,
 			right_gui,
 			
@@ -53,9 +53,17 @@ namespace ps2 {
 			virtual void write(fs::vfs::file_t* file, void* buffer, size_t size, size_t offset);
 		
 		private:
+			bool special_next = false;
+			uint8_t special_code = 0x00;
+
+			bool l_alt = false;
+			bool r_alt = false;
+			bool l_ctrl = false;
+			bool r_ctrl = false;
 			bool l_shift = false;
 			bool r_shift = false;
 			bool caps_lock = false;
+
 			Port8Bit dataport;
 			Port8Bit commandport;
 	};

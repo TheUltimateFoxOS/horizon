@@ -4,9 +4,9 @@
 
 using namespace ps2;
 
-char ps2::keymap_de(uint8_t key, bool l_shift, bool r_shift, bool caps_lock) {
-	if(l_shift || r_shift || caps_lock){
-		switch(key){
+char ps2::keymap_de(uint8_t key, bool l_alt, bool r_alt, bool l_ctrl, bool r_ctrl, bool l_shift, bool r_shift, bool caps_lock) {
+	if (l_shift || r_shift || caps_lock) {
+		switch (key) {
 			case 0x02: return('!'); break;
 			case 0x03: return('"'); break;
 			//case 0x04: return('§'); break;
@@ -53,12 +53,15 @@ char ps2::keymap_de(uint8_t key, bool l_shift, bool r_shift, bool caps_lock) {
 			case 0x2b: return('\''); break;
 			//case 0x29: return('°'); break;
 			case 0x39: return(' '); break;
-			default:
-				break;
+			default: return ('\0'); break;
 		}
-	}
-	else{
-		switch(key){
+	} else if (l_alt || r_alt) {
+		switch (key) {
+			case 0x06: return('|'); break;
+			default: return ('\0'); break;
+		}
+	} else {
+		switch (key) {
 			case 0x02: return('1'); break;
 			case 0x03: return('2'); break;
 			case 0x04: return('3'); break;
@@ -106,16 +109,15 @@ char ps2::keymap_de(uint8_t key, bool l_shift, bool r_shift, bool caps_lock) {
 			case 0x2b: return('#'); break;
 			case 0x29: return('^'); break;
 			case 0x39: return(' '); break;
-			default:
-				break;
+			default: return ('\0'); break;
 		}
 	}
 	return 0;
 }
 
-char ps2::keymap_us(uint8_t key, bool l_shift, bool r_shift, bool caps_lock){
-	if(l_shift || r_shift || caps_lock){
-		switch(key){
+char ps2::keymap_us(uint8_t key, bool l_alt, bool r_alt, bool l_ctrl, bool r_ctrl, bool l_shift, bool r_shift, bool caps_lock){
+	if (l_shift || r_shift || caps_lock) {
+		switch (key) {
 			case 0x02: return('!'); break;
 			case 0x03: return('\"'); break;
 			case 0x04: break; //Pound symbol
@@ -153,7 +155,7 @@ char ps2::keymap_us(uint8_t key, bool l_shift, bool r_shift, bool caps_lock){
 			case 0x27: return(':'); break;
 			case 0x28: return('@'); break;
 			case 0x29: return(126); break;
-			case 0x2B: return(124); break;
+			case 0x2B: return('|'); break;
 			case 0x2C: return('Z'); break;
 			case 0x2D: return('X'); break;
 			case 0x2E: return('C'); break;
@@ -166,12 +168,14 @@ char ps2::keymap_us(uint8_t key, bool l_shift, bool r_shift, bool caps_lock){
 			case 0x35: return('?'); break;
 			case 0x1C: return('\n'); break;
 			case 0x39: return(' '); break;
-			default:
-				break;
+			default: return ('\0'); break;
 		}
-	}
-	else{
-		switch(key){
+	} else if (l_alt || r_alt) {
+		switch (key) {
+			default: return ('\0'); break;
+		}
+	} else {
+		switch (key) {
 			case 0x02: return('1'); break;
 			case 0x03: return('2'); break;
 			case 0x04: return('3'); break;
@@ -222,16 +226,15 @@ char ps2::keymap_us(uint8_t key, bool l_shift, bool r_shift, bool caps_lock){
 			case 0x34: return('.'); break;
 			case 0x35: return('/'); break;
 			case 0x39: return(' '); break;
-			default:
-				break;
+			default: return ('\0'); break;
 		}
-	}	
+	}
 	return 0;
 }
 
-char ps2::keymap_fr(uint8_t key, bool l_shift, bool r_shift, bool caps_lock){
-	if(l_shift || r_shift || caps_lock){
-		switch(key){
+char ps2::keymap_fr(uint8_t key, bool l_alt, bool r_alt, bool l_ctrl, bool r_ctrl, bool l_shift, bool r_shift, bool caps_lock){
+	if (l_shift || r_shift || caps_lock) {
+		switch (key) {
 			case 0x02: return('1'); break;
 			case 0x03: return('2'); break;
 			case 0x04: return('3'); break;
@@ -281,12 +284,15 @@ char ps2::keymap_fr(uint8_t key, bool l_shift, bool r_shift, bool caps_lock){
 			case 0x1C: return('\n'); break;
 			case 0x39: return(' '); break;
 			case 0x56: return('>'); break;
-			default:
-				break;
+			default: return ('\0'); break;
 		}
-	}
-	else{
-		switch(key){
+	} else if (l_alt || r_alt) {
+		switch (key) {
+			case 0x07: return('|'); break;
+			default: return ('\0'); break;
+		}
+	} else {
+		switch(key) {
 			case 0x02: return('&'); break;
 			case 0x03: return(233); break;
 			case 0x04: return('"'); break;
@@ -337,21 +343,20 @@ char ps2::keymap_fr(uint8_t key, bool l_shift, bool r_shift, bool caps_lock){
 			case 0x1C: return('\n'); break;
 			case 0x39: return(' '); break;
 			case 0x56: return('<'); break;
-			default:
-				break;
+			default: return ('\0'); break;
 		}
 	}
 	return 0;
 }
 
-char ps2::keymap(keymap_layout keymap_id, uint8_t key, bool l_shift, bool r_shift, bool caps_lock) {
+char ps2::keymap(keymap_layout keymap_id, uint8_t key, bool l_alt, bool r_alt, bool l_ctrl, bool r_ctrl, bool l_shift, bool r_shift, bool caps_lock) {
 	switch (keymap_id) {
 		case keymap_layout::keymap_de_e:
-			return keymap_de(key, l_shift, r_shift, caps_lock);
+			return keymap_de(key, l_alt, r_alt, l_ctrl, r_ctrl, l_shift, r_shift, caps_lock);
 		case keymap_layout::keymap_us_e:
-			return keymap_us(key, l_shift, r_shift, caps_lock);
+			return keymap_us(key, l_alt, r_alt, l_ctrl, r_ctrl, l_shift, r_shift, caps_lock);
 		case keymap_layout::keymap_fr_e:
-			return keymap_fr(key, l_shift, r_shift, caps_lock);
+			return keymap_fr(key, l_alt, r_alt, l_ctrl, r_ctrl, l_shift, r_shift, caps_lock);
 		default:
 			abortf("Invalid keymap_layout %d selected!", keymap_id);
 	}
