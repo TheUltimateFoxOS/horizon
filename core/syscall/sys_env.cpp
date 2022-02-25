@@ -56,9 +56,15 @@ void syscall::sys_env(interrupts::s_registers* regs) {
 			}
 			break;
 		
-		case 7: // env set
+		case 7: // envp set
 			{
 				task->envp = (char**) regs->rcx;
+			}
+			break;
+		
+		case 8: // pipe enable/disable
+			{
+				task->pipe_enabled = regs->rcx;
 			}
 			break;
 		
