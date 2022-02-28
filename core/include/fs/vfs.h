@@ -24,6 +24,8 @@ namespace fs {
 
 				void register_mount(char* device, vfs_mount* vfs_mount_point);
 				void unregister_mount(char* device);
+
+				bool fs_at(int idx, char* out);
 			
 			private:
 				struct mount_store_t {

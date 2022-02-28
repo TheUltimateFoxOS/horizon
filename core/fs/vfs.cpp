@@ -172,6 +172,17 @@ void vfs_manager::unregister_mount(char* device) {
 	}
 }
 
+bool vfs_manager::fs_at(int idx, char* out) {
+	list<mount_store_t>::node device = mounts.data[idx];
+
+	if (!device.taken) {
+		return false;
+	} else {
+		strcpy(out, device.data.name);
+		return true;
+	}
+}
+
 file_t* vfs_mount::open(char* path) {
 	debugf("WARNING: vfs_mount::open() not implemented\n");
 	return nullptr;

@@ -58,6 +58,7 @@ void syscall::setup() {
 	register_syscall(sys_delete, "sys_delete");
 	register_syscall(sys_mkdir, "sys_mkdir");
 	register_syscall(sys_dir_at, "sys_dir_at");
+	register_syscall(sys_fs_at, "sys_fs_at");
 	register_syscall(sys_get_file_size, "sys_get_file_size");
 	register_syscall(sys_exit, "sys_exit");
 	register_syscall(sys_spawn, "sys_spawn");
