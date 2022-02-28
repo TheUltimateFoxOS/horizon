@@ -22,6 +22,7 @@ namespace fs {
 			virtual void close(file_t* file);
 			virtual void read(file_t* file, void* buffer, size_t size, size_t offset);
 			virtual void write(file_t* file, void* buffer, size_t size, size_t offset);
+			virtual dir_t dir_at(int idx, char* path);
 			
 			list<dev_fs_file*> files;
 

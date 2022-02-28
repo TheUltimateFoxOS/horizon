@@ -3,6 +3,7 @@
 #include <memory/page_frame_allocator.h>
 
 #include <fs/gpt.h>
+#include <fs/dev_fs.h>
 
 #include <utils/log.h>
 
@@ -36,9 +37,10 @@ void ahci_port::configure() {
 	start_command();
 
 	if (!fs::gpt::read_gpt(this)) {
-		debugf("AHCI: Failed to read GPT. Adding disk as raw disk!\n");
-		driver::global_disk_manager->add_disk(this);
+		debugf("AHCI: Failed to read GPT. Adding disk as raw disk only!\n");
 	}
+
+	fs::global_devfs->register_file(new driver::raw_disk_dev_fs(driver::global_disk_manager->add_disk(this)));
 }
 
 void ahci_port::stop_command() {

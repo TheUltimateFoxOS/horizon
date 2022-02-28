@@ -68,7 +68,6 @@ class list {
 			goto retry;
 		}
 	
-	private:
 		int length;
 		node* data;
 };

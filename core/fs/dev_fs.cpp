@@ -74,3 +74,24 @@ void dev_fs::read(file_t* file, void* buffer, size_t size, size_t offset) {
 void dev_fs::write(file_t* file, void* buffer, size_t size, size_t offset) {
 	((dev_fs_file*) file->data)->write(file, buffer, size, offset);
 }
+
+dir_t dev_fs::dir_at(int idx, char* path) {
+	list<dev_fs_file*>::node file = files.data[idx];
+
+	if (!file.taken) {
+		return {
+			.is_none = true
+		};
+	}
+
+	dir_t dir;
+	memset(&dir, 0, sizeof(dir_t));
+
+	dir.idx = idx;
+	dir.is_none = false;
+	dir.type = ENTRY_FILE;
+
+	strcpy(dir.name, file.data->get_name());
+
+	return dir;
+}

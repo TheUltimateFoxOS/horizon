@@ -2,6 +2,7 @@
 
 #include <utils/log.h>
 #include <fs/gpt.h>
+#include <fs/dev_fs.h>
 
 using namespace driver;
 
@@ -56,9 +57,10 @@ bool advanced_technology_attachment::is_presend() {
 
 void advanced_technology_attachment::activate() {
 	if (!fs::gpt::read_gpt(this)) {
-		debugf("ATA: Failed to read GPT. Adding disk as raw disk!\n");
-		driver::global_disk_manager->add_disk(this);
+		debugf("ATA: Failed to read GPT. Adding disk as raw disk only!\n");
 	}
+
+	fs::global_devfs->register_file(new driver::raw_disk_dev_fs(driver::global_disk_manager->add_disk(this)));
 }
 
 void advanced_technology_attachment::read28(uint32_t sector, uint8_t* data, int count) {
