@@ -88,6 +88,7 @@ extern "C" void main() {
 	fs::dev_fs* dev_fs_mount = new fs::dev_fs();
 	fs::global_devfs = dev_fs_mount;
 	fs::global_vfs->register_mount((char*) "dev", dev_fs_mount);
+	fs::global_devfs->register_file(renderer::global_font_renderer);
 
 	fs::global_fd_manager = new fs::file_descriptor_manager();
 

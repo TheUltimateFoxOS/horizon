@@ -3,6 +3,7 @@
 #include <renderer/render2d.h>
 
 #include <utils/string.h>
+#include <utils/log.h>
 
 using namespace renderer;
 
@@ -110,4 +111,82 @@ void font_renderer::set_color(uint32_t new_color) {
 
 void font_renderer::reset_color() {
 	color = old_color;
+}
+
+char* font_renderer::get_name() {
+	return (char*) "font_renderer";
+}
+
+void font_renderer::write(fs::file_t* file, void* buffer, size_t size, size_t offset) {
+	char* buf = (char*) buffer;
+
+	switch (buf[0]) {
+		case 0: // opcode set color
+			{
+				uint32_t new_color = *((uint32_t*) &buf[1]);
+				set_color(new_color);
+			}
+			break;
+		
+		case 1: // opcode get color
+			{
+				uint32_t* color_ptr = (uint32_t*) &buf[1];
+				*color_ptr = color;
+			}
+			break;
+		
+		case 2: // opcode set cursor
+			{
+				uint64_t x = *((uint64_t*) &buf[1]);
+				uint64_t y = *((uint64_t*) &buf[9]);
+				
+				cursor_position.x = x;
+				cursor_position.y = y;
+			}
+			break;
+
+		case 3: // opcode get cursor
+			{
+				uint64_t x = cursor_position.x;
+				uint64_t y = cursor_position.y;
+				
+				uint64_t* x_ptr = (uint64_t*) &buf[1];
+				uint64_t* y_ptr = (uint64_t*) &buf[9];
+
+				*x_ptr = x;
+				*y_ptr = y;
+			}
+			break;
+		
+		case 4: // opcode get screen size
+			{
+				uint64_t width = target_frame_buffer->width;
+				uint64_t height = target_frame_buffer->height;
+
+				uint64_t* width_ptr = (uint64_t*) &buf[1];
+				uint64_t* height_ptr = (uint64_t*) &buf[9];
+
+				*width_ptr = width;
+				*height_ptr = height;
+			}
+			break;
+
+		case 5: // opcode clear screen
+			{
+				clear(color);
+			}
+			break;
+		
+		case 6: // opcode clear line
+			{
+				clear_line();
+			}
+			break;
+		
+		default:
+			{
+				debugf("unknown opcode %d\n", buf[0]);
+			}
+			break;
+	}
 }
