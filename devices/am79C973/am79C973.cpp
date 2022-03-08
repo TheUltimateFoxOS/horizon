@@ -138,23 +138,19 @@ void am79C973_driver::handle() {
 	register_address_port.Write(0x0);
 	uint32_t temp = register_data_port.Read();
 
-#ifdef DEBUG
 	debugf("am79C973_driver: interrupt: %x\n", temp);
-#endif
 
 	if ((temp & 0x100) == 0x100) {
 		debugf("am79C973_driver: init done\n");
 		// this->send((uint8_t*) "Hello World!\n", 12);
 	}
 
-#ifdef DEBUG
 	if((temp & 0x8000) == 0x8000) debugf("AMD am79c973 ERROR\n");
 	if((temp & 0x2000) == 0x2000) debugf("AMD am79c973 COLLISION ERROR\n");
 	if((temp & 0x1000) == 0x1000) debugf("AMD am79c973 MISSED FRAME\n");
 	if((temp & 0x0800) == 0x0800) debugf("AMD am79c973 MEMORY ERROR\n");
 	if((temp & 0x0400) == 0x0400) debugf("AMD am79c973 RECEIVE\n");
 	if((temp & 0x0200) == 0x0200) debugf("AMD am79c973 TRANSMIT\n");
-#endif
 
 	if ((temp & 0x0400) == 0x0400) {
 		this->receive();
@@ -178,13 +174,11 @@ void am79C973_driver::send(uint8_t* data, int32_t length) {
 
 	memcpy((uint8_t*) (uint64_t) sendBufferDescr[send_descriptor].address, data, length);
 
-#ifdef DEBUG
 	debugf("Am79C973Driver: sending packet: ");
 	for(int i = 0; i < (length > 64 ? 64 : length); i++) {
-		debugf_intrnl("%x ", data[i]);
+		debugf_raw("%x ", data[i]);
 	}
-	debugf_intrnl("\n");
-#endif
+	debugf_raw("\n");
 
 	sendBufferDescr[send_descriptor].avail = 0;
 	sendBufferDescr[send_descriptor].flags2 = 0;
@@ -199,9 +193,7 @@ void am79C973_driver::receive() {
 		if (!(recvBufferDescr[currentRecvBuffer].flags & 0x40000000) && (recvBufferDescr[currentRecvBuffer].flags & 0x03000000) == 0x03000000) {
 			uint32_t size = recvBufferDescr[currentRecvBuffer].flags & 0xFFF;
 
-		#ifdef DEBUG
 			debugf("am79C973_driver: received packet of size %d\n", size);
-		#endif
 
 			if (size > 64) {
 				size -= 4;
@@ -209,13 +201,11 @@ void am79C973_driver::receive() {
 
 			uint8_t* data = (uint8_t*) (uint64_t) recvBufferDescr[currentRecvBuffer].address;
 
-		#ifdef DEBUG
 			debugf("am79C973_driver: receiveing packet: ");
 			for(int i = 0; i < (size > 64 ? 64 : size); i++) {
-				debugf_intrnl("%x ", data[i]);
+				debugf_raw("%x ", data[i]);
 			}
-			debugf_intrnl("\n");
-		#endif
+			debugf_raw("\n");
 
 			if (_nic_data_manager) {
 				if (_nic_data_manager->recv(data, size)) {

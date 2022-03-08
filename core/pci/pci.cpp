@@ -26,12 +26,10 @@ void enumerate_function(uint64_t address, uint64_t function, uint16_t bus, uint1
 	}
 
 	debugf("Vendor name: %s, ", get_vendor_name(pci_device_header->vendor_id));
-#ifdef DEBUG
-	debugf_intrnl("Device name: %s, ", get_device_name(pci_device_header->vendor_id, pci_device_header->device_id));
-	debugf_intrnl("Device class: %s, ", device_classes[pci_device_header->class_]);
-	debugf_intrnl("Sub class name: %s, ", get_subclass_name(pci_device_header->class_, pci_device_header->subclass));
-	debugf_intrnl("Prog interface name: %s\n", get_prog_IF_name(pci_device_header->class_, pci_device_header->subclass, pci_device_header->prog_if));
-#endif
+	debugf_raw("Device name: %s, ", get_device_name(pci_device_header->vendor_id, pci_device_header->device_id));
+	debugf_raw("Device class: %s, ", device_classes[pci_device_header->class_]);
+	debugf_raw("Sub class name: %s, ", get_subclass_name(pci_device_header->class_, pci_device_header->subclass));
+	debugf_raw("Prog interface name: %s\n", get_prog_IF_name(pci_device_header->class_, pci_device_header->subclass, pci_device_header->prog_if));
 
 	if (pci_drivers != nullptr) {
 		debugf("Searching for pci driver...\n");
@@ -119,12 +117,10 @@ void enumerate_legacy() {
 				pci_device_header_t* pci_device_header = &pci_header.header;
 
 				debugf("Vendor name: %s, ", get_vendor_name(pci_device_header->vendor_id));
-			#ifdef DEBUG
-				debugf_intrnl("Device name: %s, ", get_device_name(pci_device_header->vendor_id, pci_device_header->device_id));
-				debugf_intrnl("Device class: %s, ", device_classes[pci_device_header->class_]);
-				debugf_intrnl("Sub class name: %s, ", get_subclass_name(pci_device_header->class_, pci_device_header->subclass));
-				debugf_intrnl("Prog interface name: %s\n", get_prog_IF_name(pci_device_header->class_, pci_device_header->subclass, pci_device_header->prog_if));
-			#endif
+				debugf_raw("Device name: %s, ", get_device_name(pci_device_header->vendor_id, pci_device_header->device_id));
+				debugf_raw("Device class: %s, ", device_classes[pci_device_header->class_]);
+				debugf_raw("Sub class name: %s, ", get_subclass_name(pci_device_header->class_, pci_device_header->subclass));
+				debugf_raw("Prog interface name: %s\n", get_prog_IF_name(pci_device_header->class_, pci_device_header->subclass, pci_device_header->prog_if));
 
 				pci::pci_header_0_t* header_copy = new pci::pci_header_0_t;
 				memcpy(header_copy, &pci_header, sizeof(pci::pci_header_0_t));

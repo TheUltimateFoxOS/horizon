@@ -31,17 +31,13 @@ e1000_driver::e1000_driver(pci::pci_header_0_t* header, uint16_t bus, uint16_t d
 			this->mem_base = pci_bar.mem_address;
 			memory::global_page_table_manager.map_range((void*) this->mem_base, (void*) this->mem_base, pci_bar.size);
 			debugf("e1000_driver: MMIO address: 0x%x\n", this->mem_base);
-#ifdef DEBUG
 			debugf("e1000_driver: SIZE = %d; BAR TYPE = %d\n", pci_bar.size, pci_bar.type);
-#endif
 			break;
 		} else if (pci_bar.type == pci::pci_bar_type_t::IO) {
 			this->bar_type = 1;
 			this->io_port = pci_bar.io_address;
 			debugf("e1000_driver: IO port: %d\n", this->io_port);
-#ifdef DEBUG
 			debugf("e1000_driver: SIZE = %d; BAR TYPE = %d\n", pci_bar.size, pci_bar.type);
-#endif
 			break;
 		}
 	}
@@ -225,13 +221,11 @@ void e1000_driver::receive() {
 		uint8_t* data = (uint8_t *) this->rx_descs[this->rx_cur]->addr;
 		uint16_t size = this->rx_descs[this->rx_cur]->length;
 
-#ifdef DEBUG
 		debugf("e1000_driver: receiveing packet: ");
 		for(int i = 0; i < (size > 64 ? 64 : size); i++) {
-			debugf_intrnl("%x ", data[i]);
+			debugf_raw("%x ", data[i]);
 		}
-		debugf_intrnl("\n");
-#endif
+		debugf_raw("\n");
  
 		if (_nic_data_manager) {
 			_nic_data_manager->recv(data, size);
@@ -252,13 +246,11 @@ void e1000_driver::send(uint8_t* data, int32_t length) {
 	this->tx_descs[this->tx_cur]->cmd = CMD_EOP | CMD_IFCS | CMD_RS;
 	this->tx_descs[this->tx_cur]->status = 0;
 
-#ifdef DEBUG
 	debugf("e1000_driver: sending packet: ");
 	for(int i = 0; i < (length > 64 ? 64 : length); i++) {
-		debugf_intrnl("%x ", data[i]);
+		debugf_raw("%x ", data[i]);
 	}
-	debugf_intrnl("\n");
-#endif
+	debugf_raw("\n");
 
 	uint8_t old_cur = this->tx_cur;
 	this->tx_cur = (this->tx_cur + 1) % e1000_NUM_TX_DESC;
@@ -274,9 +266,7 @@ void e1000_driver::handle() {
 	if (status & 0x04) {
 		start_link();
 	} else if(status & 0x10) {
-#ifdef DEBUG
 		debugf("e1000_driver: Good threshold\n");
-#endif
 	} else if(status & 0x80) {
 		receive();
 	}
