@@ -143,7 +143,11 @@ void ps2_keyboard::handle() {
 
 			default:
 				char tmp = input::keymap(keyboard_layout, key, l_alt, r_alt, l_ctrl, r_ctrl, l_shift, r_shift, caps_lock);
-				printf("%c", tmp);
+				// if in printable range
+				if (tmp >= 0x20 && tmp <= 0x7E || tmp == '\n'|| tmp == '\b') {
+					printf("%c", tmp);
+				}
+
 				current_char = tmp;
 		}
 	}
