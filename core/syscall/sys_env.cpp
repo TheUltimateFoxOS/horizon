@@ -67,6 +67,12 @@ void syscall::sys_env(interrupts::s_registers* regs) {
 				task->pipe_enabled = regs->rcx;
 			}
 			break;
+
+		case 9: // get task struct
+			{
+				regs->rcx = (uint64_t) task;
+			}
+			break;
 		
 		default:
 			{

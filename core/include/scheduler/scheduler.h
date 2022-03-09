@@ -9,6 +9,7 @@ namespace scheduler {
 
 	typedef void (*signal_handler)(uint8_t signum);
 	typedef void (*pipe)(char* buffer, uint64_t size);
+	typedef void (*system)(char* in);
 
 	struct task_t {
 		interrupts::s_registers registers;
@@ -37,6 +38,8 @@ namespace scheduler {
 		signal_handler signals[32];
 
 		char cwd[128];
+
+		system system_method;
 	};
 
 	void setup();
