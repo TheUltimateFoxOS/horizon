@@ -47,6 +47,12 @@
 
 extern uint8_t logo[];
 
+#ifdef NICE_BOOT_ANIMATION
+#define BOOT_PROGRESS(progress) debugf("boot: %d%%\n", progress); boot_screen_renderer->set_progress(progress)
+#else
+#define BOOT_PROGRESS(progress) debugf("boot: %d%%\n", progress)
+#endif
+
 extern "C" void main() {
 
 	output::stivale2_terminal terminal = output::stivale2_terminal();
@@ -84,6 +90,8 @@ extern "C" void main() {
 	fs::stivale_mount* stivale_mount = new fs::stivale_mount(global_bootinfo);
 	fs::global_vfs->register_mount((char*) "stivale", stivale_mount);
 
+	BOOT_PROGRESS(10);
+
 	debugf("Creating devfs mount...\n");
 	fs::dev_fs* dev_fs_mount = new fs::dev_fs();
 	fs::global_devfs = dev_fs_mount;
@@ -92,14 +100,21 @@ extern "C" void main() {
 
 	fs::global_fd_manager = new fs::file_descriptor_manager();
 
+	BOOT_PROGRESS(15);
+
 	driver::global_driver_manager = new driver::driver_manager();
 	driver::global_disk_manager = new driver::disk_driver_manager();
 	driver::global_nic_manager = new driver::nic_driver_manager();
 
+	BOOT_PROGRESS(20);
+
 	acpi::init();
 	acpi::madt::parse_madt(global_bootinfo);
 	apic::setup();
+
 	// apic::smp_spinup(global_bootinfo);
+
+	BOOT_PROGRESS(25);
 
 	setup_global_argparser(global_bootinfo);
 
@@ -116,8 +131,12 @@ extern "C" void main() {
 		apic::smp_spinup(global_bootinfo);
     }
 
+	BOOT_PROGRESS(30);
+
 	scheduler::setup();
 	syscall::setup();
+
+	BOOT_PROGRESS(35);
 
 	printf("Loading kernel modules...\n");
 	char* kernel_module_path = nullptr;
@@ -126,7 +145,11 @@ extern "C" void main() {
 		elf::load_kernel_module(kernel_module_path, true);
 	}
 
+	BOOT_PROGRESS(40);
+
 	pci::enumerate_pci();
+
+	BOOT_PROGRESS(45);
 
 	// fs::vfs::file_t* test = fs::global_vfs->open("stivale:limine.cfg");
 
@@ -138,16 +161,24 @@ extern "C" void main() {
 	// elf::load_kernel_module("stivale:ps2_keyboard.o");
 
 	elf::device_init_all();
+
+	BOOT_PROGRESS(50);
+
 	// driver::global_driver_manager->add_driver(new driver::device_driver());
 	//init drivers here
 	printf("\nLoading drivers...\n");
 	driver::global_driver_manager->activate_all(false);
 
+	BOOT_PROGRESS(60);
+
 	printf("\nLoading network stack...\n");
 	driver::load_network_stack();
 
+	BOOT_PROGRESS(70);
+
 	elf::fs_init_all();
 
+	BOOT_PROGRESS(80);
 
 	// scheduler::create_task((void*) (void (*)()) []() {
 	// 	int i = 1000;
@@ -216,6 +247,8 @@ extern "C" void main() {
 			abortf("Failed to load autoexec: %s\n", autoexec_path);
 		}
 	}
+
+	BOOT_PROGRESS(100);
 
 	// fs::vfs::file_t* ps2_device = fs::global_vfs->open("dev:ps2_keyboard");
 	// char buffer[] = {0x1, 0x0};

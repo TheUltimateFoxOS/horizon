@@ -27,7 +27,7 @@ boot_screen_renderer::boot_screen_renderer(framebuffer_t* target_frame_buffer) :
 	this->current_frame = 0;
 	this->divider = 0;
 
-	point_t frame_size = global_renderer_2d->get_bitmap_info(boot_animation_frames[0]);
+	frame_size = global_renderer_2d->get_bitmap_info(boot_animation_frames[0]);
 	this->frame_x = target_frame_buffer->width / 2 - frame_size.x / 2;
 	this->frame_y = target_frame_buffer->height / 2 - frame_size.y;
 
@@ -55,13 +55,16 @@ boot_screen_renderer::~boot_screen_renderer() {
 }
 
 void boot_screen_renderer::putchar(char c) {
+/*
 	char str[2];
 	str[0] = c;
 	str[1] = '\0';
 	putstring(str);
+*/
 }
 
 void boot_screen_renderer::putstring(const char *str) {
+/*
 	char _str[strlen((char*) str) + 1];
 	memset(_str, 0, strlen((char*) str) + 1);
 	strcpy(_str, str);
@@ -85,7 +88,35 @@ void boot_screen_renderer::putstring(const char *str) {
 
 	global_font_renderer->cursor_position = { this->target_frame_buffer->width / 2 - len * 8 / 2, text_y };
 	global_font_renderer->putstring(_str);
+*/
 }
+
+void boot_screen_renderer::set_progress(uint8_t progress) {
+	if (progress > 100) {
+		progress = 100;
+	}
+
+
+	int x_start = this->target_frame_buffer->width / 2 - 100;
+	int x_end = this->target_frame_buffer->width / 2 + 100;
+
+	int x_pos = x_start + progress * (x_end - x_start) / 100;
+	
+	int y_size = 10;
+
+	for (int y = 0; y < y_size; y++) {
+		for (int x = x_start; x < x_pos; x++) {
+			global_renderer_2d->put_pix(x, y + this->frame_y + frame_size.y, 0xFFFFFF);
+		}
+	}
+
+	for (int y = 0; y < y_size; y++) {
+		for (int x = x_pos; x < x_end; x++) {
+			global_renderer_2d->put_pix(x, y + this->frame_y + frame_size.y, 0x0);
+		}
+	}
+}
+
 
 void boot_screen_renderer::handle() {
 	timer::global_pit_timer->handle(); // quick and dirty hack because we override the timer interrupt handler

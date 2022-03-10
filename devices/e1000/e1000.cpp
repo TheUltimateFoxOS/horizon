@@ -226,13 +226,13 @@ void e1000_driver::receive() {
 			debugf_raw("%x ", data[i]);
 		}
 		debugf_raw("\n");
- 
+
 		if (_nic_data_manager) {
 			_nic_data_manager->recv(data, size);
 		} else {
 			debugf("e1000_driver: no handler\n");
 		}
- 
+
 		this->rx_descs[this->rx_cur]->status = 0;
 		uint16_t old_cur = this->rx_cur;
 		this->rx_cur = (this->rx_cur + 1) % e1000_NUM_RX_DESC;
