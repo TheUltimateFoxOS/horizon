@@ -3,6 +3,7 @@
 #include <scheduler/scheduler.h>
 #include <apic/apic.h>
 #include <acpi/acpi.h>
+#include <utils/abort.h>
 
 using namespace syscall;
 
@@ -71,6 +72,12 @@ void syscall::sys_env(interrupts::s_registers* regs) {
 		case 9: // get task struct
 			{
 				regs->rcx = (uint64_t) task;
+			}
+			break;
+		
+		case 10: // get all running tasks in an array
+			{
+				scheduler::read_running_tasks((scheduler::task_t**) regs->rdx, regs->rcx);
 			}
 			break;
 		

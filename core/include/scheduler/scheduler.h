@@ -40,6 +40,8 @@ namespace scheduler {
 		char cwd[128];
 
 		system system_method;
+
+		int running_on_cpu;
 	};
 
 	void setup();
@@ -57,6 +59,8 @@ namespace scheduler {
 
 	void set_cwd_self(const char* cwd);
 	const char* get_cwd_self();
+
+	void read_running_tasks(task_t** tasks, int max_tasks);
 
 	extern "C" void task_entry();
 }

@@ -118,6 +118,8 @@ out:
 	}
 }
 
+char* idle_argv[] = { "idle", nullptr };
+
 void scheduler::setup() {
 	LAPIC_ID(id);
 
@@ -134,6 +136,8 @@ void scheduler::setup() {
 			idle_task->registers.rip = (uint64_t) (void (*)()) []() { while(1) { __asm__ __volatile__ ("sti; hlt"); } };
 			idle_task->registers.rsp = idle_task->stack + (TASK_STACK_PAGES * 4096) - sizeof(uint64_t);
 			idle_task->first_sched = true;
+			idle_task->argv = idle_argv;
+			idle_task->running_on_cpu = i;
 
 			task_queue[i]->add(idle_task);
 		}
@@ -188,6 +192,7 @@ task_t* scheduler::create_task(void* entry) {
 			if (task_queue[i]->len < min) {
 				min = task_queue[i]->len;
 				min_id = i;
+				task->running_on_cpu = i;
 			}
 		}
 	}
@@ -228,6 +233,33 @@ void scheduler::set_cwd_self(const char* cwd) {
 	memset(task->cwd, 0, sizeof(task->cwd));
 	strcpy(task->cwd, cwd);
 }
+
+void scheduler::read_running_tasks(task_t** tasks, int max_tasks) {
+	atomic_acquire_spinlock(task_queue_lock);
+
+	int slot = 0;
+
+	for (int i = 0; i < acpi::madt::lapic_count; i++) {
+		if (apic::cpu_started[i]) {
+			int len = task_queue[i]->len;
+
+			for (int j = 0; j < len; j++) {
+				if (j < max_tasks) {
+					tasks[slot] = task_queue[i]->list[j];
+					debugf("setting task slot %d to %p\n", slot, tasks[slot]);
+					max_tasks--;
+					slot++;
+				} else {
+					debugf("Too many tasks to read\n");
+					break;
+				}
+			}
+		}
+	}
+
+	atomic_release_spinlock(task_queue_lock);
+}
+
 
 const char* scheduler::get_cwd_self() {
 	LAPIC_ID(id);
