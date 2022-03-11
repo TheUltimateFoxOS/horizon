@@ -100,7 +100,13 @@ void font_renderer::clear(uint32_t c_color) {
 }
 
 void font_renderer::clear_line() {
-	memset((void*) ((uint64_t) target_frame_buffer->base_address + cursor_position.y * target_frame_buffer->width * 4), 0, target_frame_buffer->width * 16 * 4);
+	// memset((void*) ((uint64_t) target_frame_buffer->base_address + cursor_position.y * target_frame_buffer->width * 4), 0, target_frame_buffer->width * 16 * 4);
+	uint32_t* pix_ptr = (uint32_t*) target_frame_buffer->base_address;
+	for (unsigned long y = cursor_position.y; y < cursor_position.y + 16; y++){
+		for (unsigned long x = cursor_position.x; x < cursor_position.x + target_frame_buffer->width; x++){
+			*(unsigned int*)(pix_ptr + x + (y * target_frame_buffer->width)) = color;
+		}
+	}
 	cursor_position.x = 0;
 }
 
