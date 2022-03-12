@@ -48,4 +48,6 @@ namespace syscall {
 	void sys_socket_disconnect(interrupts::s_registers* regs);
 	void sys_socket_send(interrupts::s_registers* regs);
 	void sys_socket_recv(interrupts::s_registers* regs);
+
+	void sys_thread(interrupts::s_registers* regs);
 }

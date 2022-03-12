@@ -71,6 +71,7 @@ void syscall::setup() {
 	register_syscall(sys_socket_disconnect, "sys_socket_disconnect");
 	register_syscall(sys_socket_send, "sys_socket_send");
 	register_syscall(sys_socket_recv, "sys_socket_recv");
+	register_syscall(sys_thread, "sys_thread");
 }
 
 void syscall::register_syscall(void (*handler)(interrupts::s_registers*), const char* name) {
