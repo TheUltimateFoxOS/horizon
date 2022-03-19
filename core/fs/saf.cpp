@@ -39,7 +39,7 @@ file_t* saf_mount::open(char* path) {
 	f = new file_t;
 	f->mount = this;
 	f->size = file_node->size;
-	f->data = (void*) (data + file_node->addr);
+	f->data = (void*) ((uint64_t) data + file_node->addr);
 
 	memory::free(path_parts);
 	delete[] path_cpy;
@@ -54,7 +54,7 @@ void saf_mount::close(file_t* file) {
 void saf_mount::read(file_t* file, void* buffer, size_t size, size_t offset) {
 	assert(file->size >= offset + size);
 
-	memcpy(buffer, file->data + offset, size);
+	memcpy(buffer, (void*) ((uint64_t) file->data + offset), size);
 }
 
 
@@ -69,7 +69,7 @@ dir_t saf_mount::dir_at(int idx, char* path) {
 	saf_node_hdr_t* current_node = (saf_node_hdr_t*) data;
 	saf_node_hdr_t* folder;
 
-	if (strcmp(path, "/") == 0 || strcmp(path, "") == 0) {
+	if (strcmp(path, (char*) "/") == 0 || strcmp(path, (char*) "") == 0) {
 		folder = current_node;
 	} else {
 		folder = resolve(current_node, -1, path_parts);
@@ -94,7 +94,7 @@ dir_t saf_mount::dir_at(int idx, char* path) {
 			.is_none = true
 		};
 	} else {
-		saf_node_hdr_t* child = (saf_node_hdr_t*) (data + folder_node->children[idx]);
+		saf_node_hdr_t* child = (saf_node_hdr_t*) ((uint64_t) data + folder_node->children[idx]);
 
 		dir_t dir;
 		memset(&dir, 0, sizeof(dir));

@@ -13,7 +13,7 @@ extern "C" {
 }
 
 int get_sci_interrupt() {
-	acpi::fadt_table_t* fadt = (acpi::fadt_table_t*) acpi::find_table(global_bootinfo, "FACP", 0);
+	acpi::fadt_table_t* fadt = (acpi::fadt_table_t*) acpi::find_table(global_bootinfo, (char*) "FACP", 0);
 
 	return fadt->sci_interrupt + 0x20;
 }

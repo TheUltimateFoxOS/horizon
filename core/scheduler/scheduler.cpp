@@ -118,7 +118,7 @@ out:
 	}
 }
 
-char* idle_argv[] = { "idle", nullptr };
+char* idle_argv[] = { (char*) "idle", nullptr };
 
 void scheduler::setup() {
 	LAPIC_ID(id);
