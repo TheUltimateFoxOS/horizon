@@ -4,8 +4,10 @@ BUILDDIR = ../../bin
 rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
 
 CPPSRC = $(call rwildcard,./,*.cpp)
+CSRC = $(call rwildcard,./,*.c)
 ASMSRC = $(call rwildcard,./,*.asm)
 OBJS = $(patsubst %.cpp, $(OBJDIR)/$(MODULE_NAME)/%.o, $(CPPSRC))
+OBJS += $(patsubst %.c, $(OBJDIR)/$(MODULE_NAME)/%.o, $(CSRC))
 OBJS += $(patsubst %.asm, $(OBJDIR)/$(MODULE_NAME)/%_asm.o, $(ASMSRC))
 
 TOOLCHAIN_BASE = /usr/local/foxos-x86_64_elf_gcc
@@ -38,6 +40,11 @@ module: $(OBJS)
 
 $(OBJDIR)/$(MODULE_NAME)/%.o: %.cpp
 	@echo "CPP $^ -> $@"
+	@mkdir -p $(@D)
+	@$(CC) $(CPPFLAGS) -c -o $@ $^
+
+$(OBJDIR)/$(MODULE_NAME)/%.o: %.c
+	@echo "CC $^ -> $@"
 	@mkdir -p $(@D)
 	@$(CC) $(CFLAGS) -c -o $@ $^
 

@@ -6,3 +6,4 @@ all:
 	make -C e1000
 	make -C am79C973
 	make -C rtl8139
+	make -C laihost

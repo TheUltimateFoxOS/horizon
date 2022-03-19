@@ -41,7 +41,7 @@ foxkrnl.elf: $(OBJS)
 $(OBJDIR)/%.o: %.cpp
 	@echo "CPP $^ -> $@"
 	@mkdir -p $(@D)
-	@$(CC) $(CFLAGS) -c -o $@ $^
+	@$(CC) $(CPPFLAGS) -c -o $@ $^
 
 $(OBJDIR)/%_asm.o: %.asm
 	@echo "ASM $^ -> $@"
