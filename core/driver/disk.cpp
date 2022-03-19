@@ -24,7 +24,7 @@ void disk_device::write(uint64_t sector, uint32_t sector_count, void* buffer) {
 }
 
 bool disk_device::get_disk_label(char* out, fs::vfs::vfs_mount* mount) {
-	fs::vfs::file_t* file = mount->open((char*) "/FOXCFG//dn.fox");
+	fs::vfs::file_t* file = mount->open((char*) "/FOXCFG/dn.fox");
 
 	if (file == nullptr) {
 		debugf("Failed to open /dn.fox\n");

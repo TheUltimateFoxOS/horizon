@@ -20,6 +20,7 @@
 #include <utils/string.h>
 #include <utils/argparse.h>
 #include <utils/log.h>
+#include <utils/assert.h>
 
 #include <elf/elf_resolver.h>
 #include <elf/elf_loader.h>
@@ -28,6 +29,7 @@
 #include <fs/fd.h>
 #include <fs/dev_fs.h>
 #include <fs/stivale_modules.h>
+#include <fs/saf.h>
 #include <input/input.h>
 
 #include <timer/timer.h>
@@ -42,6 +44,7 @@
 #include <syscall/syscall.h>
 
 #include <memory/memory.h>
+#include <memory/page_frame_allocator.h>
 
 #include <config.h>
 
@@ -127,6 +130,19 @@ extern "C" void main() {
 		strcpy(input::keymap_load_path, global_argparser->get_arg("--keymap_load_path"));
 	}
 
+	if (global_argparser->is_arg("--initrd")) {
+		debugf("Loading initrd...\n");
+		fs::vfs::file_t* initrd = fs::vfs::global_vfs->open(global_argparser->get_arg("--initrd"));
+		assert(initrd != nullptr);
+
+		void* data = memory::global_allocator.request_pages(initrd->size / 4096 + 1);
+		fs::vfs::global_vfs->read(initrd, data, initrd->size, 0);
+		fs::vfs::global_vfs->close(initrd);
+
+		fs::saf_mount* saf_mount = new fs::saf_mount(data);
+		fs::global_vfs->register_mount((char*) "initrd", saf_mount);
+	}
+
 	if (!global_argparser->is_arg("--no_smp")) {
 		apic::smp_spinup(global_bootinfo);
     }
@@ -143,6 +159,28 @@ extern "C" void main() {
 	while ((kernel_module_path = global_argparser->get_arg("--load_module"))) {
 		debugf("Loading module: %s\n", kernel_module_path);
 		elf::load_kernel_module(kernel_module_path, true);
+	}
+
+	if (global_argparser->is_arg("--load_modules")) {
+		char* modules_folder = global_argparser->get_arg("--load_modules");
+
+		int idx = 0;
+		fs::vfs::dir_t dir = fs::vfs::global_vfs->dir_at(idx, modules_folder);
+		while (!dir.is_none) {
+			char module_path[256] = { 0 };
+			strcpy(module_path, modules_folder);
+			if (module_path[strlen(module_path) - 1] != '/') {
+				strcat(module_path, "/");
+			}
+
+			strcat(module_path, dir.name);
+
+			debugf("Loading module: %s\n", module_path);
+
+			elf::load_kernel_module(module_path, true);
+
+			dir = fs::vfs::global_vfs->dir_at(++idx, modules_folder);
+		}
 	}
 
 	BOOT_PROGRESS(40);
