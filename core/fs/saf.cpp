@@ -119,7 +119,23 @@ saf_node_hdr_t* saf_mount::resolve(saf_node_hdr_t* curr, int level, char** path)
 	// debugf("level %d (%s), curr->name %s\n", level,  level < 0 ? "-1" : path[level], curr->name);
 
 	if (path[level + 1] == nullptr) {
-		if (strcmp(curr->name, path[level]) == 0) {
+		for (int i = 0; i < strlen(path[level]); i++) {
+			if (path[level][i] >= 'A' && path[level][i] <= 'Z') {
+				path[level][i] = path[level][i] + 32;
+			}
+		}
+
+		char curr_name_cpy[512] = {0};
+		strcpy(curr_name_cpy, curr->name);
+
+		for (int i = 0; i < strlen(curr_name_cpy); i++) {
+			if (curr_name_cpy[i] >= 'A' && curr_name_cpy[i] <= 'Z') {
+				curr_name_cpy[i] = curr_name_cpy[i] + 32;
+			}
+		}
+
+		
+		if (strcmp(curr_name_cpy, path[level]) == 0) {
 			return curr;
 		} else {
 			return nullptr;
