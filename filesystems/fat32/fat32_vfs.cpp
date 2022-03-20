@@ -116,7 +116,11 @@ dir_t fat32_mount::dir_at(int idx, char* path) {
 	strcpy(new_path + 2, path);
 	new_path[strlen(path) + 2] = 0;
 
-	f_opendir(&dir_, new_path);
+	if (f_opendir(&dir_, new_path) != FR_OK) {
+		return {
+			.is_none = true
+		};
+	}
 	
 	FRESULT fr = f_readdir(&dir_, &file_info);
 	assert(fr == FR_OK);
