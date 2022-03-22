@@ -63,6 +63,8 @@ namespace ps2 {
 			bool r_shift = false;
 			bool caps_lock = false;
 
+			bool print_char = true;
+
 			Port8Bit dataport;
 			Port8Bit commandport;
 	};
