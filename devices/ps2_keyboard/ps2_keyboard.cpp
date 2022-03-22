@@ -7,6 +7,7 @@ using namespace ps2;
 
 ps2_keyboard::ps2_keyboard() : interrupts::interrupt_handler(0x21), dataport(0x60), commandport(0x64) {
 	memcpy(keyboard_layout, "us", 3);
+	print_char = true;
 }
 
 void ps2_keyboard::activate() {
@@ -144,7 +145,7 @@ void ps2_keyboard::handle() {
 			default:
 				char tmp = input::keymap(keyboard_layout, key, l_alt, r_alt, l_ctrl, r_ctrl, l_shift, r_shift, caps_lock);
 				// if in printable range
-				if (tmp >= 0x20 && tmp <= 0x7E || tmp == '\n'|| tmp == '\b') {
+				if ((tmp >= 0x20 && tmp <= 0x7E || tmp == '\n'|| tmp == '\b') && print_char) {
 					printf("%c", tmp);
 				}
 
@@ -171,6 +172,14 @@ void ps2_keyboard::write(fs::vfs::file_t* file, void* buffer, size_t size, size_
 				uint8_t mode = buf[1];
 				this->keyboard_debug = mode;
 				debugf("Keyboard debug mode changed to %s\n", mode ? "true" : "false");
+			}
+			break;
+		
+		case 3: // opcode set print char
+			{
+				uint8_t mode = buf[1];
+				this->print_char = mode;
+				debugf("Keyboard print char changed to %s\n", mode ? "true" : "false");
 			}
 			break;
 		

@@ -7,3 +7,4 @@ all:
 	make -C am79C973
 	make -C rtl8139
 	make -C laihost
+	make -C xhci
