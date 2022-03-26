@@ -6,6 +6,7 @@ build:
 
 	make -C devices
 	make -C filesystems
+	make -C features
 
 setup:
 	@mkdir $(BUILDDIR)
