@@ -77,6 +77,12 @@ namespace elf {
     constexpr uint8_t ELFCLASS32    = 1;
     constexpr uint8_t ELFCLASS64    = 2;
 
+	constexpr uint64_t DT_NULL      = 0x00000000;
+	constexpr uint64_t DT_NEEDED    = 0x00000001;
+	constexpr uint64_t DT_RELA      = 0x00000007;
+	constexpr uint64_t DT_RELASZ    = 0x00000008;
+	constexpr uint64_t DT_RELAENT   = 0x00000009;
+
 
 	// ELF File Header - ELF-64 Object File Format 1.5d2 p. 3
 	typedef struct {
@@ -122,6 +128,7 @@ namespace elf {
 	#define R_X86_64_32S 11
 	#define R_X86_64_PC32 2
 	#define R_X86_64_PLT32 4
+	#define R_X86_64_RELATIVE 8
 
 	typedef struct {
 		Elf64_Addr r_offset;
@@ -151,6 +158,11 @@ namespace elf {
 		Elf64_Addr st_value;
 		Elf64_Xword st_size;
 	} __attribute__((packed)) Elf64_Sym;
+
+	typedef struct {
+		uint64_t d_tag;
+		uint64_t d_un;
+	} __attribute__((packed)) Elf64_Dyn;
 
 	typedef struct {
 		Elf64_Shdr* shdr;
