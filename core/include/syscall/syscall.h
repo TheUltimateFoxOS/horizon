@@ -50,4 +50,8 @@ namespace syscall {
 	void sys_socket_recv(interrupts::s_registers* regs);
 
 	void sys_thread(interrupts::s_registers* regs);
+
+	void sys_sound_push_note(interrupts::s_registers* regs);
+	void sys_sound_sync(interrupts::s_registers* regs);
+	void sys_sound_get_channel_count(interrupts::s_registers* regs);
 }

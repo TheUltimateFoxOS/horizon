@@ -72,6 +72,9 @@ void syscall::setup() {
 	register_syscall(sys_socket_send, "sys_socket_send");
 	register_syscall(sys_socket_recv, "sys_socket_recv");
 	register_syscall(sys_thread, "sys_thread");
+	register_syscall(sys_sound_push_note, "sys_sound_push_note");
+	register_syscall(sys_sound_sync, "sys_sound_sync");
+	register_syscall(sys_sound_get_channel_count, "sys_sound_get_channel_count");
 }
 
 void syscall::register_syscall(void (*handler)(interrupts::s_registers*), const char* name) {
