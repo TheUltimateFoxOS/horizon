@@ -41,7 +41,7 @@ syscall_interrupt_stub:
 	push 0
 	push 0x30 ; interrupt number
 
-	cli
+	; cli
 	pusha
 	mov r15, cr0
 	push r15
@@ -70,7 +70,7 @@ syscall_interrupt_stub:
 
 	add rsp, 16
 
-	sti
+	; sti
 
 	iretq
 
