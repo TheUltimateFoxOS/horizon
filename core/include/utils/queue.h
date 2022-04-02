@@ -20,16 +20,16 @@ class queue {
 
 		void add(T item) {
 			if (len == size) {
-				debugf("Queue is full, resizing\n");
+				debugf("Queue is full, resizing! old size: %d, new size %d\n", size, size + 40);
 
-				T* new_list = new T[size + 1];
+				T* new_list = new T[size + 40];
 				for (int i = 0; i < len; i++) {
 					new_list[i] = list[i];
 				}
 				delete[] list;
 
 				list = new_list;
-				size++;
+				size += 40;
 			}
 
 			list[len++] = item;
