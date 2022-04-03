@@ -22,6 +22,8 @@ namespace fs {
 
 			virtual void touch(char* path);
 
+			virtual void delete_dir(char* path);
+
 			fat32_mount(int disk_id, char* name);
 			~fat32_mount();
 

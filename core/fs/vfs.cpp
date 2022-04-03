@@ -152,6 +152,36 @@ void vfs_manager::touch(char* path) {
 	found_device->data.mount->touch(file_path);
 }
 
+void vfs_manager::delete_dir(char* path) {
+	char _filename[1024] = "";
+	char* file_path = NULL;
+	strcpy(_filename, path);
+	int len = strlen(_filename);
+
+	list<mount_store_t>::node* found_device = nullptr;
+
+	for (int i = 0; i < len; i++) {
+		if(_filename[i] == ':') {
+			_filename[i] = 0;
+			file_path = (char*) ((uint64_t) &_filename[i] + 1);
+
+			found_device = mounts.find<char*>([](char* d, list<mount_store_t>::node* n) {
+				return strcmp(d, n->data.name) == 0;
+			}, _filename);
+
+			break;
+		}
+	}
+
+	if (found_device == nullptr) {
+		debugf("No device found for path: %s\n", path);
+
+		return;
+	}
+
+	found_device->data.mount->delete_dir(file_path);
+}
+
 void vfs_manager::register_mount(char* device, vfs_mount* vfs_mount_point) {
 	mount_store_t new_mount = {
 		.mount = vfs_mount_point
@@ -220,6 +250,9 @@ void vfs_mount::touch(char* path) {
 	debugf("WARNING: vfs_mount::touch() not implemented\n");
 }
 
+void vfs_mount::delete_dir(char* path) {
+	debugf("WARNING: vfs_mount::delete_dir() not implemented\n");
+}
 
 void fs::vfs::setup() {
 	debugf("Creating global vfs...\n");

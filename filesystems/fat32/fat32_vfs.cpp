@@ -167,3 +167,17 @@ void fat32_mount::touch(char* path) {
 	f_open(&file, new_path, FA_WRITE | FA_CREATE_ALWAYS);
 	f_close(&file);
 }
+
+void fat32_mount::delete_dir(char* path) {
+	char new_path[256] = {0};
+	memset(new_path, 0, 256);
+	new_path[0] = '0' + drive_number;
+	new_path[1] = ':';
+	strcpy(new_path + 2, path);
+	new_path[strlen(path) + 2] = 0;
+
+	FRESULT result = f_rmdir(new_path);
+	if (result != FR_OK) {
+		debugf("Failed to delete directory %s\n", new_path);
+	}
+}

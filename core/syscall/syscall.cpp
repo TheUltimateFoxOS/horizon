@@ -76,6 +76,7 @@ void syscall::setup() {
 	register_syscall(sys_sound_sync, "sys_sound_sync");
 	register_syscall(sys_sound_get_channel_count, "sys_sound_get_channel_count");
 	register_syscall(sys_delay, "sys_delay");
+	register_syscall(sys_delete_dir, "sys_delete_dir");
 }
 
 void syscall::register_syscall(void (*handler)(interrupts::s_registers*), const char* name) {

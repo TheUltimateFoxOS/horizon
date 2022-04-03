@@ -21,6 +21,7 @@ namespace fs {
 				void mkdir(char* path);
 				void touch(char* path);
 				dir_t dir_at(int idx, char* path);
+				void delete_dir(char* path);
 
 				void register_mount(char* device, vfs_mount* vfs_mount_point);
 				void unregister_mount(char* device);
@@ -46,6 +47,7 @@ namespace fs {
 				virtual void mkdir(char* path);
 				virtual void touch(char* path);
 				virtual dir_t dir_at(int idx, char* path);
+				virtual void delete_dir(char* path);
 		};
 
 		enum dir_entry_type_e {

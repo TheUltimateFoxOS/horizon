@@ -40,6 +40,7 @@ namespace syscall {
 	void sys_env(interrupts::s_registers* regs);
 	void sys_time(interrupts::s_registers* regs);
 	void sys_touch(interrupts::s_registers* regs);
+	void sys_delete_dir(interrupts::s_registers* regs);
 
 	void sys_dns_resolve(interrupts::s_registers* regs);
 	void sys_icmp_echo_request(interrupts::s_registers* regs);
