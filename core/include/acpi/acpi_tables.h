@@ -64,6 +64,14 @@ namespace acpi {
 		uint64_t address;
 	} __attribute__((packed));
 
+	enum generic_address_structure_address_space {
+		GENERIC_ADDRESS_SPACE_SYSTEM_MEMORY = 0,
+		GENERIC_ADDRESS_SPACE_SYSTEM_IO = 1,
+		GENERIC_ADDRESS_SPACE_PCI_CONFIGURATION_SPACE = 2,
+		GENERIC_ADDRESS_SPACE_EMBEDDED_CONTROLLER = 3,
+		GENERIC_ADDRESS_SPACE_SMBUS = 4
+	};
+
 	struct fadt_table_t {
 		sdt_header_t header;
 		uint32_t firmware_ctrl;

@@ -10,6 +10,8 @@
 
 #include <timer/timer.h>
 
+#include <memory/page_table_manager.h>
+
 using namespace acpi;
 
 void* acpi::find_table_xsdt(sdt_header_t* sdt_header, char* signature, int idx) {
@@ -81,6 +83,11 @@ void acpi::init() {
 	}
 
 	dsdt_init();
+
+	outb(fadt->smi_command_port, fadt->acpi_enable);
+	while (inw(fadt->PM1a_control_block) & 1 == 0) {
+		__asm__ __volatile__("pause" ::: "memory");
+	}
 }
 
 uint16_t SLP_TYPa;
@@ -147,4 +154,42 @@ void acpi::shutdown() {
 	timer::global_timer->sleep(100);
 
 	abortf("ACPI shutdown failed");
+}
+
+void acpi::reboot() {
+	debugf("ACPI reboot...\n");
+	fadt_table_t* fadt = (fadt_table_t*) find_table(global_bootinfo, (char*) "FACP", 0);
+
+	switch (fadt->reset_reg.address_space ) {
+		case GENERIC_ADDRESS_SPACE_SYSTEM_IO:
+			{
+				debugf("ACPI reboot: system io\n");
+				outb(fadt->reset_reg.address, fadt->reset_value);
+			}
+			break;
+		
+		case GENERIC_ADDRESS_SPACE_SYSTEM_MEMORY:
+			{
+				debugf("ACPI reboot: system memory\n");
+				memory::global_page_table_manager.map_memory((void*) fadt->reset_reg.address, (void*) fadt->reset_reg.address);
+				uint8_t* addr = (uint8_t*) fadt->reset_reg.address;
+				*addr = fadt->reset_value;
+			}
+			break;
+		
+		case GENERIC_ADDRESS_SPACE_PCI_CONFIGURATION_SPACE:
+			{
+				debugf("ACPI reboot: pci configuration space\n");
+				pci::pci_writeb(0, (fadt->reset_reg.address >> 32) & 0xFFFF, (fadt->reset_reg.address >> 16) & 0xFFFF, fadt->reset_reg.address & 0xFFFF, fadt->reset_value);
+			}
+			break;
+
+		default:
+			abortf("ACPI reboot: unknown address space %d", fadt->reset_reg.address_space);
+			break;
+	}
+
+	timer::global_timer->sleep(100);
+
+	abortf("ACPI reboot failed");
 }

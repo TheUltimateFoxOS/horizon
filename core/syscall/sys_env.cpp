@@ -81,6 +81,14 @@ void syscall::sys_env(interrupts::s_registers* regs) {
 			}
 			break;
 		
+		case 11: // acpi reboot
+			{
+				__asm__ __volatile__ ("sti");
+				acpi::reboot();
+				__asm__ __volatile__ ("cli");
+			}
+			break;
+
 		default:
 			{
 				debugf("sys_env: unknown syscall\n");

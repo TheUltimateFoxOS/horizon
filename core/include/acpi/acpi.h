@@ -17,4 +17,5 @@ namespace acpi {
 	void init();
 	void dsdt_init();
 	void shutdown();
+	void reboot();
 }
