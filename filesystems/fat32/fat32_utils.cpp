@@ -97,13 +97,9 @@ bool fs::is_fat32(BPB_t* bpb) {
 	return true;
 }
 
-bool fs::is_fat32(int disk_id) {
-	void* buffer = memory::global_allocator.request_page();
-	driver::global_disk_manager->disks[disk_id]->read(0, 1, buffer);
-
-	bool ret = is_fat32((BPB_t*) buffer);
-	memory::global_allocator.free_page(buffer);
-	return ret;
+bool fs::is_fat32(int disk_id, uint8_t* buffer) {
+	driver::global_disk_manager->disks[disk_id]->read(0, 1, (void*) buffer);
+	return is_fat32((BPB_t*) buffer);
 }
 
 uint32_t fs::get_fattime() {

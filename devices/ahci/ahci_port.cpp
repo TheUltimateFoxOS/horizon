@@ -1,6 +1,7 @@
 #include <ahci.h>
 
 #include <memory/page_frame_allocator.h>
+#include <memory/page_table_manager.h>
 
 #include <fs/gpt.h>
 #include <fs/dev_fs.h>
@@ -65,6 +66,14 @@ void ahci_port::start_command() {
 }
 
 void ahci_port::read(uint64_t sector, uint32_t sector_count, void* buffer) {
+	void* physical_buffer = memory::global_page_table_manager.virt_to_phys(buffer);
+	if (physical_buffer == NULL) {
+		debugf("AHCI: Failed to get physical address of buffer!");
+		return;
+	}/* else {
+		debugf("AHCI: Buffer is at physical address 0x%x and virtual address 0x%x.\n", physical_buffer, buffer);
+	}*/
+
 	uint64_t spin = 0;
 	while ((hba_port->task_file_data & (ATA_DEV_BUSY | ATA_DEV_DRQ)) && spin < 1000000) {
 		spin ++;
@@ -87,8 +96,8 @@ void ahci_port::read(uint64_t sector, uint32_t sector_count, void* buffer) {
 	HBA_command_table* commandTable = (HBA_command_table*)(uint64_t)(cmd_header->command_table_base_address);
 	memset(commandTable, 0, sizeof(HBA_command_table) + (cmd_header->prdt_length-1)*sizeof(HBA_PRDT_entry));
 
-	commandTable->prdt_entry[0].data_base_address = (uint32_t)(uint64_t)buffer;
-	commandTable->prdt_entry[0].data_base_address_upper = (uint32_t)((uint64_t)buffer >> 32);
+	commandTable->prdt_entry[0].data_base_address = (uint32_t)(uint64_t) physical_buffer;
+	commandTable->prdt_entry[0].data_base_address_upper = (uint32_t)((uint64_t) physical_buffer >> 32);
 	commandTable->prdt_entry[0].byte_count = (sector_count << 9) - 1; // 512 bytes per sector
 	commandTable->prdt_entry[0].interrupt_on_completion = 1;
 
@@ -123,6 +132,14 @@ void ahci_port::read(uint64_t sector, uint32_t sector_count, void* buffer) {
 }
 
 void ahci_port::write(uint64_t sector, uint32_t sector_count, void* buffer) {
+	void* physical_buffer = memory::global_page_table_manager.virt_to_phys(buffer);
+	if (physical_buffer == NULL) {
+		debugf("AHCI: Failed to get physical address of buffer!");
+		return;
+	}/* else {
+		debugf("AHCI: Buffer is at physical address 0x%x and virtual address 0x%x.\n", physical_buffer, buffer);
+	}*/
+
 	uint64_t spin = 0;
 	while ((hba_port->task_file_data & (ATA_DEV_BUSY | ATA_DEV_DRQ)) && spin < 1000000) {
 		spin ++;
@@ -145,8 +162,8 @@ void ahci_port::write(uint64_t sector, uint32_t sector_count, void* buffer) {
 	HBA_command_table* commandTable = (HBA_command_table*)(uint64_t)(cmd_header->command_table_base_address);
 	memset(commandTable, 0, sizeof(HBA_command_table) + (cmd_header->prdt_length-1)*sizeof(HBA_PRDT_entry));
 
-	commandTable->prdt_entry[0].data_base_address = (uint32_t)(uint64_t)buffer;
-	commandTable->prdt_entry[0].data_base_address_upper = (uint32_t)((uint64_t)buffer >> 32);
+	commandTable->prdt_entry[0].data_base_address = (uint32_t)(uint64_t) physical_buffer;
+	commandTable->prdt_entry[0].data_base_address_upper = (uint32_t)((uint64_t) physical_buffer >> 32);
 	commandTable->prdt_entry[0].byte_count = (sector_count << 9) - 1; // 512 bytes per sector
 	commandTable->prdt_entry[0].interrupt_on_completion = 1;
 

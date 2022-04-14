@@ -24,7 +24,7 @@ namespace fs {
 	} __attribute__ ((__packed__));
 
 	bool is_fat32(BPB_t* bpb);
-	bool is_fat32(int disk_id);
+	bool is_fat32(int disk_id, uint8_t* buffer);
 
 	uint32_t get_fattime();
 }

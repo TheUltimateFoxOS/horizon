@@ -11,9 +11,9 @@ using namespace xhci;
 
 template<typename F>
 bool xhci_timeout(uint64_t ms, F f) {
-	while(!f()) {
+	while (!f()) {
 		ms--;
-		if(ms == 0) {
+		if (ms == 0) {
 			return false;
 		}
 
@@ -80,8 +80,8 @@ void xhci_driver::activate() {
 	debugf("n_ports %d\n", n_ports);
 
 	uint8_t bit = 0;
-	for(uint8_t i = 0; i < 16; i++) {
-		if(operational->pagesize & (1 << i)) {
+	for (uint8_t i = 0; i < 16; i++) {
+		if (operational->pagesize & (1 << i)) {
 			bit = i;
 			break;
 		}
@@ -95,13 +95,13 @@ void xhci_driver::activate() {
 	ext_caps = (volatile uint32_t*)(mmio_addr + (off * 4));
 
 	int i = 0;
-	while(true) {
+	while (true) {
 		uint32_t id = ext_caps[i] & 0xFF;
 		uint32_t off = (ext_caps[i] >> 8) & 0xFF;
 
-		if(id == 1) {
+		if (id == 1) {
 			// BIOS-OS handoff was already done
-		} else if(id == 2) {
+		} else if (id == 2) {
 			volatile protocol_cap* item = (volatile protocol_cap*) &ext_caps[i];
 
 			protocol proto;
@@ -134,7 +134,7 @@ void xhci_driver::activate() {
 }
 
 char* xhci_driver::get_name() {
-	return "xhci";
+	return (char*) "xhci";
 }
 
 void xhci_driver::intel_enable_ports() {
@@ -170,7 +170,7 @@ void xhci_driver::reset_controller() {
 
 	operational->usbcmd |= usbcmd::reset;
 
-	while(operational->usbcmd & usbcmd::reset || operational->usbsts & usbsts::not_ready) {
+	while (operational->usbcmd & usbcmd::reset || operational->usbsts & usbsts::not_ready) {
 		__asm__ __volatile__ ("pause" ::: "memory");
 	}
 
