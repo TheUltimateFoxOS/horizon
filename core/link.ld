@@ -3,8 +3,8 @@ ENTRY(_start)
 
 SECTIONS
 {
-	. = 0xFFFFFFFF80000000;
-	. += 0x100000;
+	virtual_base = 0xffffffff80000000;
+	. = virtual_base + 2M;
 
 	kernel_start = .;
 	.stivale2hdr : ALIGN(0x1000)

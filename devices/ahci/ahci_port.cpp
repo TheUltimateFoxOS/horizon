@@ -68,7 +68,7 @@ void ahci_port::start_command() {
 void ahci_port::read(uint64_t sector, uint32_t sector_count, void* buffer) {
 	void* physical_buffer = memory::global_page_table_manager.virt_to_phys(buffer);
 	if (physical_buffer == NULL) {
-		debugf("AHCI: Failed to get physical address of buffer!");
+		debugf("AHCI: Failed to get physical address of buffer!\n");
 		return;
 	}/* else {
 		debugf("AHCI: Buffer is at physical address 0x%x and virtual address 0x%x.\n", physical_buffer, buffer);
