@@ -144,7 +144,7 @@ extern "C" void main() {
 	}
 
 	if (!global_argparser->is_arg("--no_smp")) {
-		// apic::smp_spinup(global_bootinfo);
+		apic::smp_spinup(global_bootinfo);
     }
 
 	BOOT_PROGRESS(30);

@@ -32,6 +32,8 @@ LDFLAGS = -static -Bsymbolic -nostdlib -Tlink.ld --no-dynamic-linker -zmax-page-
 
 include ../Makefile.flags
 
+#CPPFLAGS += -DUSE_STIVALE2_SMP
+
 foxkrnl.elf: $(OBJS)
 	@echo LD $^
 	@$(LD) $(LDFLAGS) -o $(BUILDDIR)/$@ $^

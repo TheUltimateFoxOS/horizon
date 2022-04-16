@@ -24,6 +24,9 @@ namespace apic {
 	extern "C" void ap_trampoline_64();
 	extern "C" void ap_trampoline_data();
 
+	extern "C" void stivale2_bootstrap();
+	extern "C" void stivale2_data();
+
 	void lapic_write(uint64_t reg, uint32_t value);
 	uint32_t lapic_read(uint64_t reg);
 	void lapic_wait();
