@@ -146,4 +146,30 @@ extern "C" {
 			return acpi::find_table(global_bootinfo, (char*) sig, index);
 		}
 	}
+
+	void* memcpy(void* dest, const void* src, size_t count) {
+		for (size_t i = 0; i < count; i++) {
+			((uint8_t*) dest)[i] = ((uint8_t*) src)[i];
+		}
+
+		return dest;
+	}
+
+	void* memset(void* dest, int val, size_t count) {
+		for (size_t i = 0; i < count; i++) {
+			((uint8_t*) dest)[i] = val;
+		}
+
+		return dest;
+	}
+
+	int memcmp(const void* dest, const void* src, size_t count) {
+		for (size_t i = 0; i < count; i++) {
+			if (((uint8_t*) dest)[i] != ((uint8_t*) src)[i]) {
+				return ((uint8_t*) dest)[i] - ((uint8_t*) src)[i];
+			}
+		}
+
+		return 0;
+	}
 }

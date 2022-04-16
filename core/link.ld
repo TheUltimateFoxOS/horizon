@@ -3,7 +3,9 @@ ENTRY(_start)
 
 SECTIONS
 {
-	. = 0x100000;
+	. = 0xFFFFFFFF80000000;
+	. += 0x100000;
+
 	kernel_start = .;
 	.stivale2hdr : ALIGN(0x1000)
 	{

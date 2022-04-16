@@ -78,6 +78,7 @@ void elf::setup(stivale2_struct* bootinfo) {
 	debugf("Setting up kernel elf resolver...\n");
 
 	stivale2_struct_tag_kernel_file* kernel_file = stivale2_tag_find<stivale2_struct_tag_kernel_file>(bootinfo, STIVALE2_STRUCT_TAG_KERNEL_FILE_ID);
+	debugf("Kernel file: %x\n", kernel_file->kernel_file);
 	kernel_resolver = new elf_symbol_resolver((void*) kernel_file->kernel_file);
 }
 

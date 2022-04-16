@@ -42,8 +42,6 @@ void memory::prepare_memory(stivale2_struct* bootinfo) {
 	uint64_t kernel_pages = (uint64_t)kernel_size / 4096 + 1;
 
 	debugf("Kernel size: %d bytes (%d pages)\n", kernel_size, kernel_pages);
-	debugf("Locking kernel pages...\n");
-	global_allocator.lock_pages(&kernel_start, kernel_pages);
 
 	debugf("Creating page table...\n");
 	page_table_t* pml4 = (page_table_t*) global_allocator.request_page();
@@ -55,12 +53,14 @@ void memory::prepare_memory(stivale2_struct* bootinfo) {
 	debugf("Identity mapping memory...\n");
 	for (uint64_t t = 0; t < get_memory_size(bootinfo); t+= 0x1000){
 		global_page_table_manager.map_memory((void*)t, (void*)t);
+		global_page_table_manager.map_memory((void*)t + KERNEL_HIGH_VMA, (void*)t);
+		global_page_table_manager.map_memory((void*)t + HIGH_VMA, (void*)t);
 	}
 
 	debugf("Mapping and locking framebuffer...\n");
 	stivale2_struct_tag_framebuffer* framebuffer = stivale2_tag_find<stivale2_struct_tag_framebuffer>(bootinfo, STIVALE2_STRUCT_TAG_FRAMEBUFFER_ID);
-	uint64_t fbBase = (uint64_t)framebuffer->framebuffer_addr;
-	uint64_t fbSize = (framebuffer->framebuffer_width * framebuffer->framebuffer_height * framebuffer->framebuffer_bpp) + 0x1000;
+	int64_t fbBase = (uint64_t)framebuffer->framebuffer_addr;
+	int64_t fbSize = (framebuffer->framebuffer_width * framebuffer->framebuffer_height * framebuffer->framebuffer_bpp) + 0x1000;
 	for (uint64_t t = fbBase; t < fbBase + fbSize; t += 4096){
 		global_page_table_manager.map_memory((void*)t, (void*)t);
 	}

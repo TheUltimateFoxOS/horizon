@@ -1,4 +1,4 @@
-CFLAGS = -ffreestanding -fshort-wchar -mno-red-zone -Iinclude -fno-exceptions -fno-leading-underscore -fno-exceptions -fno-stack-protector -mno-sse -mno-sse2 -mno-3dnow -mno-80387 -g
+CFLAGS = -mcmodel=large -ffreestanding -fshort-wchar -mno-red-zone -Iinclude -fno-exceptions -fno-exceptions -fno-stack-protector -mno-sse -mno-sse2 -mno-3dnow -mno-80387 -g
 CPPFLAGS = -fno-use-cxa-atexit -fno-rtti $(CFLAGS)
 ASMFLAGS = -f elf64
 

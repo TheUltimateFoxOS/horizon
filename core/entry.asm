@@ -12,6 +12,7 @@ _start:
 
 
 cpu_init:
+	cli
 	push rbp
 	mov rbp, rsp
 	push rbx

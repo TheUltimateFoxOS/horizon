@@ -38,7 +38,7 @@ __attribute__((section(".stivale2hdr"), used))
 static stivale2_header __stivale2_header = {
 	.entry_point = 0,
 	.stack = (uintptr_t) stack + sizeof(stack),
-	.flags = 0,
+	.flags = (1 << 4),
 	.tags = (uint64_t) &framebuffer_tag
 };
 

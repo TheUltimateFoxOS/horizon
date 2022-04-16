@@ -23,6 +23,7 @@ void apic::setup() {
 
 void apic::smp_spinup(stivale2_struct* bootinfo) {
 	memory::global_page_table_manager.map_memory((void*) acpi::madt::lapic_base_addr, (void*) acpi::madt::lapic_base_addr);
+	debugf("Mapped LAPIC memory at %p\n", (void*) acpi::madt::lapic_base_addr);
 	
 	memory::global_page_table_manager.map_memory((void*) 0x8000, (void*) 0x8000);
 	memcpy((void*) 0x8000, (void*) &ap_trampoline, 4096);
