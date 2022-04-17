@@ -123,7 +123,7 @@ extern "C" void stivale2_entry(stivale2_struct* bootinfo) {
 	stivale2_struct_tag_hhdm* hhdm_tag = stivale2_tag_find<stivale2_struct_tag_hhdm>(bootinfo, STIVALE2_STRUCT_TAG_HHDM_ID);
 	boot::boot_info.hhdm_base_address = (void*) hhdm_tag->addr;
 
-	boot::boot_info.boot_protocol_name = "stivale2";
+	boot::boot_info.boot_protocol_name = (char*) "stivale2";
 
 	main();
 

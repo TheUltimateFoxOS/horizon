@@ -123,7 +123,7 @@ extern "C" void limine_entry() {
 
 	boot::boot_info.hhdm_base_address = (void*) hhdm_request.response->offset;
 
-	boot::boot_info.boot_protocol_name = "limine";
+	boot::boot_info.boot_protocol_name = (char*) "limine";
 
 	main();
 

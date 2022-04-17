@@ -69,11 +69,11 @@ void memory::prepare_memory() {
 
 		for (uint64_t t = base; t < top; t += 0x1000) {
 			global_page_table_manager.map_memory((void*) t, (void*) t);
-			global_page_table_manager.map_memory((void*) t + (uint64_t) boot::boot_info.hhdm_base_address, (void*) t);
+			global_page_table_manager.map_memory((void*) (t + (uint64_t) boot::boot_info.hhdm_base_address), (void*) t);
 		}
 	}
 
-	for (int i = 0; i < get_memory_size(); i += 0x1000) {
+	for (uint64_t i = 0; i < get_memory_size(); i += 0x1000) {
 		global_page_table_manager.map_memory((void*) i, (void*) i);
 	}
 
