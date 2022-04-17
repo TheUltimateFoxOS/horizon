@@ -1,11 +1,10 @@
-[global _start]
-[global cpu_init]
+[global _start_stivale2]
 [extern stivale2_entry]
 
 ; This is here to mark the end of the stack trace.
 ; The boot loader passes the bootinfo struct just dont touch it and call kernel_main
 
-_start: 
+_start_stivale2: 
 	mov rbp, rsp
 	call cpu_init
 	call stivale2_entry

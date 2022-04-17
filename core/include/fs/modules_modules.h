@@ -1,12 +1,12 @@
 #pragma once
 
 #include <fs/vfs.h>
-#include <stivale2.h>
+#include <boot/boot.h>
 
 namespace fs {
 	using namespace vfs;
 
-	class stivale_mount : public vfs_mount {
+	class modules_mount : public vfs_mount {
 		public:
 			virtual file_t* open(char* path);
 			virtual void close(file_t* file);
@@ -14,9 +14,9 @@ namespace fs {
 			
 			virtual dir_t dir_at(int idx, char* path);
 
-			stivale_mount(stivale2_struct* bootinfo);
+			modules_mount(boot::boot_info_t* bootinfo);
 
 		private:
-			stivale2_struct_tag_modules* modules;
+			boot::boot_info_t* info;
 	};
 }

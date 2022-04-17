@@ -2,6 +2,8 @@
 
 #include <memory/memory.h>
 
+#include <boot/boot.h>
+
 using namespace memory;
 
 uint64_t free_memory;
@@ -13,7 +15,7 @@ namespace memory {
 	page_frame_allocator global_allocator;
 }
 
-void page_frame_allocator::read_EFI_memory_map(stivale2_struct* bootinfo) {
+void page_frame_allocator::read_EFI_memory_map() {
 	if (initialized) {
 		return;
 	}
@@ -23,17 +25,15 @@ void page_frame_allocator::read_EFI_memory_map(stivale2_struct* bootinfo) {
 	void* largest_free_mem_seg = NULL;
 	size_t largest_free_mem_seg_size = 0;
 
-	stivale2_struct_tag_memmap* memmap = stivale2_tag_find<stivale2_struct_tag_memmap>(bootinfo, STIVALE2_STRUCT_TAG_MEMMAP_ID);
-
-	for (int i = 0; i < memmap->entries; i++){
-		if (memmap->memmap[i].type == STIVALE2_MMAP_USABLE) {
-			if (memmap->memmap[i].length > largest_free_mem_seg_size) {
-				largest_free_mem_seg = (void*) memmap->memmap[i].base;
-				largest_free_mem_seg_size = memmap->memmap[i].length;
+	for (int i = 0; i < boot::boot_info.memmap_entries; i++){
+		if (boot::boot_info.memmap[i].type == MMAP_USABLE) {
+			if (boot::boot_info.memmap[i].length > largest_free_mem_seg_size) {
+				largest_free_mem_seg = (void*) boot::boot_info.memmap[i].base;
+				largest_free_mem_seg_size = boot::boot_info.memmap[i].length;
 			}
 		}
 	}
-	uint64_t memorysize = get_memory_size(bootinfo);
+	uint64_t memorysize = get_memory_size();
 	free_memory = memorysize;
 	uint64_t bitmapsize = memorysize / 4096 / 8 + 1;
 
@@ -41,9 +41,9 @@ void page_frame_allocator::read_EFI_memory_map(stivale2_struct* bootinfo) {
 
 	reserve_pages(0, memorysize / 4096 + 1);
 
-	for (int i = 0; i < memmap->entries; i++){
-		if (memmap->memmap[i].type == STIVALE2_MMAP_USABLE) { 
-			unreserve_pages((void*) memmap->memmap[i].base, (memmap->memmap[i].length / 0x1000) + 1);
+	for (int i = 0; i < boot::boot_info.memmap_entries; i++){
+		if (boot::boot_info.memmap[i].type == MMAP_USABLE) {
+			unreserve_pages((void*) boot::boot_info.memmap[i].base, boot::boot_info.memmap[i].length / 4096 );
 		}
 	}
 

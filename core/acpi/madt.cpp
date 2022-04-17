@@ -19,8 +19,8 @@ namespace acpi {
 	}
 }
 
-void acpi::madt::parse_madt(stivale2_struct* bootinfo) {
-	madt_header_t* madt = (madt_header_t*) find_table(bootinfo, (char*) "APIC", 0);
+void acpi::madt::parse_madt() {
+	madt_header_t* madt = (madt_header_t*) find_table((char*) "APIC", 0);
 
 	lapic_base_addr = madt->local_apic_address;
 

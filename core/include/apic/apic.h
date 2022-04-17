@@ -1,7 +1,6 @@
 #pragma once
 
 #include <stdint.h>
-#include <stivale2.h>
 
 namespace apic {
 	struct trampoline_data {
@@ -24,9 +23,6 @@ namespace apic {
 	extern "C" void ap_trampoline_64();
 	extern "C" void ap_trampoline_data();
 
-	extern "C" void stivale2_bootstrap();
-	extern "C" void stivale2_data();
-
 	void lapic_write(uint64_t reg, uint32_t value);
 	uint32_t lapic_read(uint64_t reg);
 	void lapic_wait();
@@ -36,7 +32,7 @@ namespace apic {
 
 	void ap_trampoline_c();
 
-	void smp_spinup(stivale2_struct* bootinfo);
+	void smp_spinup();
 	void setup();
 
 	#define LAPIC_ID(vaiable_name) \

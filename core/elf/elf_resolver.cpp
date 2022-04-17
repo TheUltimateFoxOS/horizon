@@ -2,6 +2,7 @@
 #include <elf/elf.h>
 #include <utils/log.h>
 #include <utils/string.h>
+#include <boot/boot.h>
 
 using namespace elf;
 
@@ -74,12 +75,11 @@ char* elf_symbol_resolver::resolve(void* symbol_addr) {
 	return (char*) "<unknown function>";
 }
 
-void elf::setup(stivale2_struct* bootinfo) {
+void elf::setup() {
 	debugf("Setting up kernel elf resolver...\n");
 
-	stivale2_struct_tag_kernel_file* kernel_file = stivale2_tag_find<stivale2_struct_tag_kernel_file>(bootinfo, STIVALE2_STRUCT_TAG_KERNEL_FILE_ID);
-	debugf("Kernel file: %x\n", kernel_file->kernel_file);
-	kernel_resolver = new elf_symbol_resolver((void*) kernel_file->kernel_file);
+	debugf("Kernel file: %x\n", boot::boot_info.kernel_file);
+	kernel_resolver = new elf_symbol_resolver(boot::boot_info.kernel_file);
 }
 
 uint64_t elf::resolve_symbol(char* name) {

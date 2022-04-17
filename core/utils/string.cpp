@@ -3,8 +3,6 @@
 #include <utils/string.h>
 #include <utils/vsprintf.h>
 
-#include <output/stivale2_terminal.h>
-
 char* strcpy(char* dest, const char* src) {
 	do {
 		*dest++ = *src++;

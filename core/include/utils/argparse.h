@@ -1,7 +1,6 @@
 #pragma once
 
 #include <utils/list.h>
-#include <stivale2.h>
 
 class argparser {
 	public:
@@ -20,4 +19,4 @@ class argparser {
 };
 
 extern argparser* global_argparser;
-void setup_global_argparser(stivale2_struct* bootinfo);
+void setup_global_argparser();

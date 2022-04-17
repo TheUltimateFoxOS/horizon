@@ -12,6 +12,8 @@
 
 #include <memory/page_table_manager.h>
 
+#include <boot/boot.h>
+
 using namespace acpi;
 
 void* acpi::find_table_xsdt(sdt_header_t* sdt_header, char* signature, int idx) {
@@ -46,21 +48,17 @@ void* acpi::find_table_rsdt(sdt_header_t* sdt_header, char* signature, int idx) 
 	return 0;
 }
 
-void* acpi::find_table(stivale2_struct* bootinfo, char* signature, int idx) {
+void* acpi::find_table(char* signature, int idx) {
 
 
 	void* result = nullptr;
 
-	stivale2_struct_tag_rsdp* rsdp_tag = stivale2_tag_find<stivale2_struct_tag_rsdp>(bootinfo, STIVALE2_STRUCT_TAG_RSDP_ID);
-
-	rsdp2_t* rsdp = (rsdp2_t*) ((uint64_t) rsdp_tag->rsdp);
-
-	if (rsdp->xsdt_address != 0) {
-		sdt_header_t* xsdt = (sdt_header_t*) (((rsdp2_t*) rsdp_tag->rsdp)->xsdt_address);
+	if (boot::boot_info.rsdp->xsdt_address != 0) {
+		sdt_header_t* xsdt = (sdt_header_t*) (((rsdp2_t*) boot::boot_info.rsdp)->xsdt_address);
 
 		result = find_table_xsdt(xsdt, (char*) signature, idx);
 	} else {
-		sdt_header_t* rsdt = (sdt_header_t*) (uint64_t) (((rsdp2_t*) rsdp_tag->rsdp)->rsdt_address);
+		sdt_header_t* rsdt = (sdt_header_t*) (uint64_t) (((rsdp2_t*) boot::boot_info.rsdp)->rsdt_address);
 			
 		result = find_table_rsdt(rsdt, (char*) signature, idx);
 	}
@@ -73,7 +71,7 @@ void* acpi::find_table(stivale2_struct* bootinfo, char* signature, int idx) {
 void acpi::init() {
 	debugf("ACPI init...\n");
 
-	fadt_table_t* fadt = (fadt_table_t*) find_table(global_bootinfo, (char*) "FACP", 0);
+	fadt_table_t* fadt = (fadt_table_t*) find_table((char*) "FACP", 0);
 
 	debugf("Sending acpi enable command...\n");
 	outb(fadt->smi_command_port, fadt->acpi_enable);
@@ -95,7 +93,7 @@ uint16_t SLP_TYPb;
 
 void acpi::dsdt_init() {
 	debugf("ACPI dsdt init...\n");
-	fadt_table_t* fadt = (fadt_table_t*) find_table(global_bootinfo, (char*) "FACP", 0);
+	fadt_table_t* fadt = (fadt_table_t*) find_table((char*) "FACP", 0);
 
 	uint64_t dsdt_addr = IS_CANONICAL(fadt->X_dsdt) ? fadt->X_dsdt : fadt->dsdt;
 
@@ -138,7 +136,7 @@ void acpi::dsdt_init() {
 
 void acpi::shutdown() {
 	debugf("ACPI shutdown...\n");
-	fadt_table_t* fadt = (fadt_table_t*) find_table(global_bootinfo, (char*) "FACP", 0);
+	fadt_table_t* fadt = (fadt_table_t*) find_table((char*) "FACP", 0);
 
 	outw(fadt->PM1a_control_block, (inw(fadt->PM1a_control_block) & 0xE3FF) | ((SLP_TYPa << 10) | 0x2000));
 
@@ -158,7 +156,7 @@ void acpi::shutdown() {
 
 void acpi::reboot() {
 	debugf("ACPI reboot...\n");
-	fadt_table_t* fadt = (fadt_table_t*) find_table(global_bootinfo, (char*) "FACP", 0);
+	fadt_table_t* fadt = (fadt_table_t*) find_table((char*) "FACP", 0);
 
 	switch (fadt->reset_reg.address_space ) {
 		case GENERIC_ADDRESS_SPACE_SYSTEM_IO:

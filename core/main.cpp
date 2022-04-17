@@ -1,4 +1,3 @@
-#include <stivale2.h>
 #include <gdt.h>
 
 #include <driver/driver.h>
@@ -7,7 +6,6 @@
 
 #include <interrupts/interrupts.h>
 
-#include <output/stivale2_terminal.h>
 #include <output/serial_port.h>
 
 #include <renderer/renderer.h>
@@ -28,7 +26,7 @@
 #include <fs/vfs.h>
 #include <fs/fd.h>
 #include <fs/dev_fs.h>
-#include <fs/stivale_modules.h>
+#include <fs/modules_modules.h>
 #include <fs/saf.h>
 #include <input/input.h>
 
@@ -58,23 +56,21 @@ extern uint8_t logo[];
 
 extern "C" void main() {
 
-	output::stivale2_terminal terminal = output::stivale2_terminal();
-	output::global_terminal = &terminal;
-	log::stdout_device = output::global_terminal;
 
 	output::serial_port serial_port = output::serial_port(COM1);
 	output::global_serial_port = &serial_port;
+	log::stdout_device = output::global_serial_port;
 	log::debug_device = output::global_serial_port;
 
 
 	debugf("Hello, world!\n");
-	printf("Hello, world!\n");
+	debugf("Booting FoxOS using the %s boot protocol...\n", boot::boot_info.boot_protocol_name);
 
 	setup_gdt();
-	memory::prepare_memory(global_bootinfo);
+	memory::prepare_memory();
 	interrupts::prepare_interrupts();
-	elf::setup(global_bootinfo);
-	renderer::setup(global_bootinfo);
+	elf::setup();
+	renderer::setup();
 
 #ifndef NICE_BOOT_ANIMATION
 	renderer::global_font_renderer->clear(0);
@@ -90,8 +86,8 @@ extern "C" void main() {
 	fs::vfs::setup();
 
 	debugf("Mounting stivale modules vfs mount...\n");
-	fs::stivale_mount* stivale_mount = new fs::stivale_mount(global_bootinfo);
-	fs::global_vfs->register_mount((char*) "stivale", stivale_mount);
+	fs::modules_mount* modules_mount = new fs::modules_mount(&boot::boot_info);
+	fs::global_vfs->register_mount((char*) "modules", modules_mount);
 
 	BOOT_PROGRESS(10);
 
@@ -112,14 +108,14 @@ extern "C" void main() {
 	BOOT_PROGRESS(20);
 
 	acpi::init();
-	acpi::madt::parse_madt(global_bootinfo);
+	acpi::madt::parse_madt();
 	apic::setup();
 
 	// apic::smp_spinup(global_bootinfo);
 
 	BOOT_PROGRESS(25);
 
-	setup_global_argparser(global_bootinfo);
+	setup_global_argparser();
 
 	if (global_argparser->is_arg("--serial_to_screen_redirect")) {
 		debugf("Redirecting serial port to screen\n");
@@ -144,7 +140,7 @@ extern "C" void main() {
 	}
 
 	if (!global_argparser->is_arg("--no_smp")) {
-		apic::smp_spinup(global_bootinfo);
+		apic::smp_spinup();
     }
 
 	BOOT_PROGRESS(30);

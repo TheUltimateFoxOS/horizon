@@ -2,10 +2,10 @@
 
 #include <acpi/acpi.h>
 #include <acpi/acpi_tables.h>
-#include <stivale2.h>
 #include <utils/log.h>
 #include <interrupts/interrupt_handler.h>
 #include <interrupts/interrupts.h>
+#include <boot/boot.h>
 
 extern "C" {
 	#include <lai/core.h>
@@ -13,7 +13,7 @@ extern "C" {
 }
 
 int get_sci_interrupt() {
-	acpi::fadt_table_t* fadt = (acpi::fadt_table_t*) acpi::find_table(global_bootinfo, (char*) "FACP", 0);
+	acpi::fadt_table_t* fadt = (acpi::fadt_table_t*) acpi::find_table((char*) "FACP", 0);
 
 	return fadt->sci_interrupt + 0x20;
 }
@@ -34,10 +34,7 @@ void sci_interrupt_handler(interrupts::s_registers* registers) {
 }
 
 void init() {
-	stivale2_struct_tag_rsdp* rsdp_tag = stivale2_tag_find<stivale2_struct_tag_rsdp>(global_bootinfo, STIVALE2_STRUCT_TAG_RSDP_ID);
-	acpi::rsdp2_t* rsdp = (acpi::rsdp2_t*) ((uint64_t) rsdp_tag->rsdp);
-
-	lai_set_acpi_revision(rsdp->revision);
+	lai_set_acpi_revision(boot::boot_info.rsdp->revision);
 
 	int sci_interrupt = get_sci_interrupt();
 	debugf("sci_interrupt: %d\n", sci_interrupt);

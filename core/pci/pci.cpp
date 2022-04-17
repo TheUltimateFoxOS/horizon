@@ -151,7 +151,7 @@ void enumerate_legacy() {
 }
 
 void pci::enumerate_pci() {
-	acpi::mcfg_header_t* mcfg_table = (acpi::mcfg_header_t*) acpi::find_table(global_bootinfo, (char*) "MCFG", 0);
+	acpi::mcfg_header_t* mcfg_table = (acpi::mcfg_header_t*) acpi::find_table((char*) "MCFG", 0);
 
 	if (mcfg_table == NULL) {
 		debugf("No mcfg found! Using PCI Configuration Space Access Mechanism!\n");

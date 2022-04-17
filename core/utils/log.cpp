@@ -2,7 +2,6 @@
 #include <utils/vsprintf.h>
 
 #include <output/serial_port.h>
-#include <output/stivale2_terminal.h>
 
 #include <stdarg.h>
 

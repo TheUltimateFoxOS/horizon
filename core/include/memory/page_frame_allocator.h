@@ -1,4 +1,3 @@
-#include <stivale2.h>
 #include <stdint.h>
 #include <stddef.h>
 #include <memory/bitmap.h>
@@ -6,7 +5,7 @@
 namespace memory {
 	class page_frame_allocator {
 		public:
-			void read_EFI_memory_map(stivale2_struct* bootinfo);
+			void read_EFI_memory_map();
 			Bitmap page_bitmap;
 			void free_page(void* address);
 			void free_pages(void* address, uint64_t page_count);

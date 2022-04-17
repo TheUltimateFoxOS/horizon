@@ -8,19 +8,19 @@
 #include <utils/log.h>
 #include <utils/string.h>
 
+#include <boot/boot.h>
+
 using namespace memory;
 
-uint64_t memory::get_memory_size(stivale2_struct* bootinfo) {
+uint64_t memory::get_memory_size() {
 	static uint64_t memorySizeBytes = 0;
 	
 	if (memorySizeBytes > 0) {
 		return memorySizeBytes; // cache the value
 	}
 
-	stivale2_struct_tag_memmap* memmap = stivale2_tag_find<stivale2_struct_tag_memmap>(bootinfo, STIVALE2_STRUCT_TAG_MEMMAP_ID);
-
-	for (int i = 0; i < memmap->entries; i++){
-		memorySizeBytes += memmap->memmap[i].length;
+	for (int i = 0; i < boot::boot_info.memmap_entries; i++){
+		memorySizeBytes += boot::boot_info.memmap[i].length;
 	}
 
 	return memorySizeBytes;
@@ -28,18 +28,15 @@ uint64_t memory::get_memory_size(stivale2_struct* bootinfo) {
 
 extern uint64_t kernel_start;
 extern uint64_t kernel_end;
-extern uint64_t virtual_base;
 
-#define KERNEL_PHYSICAL_ADDRESS(virtual_address) ((void*)((unsigned long long)(virtual_address) - ((unsigned long long) &virtual_base)))
+#define KERNEL_PHYSICAL_ADDRESS(virtual_address) (void*) ((uint64_t) boot::boot_info.physical_base_address + ((uint64_t) virtual_address - (uint64_t) &virtual_base))
 
-void memory::prepare_memory(stivale2_struct* bootinfo) {
-	stivale2_struct_tag_memmap* memmap = stivale2_tag_find<stivale2_struct_tag_memmap>(bootinfo, STIVALE2_STRUCT_TAG_MEMMAP_ID);
-	
-	uint64_t m_map_entries = memmap->entries;
+void memory::prepare_memory() {	
+	uint64_t m_map_entries = boot::boot_info.memmap_entries;
 
 	debugf("Creating page frame allocator...\n");
 	global_allocator = page_frame_allocator();
-	global_allocator.read_EFI_memory_map(bootinfo);
+	global_allocator.read_EFI_memory_map();
 
 	uint64_t kernel_size = (uint64_t)&kernel_end - (uint64_t)&kernel_start;
 	uint64_t kernel_pages = (uint64_t)kernel_size / 4096 + 1;
@@ -53,32 +50,42 @@ void memory::prepare_memory(stivale2_struct* bootinfo) {
 	debugf("Creating page table manager...\n");
 	global_page_table_manager = page_table_manager(pml4);
 
-	void* kernel_physical_start = KERNEL_PHYSICAL_ADDRESS(&kernel_start);
-	void* kernel_physical_end = KERNEL_PHYSICAL_ADDRESS(&kernel_end);
-	uint64_t kernel_virtual_base = (uint64_t) &virtual_base;
-
-	debugf("Kernel physical start: %p\n", kernel_physical_start);
-	debugf("Kernel physical end: %p\n", kernel_physical_end);
-	debugf("Kernel virtual base: %p\n", kernel_virtual_base);
-
 	debugf("Starting to map memory...\n");
-	for(void* ptr = kernel_physical_start; (uint64_t)ptr < (uint64_t)kernel_physical_end; ptr = ptr + 0x1000) {
-		void* virtual_address = (void*)((uint64_t)ptr + kernel_virtual_base);
-		global_page_table_manager.map_memory(virtual_address, ptr);
+	for(uint64_t size = 0; size < kernel_size; size += 4096) {
+		uint64_t physical_address = (uint64_t) boot::boot_info.physical_base_address + size;
+		uint64_t virtual_address = (uint64_t) boot::boot_info.virtual_base_address + size;
+		global_page_table_manager.map_memory((void*) virtual_address, (void*) physical_address);
 	}
-	for (int i = 0; i < get_memory_size(bootinfo); i += 0x1000) {
+
+	for (int i = 0; i < boot::boot_info.memmap_entries; i++) {
+		int type = boot::boot_info.memmap[i].type;
+		uint64_t base = boot::boot_info.memmap[i].base;
+		base &= ~0xFFF;
+
+		uint64_t top = base + boot::boot_info.memmap[i].length;
+		top = (top + 0xFFF) & ~0xFFF;
+
+		debugf("Mapping memory type %d from %p with size %p\n", type, base, top - base);
+
+		for (uint64_t t = base; t < top; t += 0x1000) {
+			global_page_table_manager.map_memory((void*) t, (void*) t);
+			global_page_table_manager.map_memory((void*) t + (uint64_t) boot::boot_info.hhdm_base_address, (void*) t);
+		}
+	}
+
+	for (int i = 0; i < get_memory_size(); i += 0x1000) {
 		global_page_table_manager.map_memory((void*) i, (void*) i);
 	}
 
 
-	debugf("Mapping and locking framebuffer...\n");
-	stivale2_struct_tag_framebuffer* framebuffer = stivale2_tag_find<stivale2_struct_tag_framebuffer>(bootinfo, STIVALE2_STRUCT_TAG_FRAMEBUFFER_ID);
-	int64_t fbBase = (uint64_t)framebuffer->framebuffer_addr;
-	int64_t fbSize = (framebuffer->framebuffer_width * framebuffer->framebuffer_height * framebuffer->framebuffer_bpp) + 0x1000;
-	for (uint64_t t = fbBase; t < fbBase + fbSize; t += 4096){
-		global_page_table_manager.map_memory((void*)t, (void*)t);
-		global_allocator.lock_page((void*)t);
-	}
+	// debugf("Mapping and locking framebuffer...\n");
+	// int64_t fbBase = (uint64_t) boot::boot_info.framebuffer.base_address;
+	// int64_t fbSize = (boot::boot_info.framebuffer.width * boot::boot_info.framebuffer.height * 4) + 0x1000;
+	// for (uint64_t t = fbBase; t < fbBase + fbSize; t += 4096){
+	// 	global_page_table_manager.map_memory((void*)t, (void*)t);
+	// 	global_page_table_manager.map_memory((void*)t + (uint64_t) boot::boot_info.hhdm_base_address, (void*)t);
+	// 	global_allocator.lock_page((void*)t);
+	// }
 
 	void* smp_trampoline_target = (void*) 0x8000;
 	debugf("Locking smp trampoline target...\n");

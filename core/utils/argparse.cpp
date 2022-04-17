@@ -2,6 +2,8 @@
 
 #include <utils/log.h>
 
+#include <boot/boot.h>
+
 argparser::argparser(char* args) : args_list(10) {
 	char* last_token = args;
 
@@ -109,9 +111,8 @@ char* argparser::get_arg(const char* arg) {
 
 argparser* global_argparser;
 
-void setup_global_argparser(stivale2_struct* bootinfo) {
+void setup_global_argparser() {
 	debugf("Setting up global argparser...\n");
-	stivale2_struct_tag_cmdline* cmdline = stivale2_tag_find<stivale2_struct_tag_cmdline>(bootinfo, STIVALE2_STRUCT_TAG_CMDLINE_ID);
 
-	global_argparser = new argparser((char*) cmdline->cmdline);
+	global_argparser = new argparser(boot::boot_info.command_line);
 }

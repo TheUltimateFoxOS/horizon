@@ -1,7 +1,6 @@
 #pragma once
 
 #include <elf/elf.h>
-#include <stivale2.h>
 
 namespace elf {
 	class elf_symbol_resolver {
@@ -23,5 +22,5 @@ namespace elf {
 	uint64_t resolve_symbol(char* symbol_name);
 	char* resolve_symbol(uint64_t symbol_addr);
 
-	void setup(stivale2_struct* bootinfo);
+	void setup();
 }

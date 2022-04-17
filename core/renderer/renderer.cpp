@@ -8,6 +8,8 @@
 #include <utils/log.h>
 #include <memory/page_frame_allocator.h>
 
+#include <boot/boot.h>
+
 using namespace renderer;
 
 namespace renderer {
@@ -16,16 +18,8 @@ namespace renderer {
 
 extern uint8_t default_font[];
 
-void renderer::setup(stivale2_struct* bootinfo) {
-	stivale2_struct_tag_framebuffer* framebuffer = stivale2_tag_find<stivale2_struct_tag_framebuffer>(bootinfo, STIVALE2_STRUCT_TAG_FRAMEBUFFER_ID);
-
-	default_framebuffer = {
-		.base_address = (void*) framebuffer->framebuffer_addr,
-		.buffer_size = (size_t) framebuffer->framebuffer_width * framebuffer->framebuffer_height * framebuffer->framebuffer_bpp,
-		.width = framebuffer->framebuffer_width,
-		.height = framebuffer->framebuffer_height
-	};
-
+void renderer::setup() {
+	default_framebuffer = boot::boot_info.framebuffer;
 	debugf("Framebuffer:\n");
 	debugf("> base_address: 0x%x\n", default_framebuffer.base_address);
 	debugf("> buffer_size: 0x%x\n", default_framebuffer.buffer_size);

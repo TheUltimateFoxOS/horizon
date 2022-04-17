@@ -12,7 +12,7 @@ namespace timer {
 }
 
 hpet_timer::hpet_timer() {
-	acpi::hpet_table_t* hpet_table = (acpi::hpet_table_t*) acpi::find_table(global_bootinfo, (char*) "HPET", 0);
+	acpi::hpet_table_t* hpet_table = (acpi::hpet_table_t*) acpi::find_table((char*) "HPET", 0);
 	this->hpet = (hpet_t*) hpet_table->address;
 	debugf("HPET at 0x%x\n", hpet);
 
@@ -30,7 +30,7 @@ void hpet_timer::sleep(uint32_t ms) {
 }
 
 bool hpet_timer::is_available() {
-	acpi::hpet_table_t* hpet_table = (acpi::hpet_table_t*) acpi::find_table(global_bootinfo, (char*) "HPET", 0);
+	acpi::hpet_table_t* hpet_table = (acpi::hpet_table_t*) acpi::find_table((char*) "HPET", 0);
 	if (hpet_table == nullptr) {
 		return false;
 	}
