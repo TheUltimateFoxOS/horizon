@@ -1,7 +1,7 @@
 #pragma once
 
 #include <driver/driver.h>
-#include <input/input.h>
+#include <input/keyboard_input.h>
 #include <interrupts/interrupt_handler.h>
 #include <utils/port.h>
 #include <fs/dev_fs.h>
@@ -28,7 +28,7 @@ namespace ps2 {
 			right_arrow,
 	};
 
-	class ps2_keyboard : public driver::device_driver, public input::input_device, public interrupts::interrupt_handler, public fs::dev_fs_file {
+	class ps2_keyboard : public driver::device_driver, public input::keyboard_input_device, public interrupts::interrupt_handler, public fs::dev_fs_file {
 		public:
 			ps2_keyboard();
 

@@ -11,7 +11,7 @@ namespace input {
 
 	extern char keymap_load_path[256];
 
-	class input_device {
+	class keyboard_input_device {
 		public:
 			virtual void getstring(char* buf);
 			virtual char getchar();
@@ -19,5 +19,5 @@ namespace input {
 
 	char keymap(char* keymap_id, uint8_t key, bool l_alt, bool r_alt, bool l_ctrl, bool r_ctrl, bool l_shift, bool r_shift, bool caps_lock);
 
-	extern input_device* default_input_device;
+	extern keyboard_input_device* default_keyboard_input_device;
 }

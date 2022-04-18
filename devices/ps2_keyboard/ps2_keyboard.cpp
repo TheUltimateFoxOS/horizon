@@ -21,7 +21,7 @@ void ps2_keyboard::activate() {
 	dataport.Write(status);
 	dataport.Write(0xf4);
 
-	input::default_input_device = this;
+	input::default_keyboard_input_device = this;
 }
 
 bool ps2_keyboard::is_presend() {

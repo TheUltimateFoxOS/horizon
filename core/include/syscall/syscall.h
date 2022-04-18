@@ -57,4 +57,8 @@ namespace syscall {
 	void sys_sound_get_channel_count(interrupts::s_registers* regs);
 
 	void sys_delay(interrupts::s_registers* regs);
+
+	void sys_mouse_reset(interrupts::s_registers* regs);
+	void sys_mouse_get_pos(interrupts::s_registers* regs);
+	void sys_mouse_get_buttons(interrupts::s_registers* regs);
 }

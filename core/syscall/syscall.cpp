@@ -77,6 +77,9 @@ void syscall::setup() {
 	register_syscall(sys_sound_get_channel_count, "sys_sound_get_channel_count");
 	register_syscall(sys_delay, "sys_delay");
 	register_syscall(sys_delete_dir, "sys_delete_dir");
+	register_syscall(sys_mouse_get_buttons, "sys_mouse_get_buttons");
+	register_syscall(sys_mouse_get_pos, "sys_mouse_get_pos");
+	register_syscall(sys_mouse_reset, "sys_mouse_reset");
 }
 
 void syscall::register_syscall(void (*handler)(interrupts::s_registers*), const char* name) {

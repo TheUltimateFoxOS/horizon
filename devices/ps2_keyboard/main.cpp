@@ -2,7 +2,6 @@
 
 #include <driver/driver.h>
 #include <ps2_keyboard.h>
-#include <input/input.h>
 #include <utils/log.h>
 #include <fs/dev_fs.h>
 

@@ -28,7 +28,7 @@
 #include <fs/dev_fs.h>
 #include <fs/modules_modules.h>
 #include <fs/saf.h>
-#include <input/input.h>
+#include <input/keyboard_input.h>
 
 #include <timer/timer.h>
 

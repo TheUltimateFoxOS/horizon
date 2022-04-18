@@ -1,6 +1,6 @@
 #include <syscall/syscall.h>
 
-#include <input/input.h>
+#include <input/keyboard_input.h>
 #include <utils/lock.h>
 #include <utils/abort.h>
 #include <fs/fd.h>
@@ -21,7 +21,7 @@ void syscall::sys_read(interrupts::s_registers* regs) {
 			{
 				if (task->stdin_pipe == nullptr || !task->pipe_enabled) {
 					// Read from stdin
-					if (input::default_input_device == nullptr) {
+					if (input::default_keyboard_input_device == nullptr) {
 						regs->rax = -1;
 						return;
 					}
@@ -29,7 +29,7 @@ void syscall::sys_read(interrupts::s_registers* regs) {
 					atomic_acquire_spinlock(sys_read_lock);
 					for (int i = 0; i < regs->rdx; i++) {
 						__asm__ __volatile__ ("sti");
-						*((char*)regs->rcx + i) = input::default_input_device->getchar();
+						*((char*)regs->rcx + i) = input::default_keyboard_input_device->getchar();
 						__asm__ __volatile__ ("cli");
 					}
 					
