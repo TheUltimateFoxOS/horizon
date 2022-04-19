@@ -38,7 +38,7 @@ foxkrnl.elf: $(OBJS)
 	@echo LD $^
 	@$(LD) $(LDFLAGS) -o $(BUILDDIR)/$@ $^
 
-	@echo "\n\nCompiled using asm: $(ASM), cc: $(CC), ld: $(LD)\n\n"
+	@echo "Compiled using asm: $(ASM), cc: $(CC), ld: $(LD)"
 
 $(OBJDIR)/%.o: %.cpp
 	@echo "CPP $^ -> $@"

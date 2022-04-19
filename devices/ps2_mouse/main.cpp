@@ -8,4 +8,4 @@ void device_init() {
 	driver::global_driver_manager->add_driver(mouse);
 }
 
-define_module("ps2 mouse", null_ptr_func, device_init, null_ptr_func);
+define_module("ps2_mouse", null_ptr_func, device_init, null_ptr_func);

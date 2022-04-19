@@ -36,7 +36,7 @@ module: $(OBJS)
 	@echo LD $^
 	@$(LD) $(LDFLAGS) -o $(BUILDDIR)/$(MODULE_NAME) $^
 
-	@echo "\n\nCompiled using asm: $(ASM), cc: $(CC), ld: $(LD)\n\n"
+	@echo "Compiled using asm: $(ASM), cc: $(CC), ld: $(LD)"
 
 $(OBJDIR)/$(MODULE_NAME)/%.o: %.cpp
 	@echo "CPP $^ -> $@"

@@ -11,4 +11,4 @@ void device_init() {
 	fs::global_devfs->register_file(keyboard);
 }
 
-define_module("ps2 keyboard", null_ptr_func, device_init, null_ptr_func);
+define_module("ps2_keyboard", null_ptr_func, device_init, null_ptr_func);

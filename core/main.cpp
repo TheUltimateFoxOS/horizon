@@ -151,6 +151,18 @@ extern "C" void main() {
 	BOOT_PROGRESS(35);
 
 	printf("Loading kernel modules...\n");
+	char* kernel_module_blacklist_name = nullptr;
+	while ((kernel_module_blacklist_name = global_argparser->get_arg("--blacklist_module"))) {
+		debugf("Blacklisting module: %s\n", kernel_module_blacklist_name);
+		for (int i = 0; i < 128; i++) {
+			if (elf::module_blacklist[i] == nullptr) {
+				elf::module_blacklist[i] = kernel_module_blacklist_name;
+				elf::module_blacklist[i + 1] = nullptr;
+				break;
+			}
+		}
+	}
+
 	char* kernel_module_path = nullptr;
 	while ((kernel_module_path = global_argparser->get_arg("--load_module"))) {
 		debugf("Loading module: %s\n", kernel_module_path);

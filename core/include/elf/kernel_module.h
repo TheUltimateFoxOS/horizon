@@ -2,6 +2,8 @@
 
 #include <stdint.h>
 
+#include <utils/list.h>
+
 namespace elf {
 
 	struct module_t {
@@ -12,6 +14,10 @@ namespace elf {
 		void* base_address;
 		uint64_t loaded_pages;
 	};
+
+	extern char* module_blacklist[128];
+	extern list<module_t*>* modules;
+
 
 	#define null_ptr_func ((void (*)())0)
 

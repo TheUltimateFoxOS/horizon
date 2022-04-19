@@ -5,6 +5,8 @@
 #include <acpi/acpi.h>
 #include <utils/abort.h>
 
+#include <elf/kernel_module.h>
+
 using namespace syscall;
 
 void syscall::sys_env(interrupts::s_registers* regs) {
@@ -86,6 +88,24 @@ void syscall::sys_env(interrupts::s_registers* regs) {
 				__asm__ __volatile__ ("sti");
 				acpi::reboot();
 				__asm__ __volatile__ ("cli");
+			}
+			break;
+
+		case 12: // get all loaded modules
+			{
+				char** modules = (char**) regs->rdx;
+				int max_modules = regs->rcx;
+
+				int offset = 0;
+				for (int i = 0; i < max_modules && i < elf::modules->length; i++) {
+					if (elf::modules->data[i + offset].taken) {
+						debugf("sys_env: module %d: %s\n", i, elf::modules->data[i + offset].data->name);
+						modules[i] = (char*) elf::modules->data[i + offset].data->name;
+					} else {
+						offset++;
+						i--;
+					}
+				}
 			}
 			break;
 

@@ -14,9 +14,16 @@
 
 #include <config.h>
 
+namespace elf {
+	char* module_blacklist[128] = {
+		nullptr
+	};
+
+	list<module_t*>* modules = nullptr;
+}
+
 using namespace elf;
 
-list<module_t*>* modules = nullptr;
 
 void kernel_module_render_status(char* status, uint64_t color) {
 #ifndef NICE_BOOT_ANIMATION
@@ -85,7 +92,7 @@ void elf::load_kernel_module(void* module, uint32_t size) {
 		Elf64_Shdr* sh = (Elf64_Shdr*) ((uint64_t) base_address +header->e_shoff + header->e_shentsize * i);
 
 		// print section information
-		debugf("Section %d: %d\n", i, sh->sh_type);
+		// debugf("Section %d: %d\n", i, sh->sh_type);
 
 		if (sh->sh_type == 8 /* SHT_NOBITS */) {
 			sh->sh_addr = (uint64_t) memory::global_allocator.request_pages(sh->sh_size / 0x1000 + 1);
@@ -122,7 +129,7 @@ void elf::load_kernel_module(void* module, uint32_t size) {
 					debugf("WARNING: Could not resolve symbol %s\n", _symbol);
 					sym_table[sym].st_value = 0;
 				} else {
-					debugf("Resolved symbol %s to %x\n", _symbol, _symbol_addr);
+					// debugf("Resolved symbol %s to %x\n", _symbol, _symbol_addr);
 					sym_table[sym].st_value = _symbol_addr;
 				}
 
@@ -186,6 +193,14 @@ void elf::load_kernel_module(void* module, uint32_t size) {
 
 	module_data->loaded_pages = size / 0x1000 + 1;
 	module_data->base_address = base_address;
+
+	for (int i = 0; module_blacklist[i] != nullptr; i++) {
+		if (strcmp((char*) module_data->name, module_blacklist[i]) == 0) {
+			debugf("Module %s is blacklisted!\n", module_data->name);
+			memory::global_allocator.free_pages(base_address, (uint64_t) size / 0x1000 + 1);
+			return;
+		}
+	}
 
 	elf_symbol_resolver* resolver = new elf_symbol_resolver(base_address);
 	other_resolver[other_resolver_count++] = resolver;
