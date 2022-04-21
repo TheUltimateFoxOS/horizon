@@ -9,8 +9,6 @@
 
 #include <memory/page_frame_allocator.h>
 
-#include <input/input.h>
-
 #include <utils/log.h>
 #include <utils/string.h>
 
