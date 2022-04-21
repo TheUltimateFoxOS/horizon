@@ -2,14 +2,15 @@
 [extern limine_entry]
 
 _start_limine: 
+	push qword 0
+	push qword 0
+
 	mov rbp, rsp
 	call cpu_init
 	call limine_entry
 
 cpu_init:
 	cli
-	push rbp
-	mov rbp, rsp
 	push rbx
 
 	; enable coprocessor (fpu and sse)
@@ -25,5 +26,4 @@ cpu_init:
 	fninit
 
 	pop rbx
-	pop rbp
 	ret

@@ -26,10 +26,13 @@ __attribute__((noreturn)) void abortf(const char* fmt, ...) {
 		}
 	}
 
-	uint64_t rbp;
-	__asm__ __volatile__ ("movq %%rbp, %0" : "=r" (rbp));
+	uint64_t rbp = ([]() {
+		uint64_t rbp;
+		__asm__ __volatile__("movq %%rbp, %0" : "=r"(rbp));
+		return rbp;
+	})();
+
 	log::stdout_device = renderer::global_font_renderer;
-	renderer::point_t bmp_info = renderer::global_renderer_2d->get_bitmap_info(screen_of_death);
 
 	va_list args;
 	char buf[1024] = {0};
@@ -69,10 +72,10 @@ __attribute__((noreturn)) void abortf(const char* fmt, ...) {
 		} else {
 			printf("<unknown function at 0x%x>\n", rip);
 		}
-		// printf("%d: %p\n", frame_num, rip);
 	});
 
-	renderer::global_renderer_2d->load_bitmap(screen_of_death, renderer::global_renderer_2d->target->height - bmp_info.x, 0);
+	renderer::point_t bmp_info = renderer::global_renderer_2d->get_bitmap_info(screen_of_death);
+	renderer::global_renderer_2d->load_bitmap(screen_of_death, renderer::global_renderer_2d->target->height - bmp_info.x - 3, 0);
 
 	while (true) {
 		__asm__ __volatile__ ("cli; hlt");

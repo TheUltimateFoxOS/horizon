@@ -7,7 +7,12 @@
 
 task_entry:
 	sti
+
+	push qword 0
+	push qword 0
+	
 	mov rbp, rsp ; mark bottom of stack trace
+	
 	call rax
 
 .exit:

@@ -62,6 +62,8 @@ ap_trampoline_64:
 
 	fninit
 
+	push qword 0
+	push qword 0
 	mov rbp, rsp ; mark end of stack for stack trace
 
 	mov [to_target(ap_trampoline_data.status)], byte 1

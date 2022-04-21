@@ -5,6 +5,9 @@
 ; The boot loader passes the bootinfo struct just dont touch it and call kernel_main
 
 _start_stivale2: 
+	push qword 0
+	push qword 0
+
 	mov rbp, rsp
 	call cpu_init
 	call stivale2_entry
@@ -12,8 +15,6 @@ _start_stivale2:
 
 cpu_init:
 	cli
-	push rbp
-	mov rbp, rsp
 	push rbx
 
 	; enable coprocessor (fpu and sse)
@@ -29,5 +30,4 @@ cpu_init:
 	fninit
 
 	pop rbx
-	pop rbp
 	ret
