@@ -61,4 +61,6 @@ namespace syscall {
 	void sys_mouse_reset(interrupts::s_registers* regs);
 	void sys_mouse_get_pos(interrupts::s_registers* regs);
 	void sys_mouse_get_buttons(interrupts::s_registers* regs);
+
+	void sys_memory_info(interrupts::s_registers* regs);
 }

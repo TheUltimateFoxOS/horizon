@@ -80,6 +80,7 @@ void syscall::setup() {
 	register_syscall(sys_mouse_get_buttons, "sys_mouse_get_buttons");
 	register_syscall(sys_mouse_get_pos, "sys_mouse_get_pos");
 	register_syscall(sys_mouse_reset, "sys_mouse_reset");
+	register_syscall(sys_memory_info, "sys_memory_info");
 }
 
 void syscall::register_syscall(void (*handler)(interrupts::s_registers*), const char* name) {
