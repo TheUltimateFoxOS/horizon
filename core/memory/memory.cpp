@@ -87,6 +87,18 @@ void memory::prepare_memory() {
 	// 	global_allocator.lock_page((void*)t);
 	// }
 
+	if (!global_page_table_manager.virt_to_phys(boot::boot_info.rsdp)) {
+		debugf("Seems like the rsdp was not in the memory map.\n");
+		// check if rsdp pointer is higher then the hhdm base address
+		if ((uint64_t) boot::boot_info.rsdp > (uint64_t) boot::boot_info.hhdm_base_address) {
+			debugf("RSDP is higher then the hhdm base address.\n");
+			global_page_table_manager.map_memory((void*) boot::boot_info.rsdp, (void*) boot::boot_info.rsdp - (uint64_t) boot::boot_info.hhdm_base_address);
+		} else {
+			debugf("RSDP is lower then the hhdm base address.\n");
+			global_page_table_manager.map_memory((void*) boot::boot_info.rsdp, (void*) boot::boot_info.rsdp);
+		}
+	}
+
 	void* smp_trampoline_target = (void*) 0x8000;
 	debugf("Locking smp trampoline target...\n");
 	global_allocator.lock_page(smp_trampoline_target);
