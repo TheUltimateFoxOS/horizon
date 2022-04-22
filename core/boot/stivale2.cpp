@@ -62,14 +62,17 @@ int stivale2_memmap_entry_conv(int stivale2_id) {
 extern uint64_t kernel_start;
 extern uint64_t kernel_end;
 
+term_write_t stivale2_term_write;
+
+
 extern "C" void stivale2_entry(stivale2_struct* bootinfo) {
 	stivale2_struct_tag_terminal* terminal_tag = stivale2_tag_find<stivale2_struct_tag_terminal>(bootinfo, STIVALE2_STRUCT_TAG_TERMINAL_ID);
-	term_write_t term_write = (term_write_t) terminal_tag->term_write;
+	stivale2_term_write = (term_write_t) terminal_tag->term_write;
 
 	stivale2_struct_tag_framebuffer* framebuffer_tag = stivale2_tag_find<stivale2_struct_tag_framebuffer>(bootinfo, STIVALE2_STRUCT_TAG_FRAMEBUFFER_ID);
 
 	if (framebuffer_tag->framebuffer_bpp != 32) {
-		term_write("Framebuffer must be 32bpp\n", 27);
+		stivale2_term_write("Framebuffer must be 32bpp\n", 27);
 		halt_cpu();
 	}
 
@@ -124,6 +127,15 @@ extern "C" void stivale2_entry(stivale2_struct* bootinfo) {
 	boot::boot_info.hhdm_base_address = (void*) hhdm_tag->addr;
 
 	boot::boot_info.boot_protocol_name = (char*) "stivale2";
+
+	boot::print_boot_info(&boot::boot_info, [](char* str) {
+		int len = 0;
+		for (int i = 0; str[i] != 0; i++) {
+			len++;
+		}
+
+		stivale2_term_write(str, len);
+	});
 
 	main();
 

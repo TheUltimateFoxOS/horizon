@@ -49,6 +49,11 @@ static volatile limine_hhdm_request hhdm_request = {
 	.revision = 0
 };
 
+static volatile limine_smbios_request smbios_request = {
+	.id = LIMINE_SMBIOS_REQUEST,
+	.revision = 0
+};
+
 extern "C" void main();
 
 int limine_memmap_entry_conv(int limine_id) {
@@ -124,6 +129,18 @@ extern "C" void limine_entry() {
 	boot::boot_info.hhdm_base_address = (void*) hhdm_request.response->offset;
 
 	boot::boot_info.boot_protocol_name = (char*) "limine";
+
+	boot::boot_info.smbios_entry_64 = (void*) smbios_request.response->entry_64;
+	boot::boot_info.smbios_entry_32 = (void*) smbios_request.response->entry_32;
+
+	boot::print_boot_info(&boot::boot_info, [](char* str) {
+		int len = 0;
+		for (int i = 0; str[i] != 0; i++) {
+			len++;
+		}
+
+		terminal_request.response->write(terminal_request.response->terminals[0], str, len);
+	});
 
 	main();
 

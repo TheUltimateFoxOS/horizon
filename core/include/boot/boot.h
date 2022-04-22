@@ -37,6 +37,9 @@ namespace boot {
 		void* hhdm_base_address;
 
 		char* boot_protocol_name;
+
+		void* smbios_entry_32;
+		void* smbios_entry_64;
 	};
 
 	#define MMAP_USABLE                 1
@@ -49,6 +52,8 @@ namespace boot {
 	#define MMAP_FRAMEBUFFER            8
 
 	#define halt_cpu() while (true) { __asm__ __volatile__ ("cli; hlt"); }
+
+	void print_boot_info(boot_info_t* info, void (*write_str)(char* str));
 
 	extern boot_info_t boot_info;
 }
