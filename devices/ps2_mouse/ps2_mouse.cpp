@@ -34,7 +34,7 @@ bool ps2_mouse::is_presend() {
 }
 
 char* ps2_mouse::get_name() {
-	return "ps2_mouse";
+	return (char*) "ps2_mouse";
 }
 
 void ps2_mouse::handle() {

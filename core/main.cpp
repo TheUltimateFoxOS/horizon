@@ -97,6 +97,10 @@ extern "C" void main() {
 	fs::global_vfs->register_mount((char*) "dev", dev_fs_mount);
 	fs::global_devfs->register_file(renderer::global_font_renderer);
 
+#ifdef BOOTINFO
+	fs::global_devfs->register_file(new boot::bootinfo_dev_fs_file(&boot::boot_info));
+#endif
+
 	fs::global_fd_manager = new fs::file_descriptor_manager();
 
 	BOOT_PROGRESS(15);

@@ -22,6 +22,10 @@ char* dev_fs_file::get_name() {
 	return (char*) "default";
 }
 
+void dev_fs_file::prepare_file(file_t* file) {
+	debugf("dev_fs_file::prepare_file is not implemented\n");
+}
+
 dev_fs::dev_fs() : files(10) {
 
 }
@@ -56,6 +60,8 @@ file_t* dev_fs::open(char* path) {
 		file->mount = this;
 		file->size = -1;
 		file->data = file_node->data;
+
+		file_node->data->prepare_file(file);
 
 		return file;
 	} else {

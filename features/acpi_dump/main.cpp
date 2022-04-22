@@ -43,7 +43,7 @@ void init() {
 		enumerate_rsdt(rsdt);
 	}
 
-	acpi::fadt_table_t* fadt = (acpi::fadt_table_t*) acpi::find_table("FACP", 0);
+	acpi::fadt_table_t* fadt = (acpi::fadt_table_t*) acpi::find_table((char*) "FACP", 0);
 	if (fadt != nullptr) {
 		void* dsdt_addr = (void*) (IS_CANONICAL(fadt->X_dsdt) ? fadt->X_dsdt : fadt->dsdt);
 		if (dsdt_addr != nullptr) {
@@ -54,7 +54,7 @@ void init() {
 	debugf("Found %d SDTs\n", num_headers);
 
 	fs::acpi_vfs* acpi_vfs = new fs::acpi_vfs(headers, num_headers);
-	fs::global_vfs->register_mount("acpi", acpi_vfs);
+	fs::global_vfs->register_mount((char*) "acpi", acpi_vfs);
 
 	debugf("use 'safm acpi: acpi.saf' to dump them\n");
 }

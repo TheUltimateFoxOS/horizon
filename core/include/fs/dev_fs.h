@@ -11,6 +11,7 @@ namespace fs {
 			virtual void read(file_t* file, void* buffer, size_t size, size_t offset);
 			virtual void write(file_t* file, void* buffer, size_t size, size_t offset);
 
+			virtual void prepare_file(file_t* file);
 			virtual char* get_name();
 	};
 

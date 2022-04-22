@@ -4,6 +4,7 @@
 #include <renderer/framebuffer.h>
 #include <acpi/acpi_tables.h>
 
+#include <fs/dev_fs.h>
 namespace boot {
 	struct boot_info_memmap_entry_t {
 		uint64_t base;
@@ -54,6 +55,19 @@ namespace boot {
 	#define halt_cpu() while (true) { __asm__ __volatile__ ("cli; hlt"); }
 
 	void print_boot_info(boot_info_t* info, void (*write_str)(char* str));
+
+	class bootinfo_dev_fs_file : public fs::dev_fs_file {
+		public:
+			void read(fs::file_t* file, void* buffer, size_t size, size_t offset);
+
+			void prepare_file(fs::file_t* file);
+			char* get_name();
+		
+			bootinfo_dev_fs_file(boot_info_t* info);
+		private:
+			char* data;
+			int size;
+	};
 
 	extern boot_info_t boot_info;
 }
