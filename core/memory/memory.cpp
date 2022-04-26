@@ -87,18 +87,6 @@ void memory::prepare_memory() {
 	// 	global_allocator.lock_page((void*)t);
 	// }
 
-	if (!global_page_table_manager.virt_to_phys(boot::boot_info.rsdp)) {
-		debugf("Seems like the rsdp was not in the memory map.\n");
-		// check if rsdp pointer is higher then the hhdm base address
-		if ((uint64_t) boot::boot_info.rsdp > (uint64_t) boot::boot_info.hhdm_base_address) {
-			debugf("RSDP is higher then the hhdm base address.\n");
-			global_page_table_manager.map_memory((void*) boot::boot_info.rsdp, (void*) boot::boot_info.rsdp - (uint64_t) boot::boot_info.hhdm_base_address);
-		} else {
-			debugf("RSDP is lower then the hhdm base address.\n");
-			global_page_table_manager.map_memory((void*) boot::boot_info.rsdp, (void*) boot::boot_info.rsdp);
-		}
-	}
-
 	void* smp_trampoline_target = (void*) 0x8000;
 	debugf("Locking smp trampoline target...\n");
 	global_allocator.lock_page(smp_trampoline_target);
@@ -108,4 +96,28 @@ void memory::prepare_memory() {
 
 	debugf("Loading heap...\n");
 	memory::initialize_heap((void*) 0x0000100000000000, 0x10);
+}
+
+void* memory::map_if_necessary(void* virtual_address) {
+	if (virtual_address == 0) {
+		debugf("--- WARNING --- Trying to acces 0 pointer!\n");
+		return virtual_address;
+	} else {
+		void* orig = virtual_address;
+
+		virtual_address = (void*) ((uint64_t) virtual_address & ~0x0fff);
+
+		if (!global_page_table_manager.virt_to_phys(virtual_address)) {
+
+			if ((uint64_t) virtual_address > (uint64_t) boot::boot_info.hhdm_base_address) {
+				debugf("Mapping %x -> %x since it isn't mapped!\n", virtual_address, virtual_address - (uint64_t) boot::boot_info.hhdm_base_address);
+				global_page_table_manager.map_memory(virtual_address, virtual_address - (uint64_t) boot::boot_info.hhdm_base_address);
+			} else {
+				debugf("Mapping %x -> %x since it isn't mapped!\n", virtual_address, virtual_address);
+				global_page_table_manager.map_memory(virtual_address, virtual_address);
+			}
+		}
+
+		return orig;
+	}
 }

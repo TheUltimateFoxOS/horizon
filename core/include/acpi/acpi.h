@@ -14,6 +14,7 @@ namespace acpi {
 	void* find_table(char* signature, int idx);
 
 	void init();
+	void early_setup();
 	void dsdt_init();
 	void shutdown();
 	void reboot();

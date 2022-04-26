@@ -77,6 +77,8 @@ extern "C" void main() {
 	renderer::global_renderer_2d->load_bitmap(logo, 0);
 #endif
 
+	acpi::early_setup();
+
 	timer::setup();
 
 #ifdef NICE_BOOT_ANIMATION

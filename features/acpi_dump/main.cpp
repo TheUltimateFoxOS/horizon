@@ -45,7 +45,7 @@ void init() {
 
 	acpi::fadt_table_t* fadt = (acpi::fadt_table_t*) acpi::find_table((char*) "FACP", 0);
 	if (fadt != nullptr) {
-		void* dsdt_addr = (void*) (IS_CANONICAL(fadt->X_dsdt) ? fadt->X_dsdt : fadt->dsdt);
+		void* dsdt_addr = memory::map_if_necessary((void*) (IS_CANONICAL(fadt->X_dsdt) ? fadt->X_dsdt : fadt->dsdt));
 		if (dsdt_addr != nullptr) {
 			register_sdt((acpi::sdt_header_t*) dsdt_addr);
 		}

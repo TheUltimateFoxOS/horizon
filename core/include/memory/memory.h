@@ -8,4 +8,6 @@ namespace memory {
 
 	uint64_t get_memory_size();
 	void prepare_memory();
+
+	void* map_if_necessary(void* virtual_address);
 }

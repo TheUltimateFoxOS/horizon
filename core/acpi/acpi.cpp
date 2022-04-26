@@ -20,7 +20,7 @@ void* acpi::find_table_xsdt(sdt_header_t* sdt_header, char* signature, int idx) 
 	int entries = (sdt_header->length - sizeof(sdt_header_t)) / 8;
 
 	for(int t = 0; t < entries; t++) {
-		sdt_header_t* new_header = (sdt_header_t*) * (uint64_t*) ((uint64_t) sdt_header + sizeof(sdt_header_t) + (t * 8));
+		sdt_header_t* new_header = (sdt_header_t*) memory::map_if_necessary((void*) *(uint64_t*) ((uint64_t) sdt_header + sizeof(sdt_header_t) + (t * 8)));
 		if (memcmp(new_header->signature, signature, 4) == 0) {
 			if (idx == 0) {
 				return new_header;
@@ -36,7 +36,7 @@ void* acpi::find_table_rsdt(sdt_header_t* sdt_header, char* signature, int idx) 
 	int entries = (sdt_header->length - sizeof(sdt_header_t)) / 4;
 
 	for(int t = 0; t < entries; t++) {
-		sdt_header_t* new_header = (sdt_header_t*) (uint64_t) * (uint32_t*) ((uint64_t) sdt_header + sizeof(sdt_header_t) + (t * 4));
+		sdt_header_t* new_header = (sdt_header_t*) memory::map_if_necessary((void*) (uint64_t) *(uint32_t*) ((uint64_t) sdt_header + sizeof(sdt_header_t) + (t * 4)));
 		if (memcmp(new_header->signature, signature, 4) == 0) {
 			if (idx == 0) {
 				return new_header;
@@ -68,6 +68,20 @@ void* acpi::find_table(char* signature, int idx) {
 	return result;
 }
 
+void acpi::early_setup() {
+	debugf("Running early acpi setup (make sure the tables are mapped)\n");
+
+	memory::map_if_necessary(boot::boot_info.rsdp);
+
+	if (boot::boot_info.rsdp->rsdt_address != 0) {
+		memory::map_if_necessary((void*) boot::boot_info.rsdp->rsdt_address);
+	}
+
+	if (boot::boot_info.rsdp->xsdt_address != 0) {
+		memory::map_if_necessary((void*) boot::boot_info.rsdp->xsdt_address);
+	}
+}
+
 void acpi::init() {
 	debugf("ACPI init...\n");
 
@@ -95,7 +109,7 @@ void acpi::dsdt_init() {
 	debugf("ACPI dsdt init...\n");
 	fadt_table_t* fadt = (fadt_table_t*) find_table((char*) "FACP", 0);
 
-	uint64_t dsdt_addr = IS_CANONICAL(fadt->X_dsdt) ? fadt->X_dsdt : fadt->dsdt;
+	uint64_t dsdt_addr = (uint64_t) memory::map_if_necessary((void*) (IS_CANONICAL(fadt->X_dsdt) ? fadt->X_dsdt : fadt->dsdt));
 
 	uint8_t *s5_addr = (uint8_t*) dsdt_addr + 36;
 	uint64_t dsdt_length = ((sdt_header_t*) dsdt_addr)->length;
@@ -170,7 +184,7 @@ void acpi::reboot() {
 			{
 				debugf("ACPI reboot: system memory\n");
 				memory::global_page_table_manager.map_memory((void*) fadt->reset_reg.address, (void*) fadt->reset_reg.address);
-				uint8_t* addr = (uint8_t*) fadt->reset_reg.address;
+				uint8_t* addr = (uint8_t*) memory::map_if_necessary((void*) fadt->reset_reg.address);
 				*addr = fadt->reset_value;
 			}
 			break;

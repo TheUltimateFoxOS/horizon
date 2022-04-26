@@ -141,7 +141,7 @@ extern "C" {
 
 	void* laihost_scan(const char *sig, size_t index) {
 		if (memcmp(sig, "DSDT", 4) == 0) {
-			return (void*) (uint64_t) ((acpi_fadt_t*) acpi::find_table((char*) "FACP", 0))->dsdt;
+			return memory::map_if_necessary((void*) (uint64_t) ((acpi_fadt_t*) acpi::find_table((char*) "FACP", 0))->dsdt);
 		} else {
 			return acpi::find_table((char*) sig, index);
 		}
