@@ -30,20 +30,8 @@ namespace input {
 	char keymap_load_path[256] = { 0 };
 };
 
-char input::keymap(char* keymap_id, uint8_t key, bool l_alt, bool r_alt, bool l_ctrl, bool r_ctrl, bool l_shift, bool r_shift, bool caps_lock) {
-	if (strcmp(keymap_id, cached_keymap_id) == 0) {
-		if (l_shift) {
-			return cached_keymap.layout_shift[key];
-		} else if (r_shift) {
-			return cached_keymap.layout_shift[key];
-		} else if (l_alt) {
-			return cached_keymap.layout_alt[key];
-		} else if (r_alt) {
-			return cached_keymap.layout_alt[key];
-		} else {
-			return cached_keymap.layout_normal[key];
-		}
-	} else {
+char input::keymap(char* keymap_id, uint8_t key, special_keys_down_t* special_keys_down) {
+	if (strcmp(keymap_id, cached_keymap_id) != 0) {
 		char path[256] = { 0 };
 		strcat(path, keymap_load_path);
 		strcat(path, keymap_id);
@@ -62,17 +50,22 @@ char input::keymap(char* keymap_id, uint8_t key, bool l_alt, bool r_alt, bool l_
 
 		cached_keymap = keymap_;
 		strcpy(cached_keymap_id, keymap_id);
+	}
 
-		if (l_shift) {
-			return keymap_.layout_shift[key];
-		} else if (r_shift) {
-			return keymap_.layout_shift[key];
-		} else if (l_alt) {
-			return keymap_.layout_alt[key];
-		} else if (r_alt) {
-			return keymap_.layout_alt[key];
+	bool shift = special_keys_down->left_shift || special_keys_down->right_shift;
+	bool alt = special_keys_down->left_alt || special_keys_down->right_alt;
+
+	if (special_keys_down->caps_lock) {
+		if (shift) {
+			return cached_keymap.layout_normal[key];
 		} else {
-			return keymap_.layout_normal[key];
+			return cached_keymap.layout_shift[key];
 		}
+	} else if (shift) {
+		return cached_keymap.layout_shift[key];
+	} else if (alt) {
+		return cached_keymap.layout_alt[key];
+	} else {
+		return cached_keymap.layout_normal[key];
 	}
 }
