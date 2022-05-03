@@ -3,7 +3,6 @@
 
 static unsigned char stack[0x4000 * 16];
 
-
 static stivale2_header_tag_terminal terminal_tag = {
 	.tag = {
 		.identifier = STIVALE2_HEADER_TAG_TERMINAL_ID,
@@ -127,6 +126,10 @@ extern "C" void stivale2_entry(stivale2_struct* bootinfo) {
 	boot::boot_info.hhdm_base_address = (void*) hhdm_tag->addr;
 
 	boot::boot_info.boot_protocol_name = (char*) "stivale2";
+
+	stivale2_struct_tag_smbios* smbios_tag = stivale2_tag_find<stivale2_struct_tag_smbios>(bootinfo, STIVALE2_STRUCT_TAG_SMBIOS_ID);
+	boot::boot_info.smbios_entry_32 = (void*) smbios_tag->smbios_entry_32;
+	boot::boot_info.smbios_entry_64 = (void*) smbios_tag->smbios_entry_64;
 
 	boot::print_boot_info(&boot::boot_info, [](char* str) {
 		int len = 0;

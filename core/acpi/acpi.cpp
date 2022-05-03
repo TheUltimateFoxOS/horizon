@@ -74,7 +74,7 @@ void acpi::early_setup() {
 	memory::map_if_necessary(boot::boot_info.rsdp);
 
 	if (boot::boot_info.rsdp->rsdt_address != 0) {
-		memory::map_if_necessary((void*) boot::boot_info.rsdp->rsdt_address);
+		memory::map_if_necessary((void*) (uint64_t) boot::boot_info.rsdp->rsdt_address);
 	}
 
 	if (boot::boot_info.rsdp->xsdt_address != 0) {
