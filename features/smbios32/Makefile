@@ -1,4 +1,4 @@
-MODULE_NAME = smbios.o
+MODULE_NAME = smbios32.o
 
 include ../../Makefile.flags
 

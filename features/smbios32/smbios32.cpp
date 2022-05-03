@@ -1,13 +1,13 @@
-#include <smbios.h>
+#include <smbios32.h>
 
 #include <utils/log.h>
 #include <memory/memory.h>
 #include <utils/string.h>
 
-using namespace smbios;
+using namespace smbios32;
 
-void smbios::print_smbios_entry(smbios_entry_t* smbios) {
-	debugf("SMBIOS entry point found at 0x%p.\n", smbios);
+void smbios32::print_smbios_entry(smbios_entry_t* smbios) {
+	debugf("SMBIOS32 entry point found at 0x%p.\n", smbios);
 
 	debugf("> entry_point_signature: %c%c%c%c\n", smbios->entry_point_signature[0], smbios->entry_point_signature[1], smbios->entry_point_signature[2], smbios->entry_point_signature[3]);
 	debugf("> checksum: 0x%x\n", smbios->checksum);
@@ -33,7 +33,7 @@ void smbios::print_smbios_entry(smbios_entry_t* smbios) {
 	}
 }
 
-smbios_structure_header_t* smbios::next(smbios_structure_header_t* structure) {
+smbios_structure_header_t* smbios32::next(smbios_structure_header_t* structure) {
 	char* x = (char*) structure;
 	x += structure->length;
 
@@ -53,7 +53,7 @@ smbios_structure_header_t* smbios::next(smbios_structure_header_t* structure) {
 }
 
 
-smbios_structure_header_t* smbios::find_smbios_structure(smbios_entry_t* smbios, uint8_t type, int idx) {
+smbios_structure_header_t* smbios32::find_smbios_structure(smbios_entry_t* smbios, uint8_t type, int idx) {
 	smbios_structure_header_t* structure = (smbios_structure_header_t*) memory::map_if_necessary((void*) (uint64_t) smbios->table_address);
 	for (uint32_t i = 0; i < smbios->number_of_structures; i++) {		
 		if (structure->type == type) {
@@ -70,7 +70,7 @@ smbios_structure_header_t* smbios::find_smbios_structure(smbios_entry_t* smbios,
 	return nullptr;
 }
 
-char* smbios::get_string(smbios_structure_header_t* structure, str_id id) {
+char* smbios32::get_string(smbios_structure_header_t* structure, str_id id) {
 	char* str = (char*) structure + structure->length;
 
 	while (id - 1 != 0) {
@@ -83,7 +83,7 @@ char* smbios::get_string(smbios_structure_header_t* structure, str_id id) {
 
 
 
-char* smbios::type_to_str(uint8_t type) {
+char* smbios32::type_to_str(uint8_t type) {
 	switch (type) {
 		case 0: return (char*) "BIOS Information";
 		case 1: return (char*) "System Information";

@@ -10,5 +10,5 @@ namespace syscall {
 		char version[64];
 	};
 
-	void sys_get_cpu_info(interrupts::s_registers* regs);
+	void sys_sm32_get_cpu_info(interrupts::s_registers* regs);
 }

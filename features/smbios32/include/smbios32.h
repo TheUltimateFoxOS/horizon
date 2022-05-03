@@ -2,7 +2,7 @@
 
 #include <stdint.h>
 
-namespace smbios {
+namespace smbios32 {
 	struct smbios_entry_t {
 		char entry_point_signature[4];
 		uint8_t checksum;
