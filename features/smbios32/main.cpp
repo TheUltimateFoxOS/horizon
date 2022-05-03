@@ -5,6 +5,7 @@
 
 #include <smbios32.h>
 #include <syscalls.h>
+#include <sm32_dev_fs_file.h>
 
 void init() {
 	if (boot::boot_info.smbios_entry_32 == nullptr) {
@@ -32,7 +33,9 @@ void init() {
 		}
 
 		syscall::register_syscall(syscall::sys_sm32_get_cpu_info, "sys_sm32_get_cpu_info");
+
+		fs::global_devfs->register_file(new smbios32::sm32_dev_fs_file());
 	}
 }
 
-define_module("smbios", init, null_ptr_func, null_ptr_func);
+define_module("smbios32", init, null_ptr_func, null_ptr_func);
