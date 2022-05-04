@@ -40,4 +40,7 @@ namespace apic {
 		{\
 			__asm__ __volatile__ ("mov $1, %%eax; cpuid; shrl $24, %%ebx;": "=b"(vaiable_name) : : ); \
 		}
+	
+	#define SMP_TRAMPOLINE_PAGE 1
+	#define SMP_TRAMPOLINE_ADDR (SMP_TRAMPOLINE_PAGE * 0x1000)
 }

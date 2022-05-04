@@ -10,6 +10,8 @@
 
 #include <boot/boot.h>
 
+#include <apic/apic.h>
+
 using namespace memory;
 
 uint64_t memory::get_memory_size() {
@@ -87,7 +89,7 @@ void memory::prepare_memory() {
 	// 	global_allocator.lock_page((void*)t);
 	// }
 
-	void* smp_trampoline_target = (void*) 0x8000;
+	void* smp_trampoline_target = (void*) SMP_TRAMPOLINE_ADDR;
 	debugf("Locking smp trampoline target...\n");
 	global_allocator.lock_page(smp_trampoline_target);
 

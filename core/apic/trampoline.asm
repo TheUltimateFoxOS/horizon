@@ -4,7 +4,10 @@
 [global ap_trampoline_data]
 [extern start_apic_timer]
 
-%define to_target(addr) ((addr - ap_trampoline) + 0x8000)
+%define SMP_TRAMPOLINE_PAGE 1
+%define SMP_TRAMPOLINE_ADDR (SMP_TRAMPOLINE_PAGE * 0x1000)
+
+%define to_target(addr) ((addr - ap_trampoline) + SMP_TRAMPOLINE_ADDR)
 
 ap_trampoline:
 	cli

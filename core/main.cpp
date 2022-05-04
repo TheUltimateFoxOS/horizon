@@ -145,7 +145,8 @@ extern "C" void main() {
 		fs::global_vfs->register_mount((char*) "initrd", saf_mount);
 	}
 
-	if (!global_argparser->is_arg("--no_smp")) {
+	if (global_argparser->is_arg("--smp")) {
+		debugf("---WARNING--- SMP is VERY experimental!\n");
 		apic::smp_spinup();
     }
 

@@ -21,6 +21,7 @@ void apic::setup() {
 	bsp_id = bspid;
 	cpu_started[bsp_id] = true;
 }
+
 void apic::smp_spinup() {
 	memory::global_page_table_manager.map_memory((void*) acpi::madt::lapic_base_addr, (void*) acpi::madt::lapic_base_addr);
 	debugf("Mapped LAPIC memory at %p\n", (void*) acpi::madt::lapic_base_addr);
@@ -34,14 +35,14 @@ void apic::smp_spinup() {
 	gdt_descriptor->size = sizeof(gdt_t) - 1;
 	gdt_descriptor->offset = (uint64_t) gdt_cpy;
 
-	memory::global_page_table_manager.map_memory((void*) 0x8000, (void*) 0x8000);
-	memcpy((void*) 0x8000, (void*) &ap_trampoline, 4096);
+	memory::global_page_table_manager.map_memory((void*) SMP_TRAMPOLINE_ADDR, (void*) SMP_TRAMPOLINE_ADDR);
+	memcpy((void*) SMP_TRAMPOLINE_ADDR, (void*) &ap_trampoline, 4096);
 
-	trampoline_data* data = (trampoline_data*) (((uint64_t) &ap_trampoline_data - (uint64_t) &ap_trampoline) + 0x8000);
+	trampoline_data* data = (trampoline_data*) (((uint64_t) &ap_trampoline_data - (uint64_t) &ap_trampoline) + SMP_TRAMPOLINE_ADDR);
 
 	debugf("Trampoline data: 0x%x\n", data);
-	debugf("Trampoline: 0x%x\n", ((uint64_t) &ap_trampoline - (uint64_t) &ap_trampoline) + 0x8000);
-	debugf("Trampoline 64: 0x%x\n", ((uint64_t) &ap_trampoline_64 - (uint64_t) &ap_trampoline) + 0x8000);
+	debugf("Trampoline: 0x%x\n", ((uint64_t) &ap_trampoline - (uint64_t) &ap_trampoline) + SMP_TRAMPOLINE_ADDR);
+	debugf("Trampoline 64: 0x%x\n", ((uint64_t) &ap_trampoline_64 - (uint64_t) &ap_trampoline) + SMP_TRAMPOLINE_ADDR);
 
 	for (int i = 0; i < acpi::madt::lapic_count; i++) {
 		if(acpi::madt::lapic_ids[i] == bsp_id) {
@@ -65,6 +66,7 @@ void apic::smp_spinup() {
 
 		lapic_wait();
 
+		lapic_write(0x280, 0);
 		lapic_write(0x310, (lapic_read(0x310) & 0x00ffffff) | (i << 24));
 		lapic_write(0x300, (lapic_read(0x300) & 0xfff00000) | 0x008500);
 
@@ -74,7 +76,7 @@ void apic::smp_spinup() {
 
 			lapic_write(0x280, 0);
 			lapic_write(0x310, (lapic_read(0x310) & 0x00ffffff) | (i << 24));
-			lapic_write(0x300, (lapic_read(0x300) & 0xfff0f800) | 0x000608);
+			lapic_write(0x300, (lapic_read(0x300) & 0xfff0f800) | 0x000600 | SMP_TRAMPOLINE_PAGE);
 
 			lapic_wait();
 		}
