@@ -1,6 +1,9 @@
 #include <boot/stivale2.h>
 #include <boot/boot.h>
 
+#include <output/output.h>
+#include <utils/log.h>
+
 static unsigned char stack[0x4000 * 16];
 
 static stivale2_header_tag_terminal terminal_tag = {
@@ -31,9 +34,27 @@ static stivale2_header __stivale2_header = {
 	.tags = (uint64_t) &framebuffer_tag
 };
 
+typedef void (*term_write_t)(const char*, int len);
+term_write_t stivale2_term_write;
+
+class stivale2_output_device : public output::output_device {
+public:
+	virtual void putstring(const char *str) {
+		int len = 0;
+		for (int i = 0; str[i] != 0; i++) {
+			len++;
+		}
+
+		stivale2_term_write(str, len);
+	}
+
+	virtual void putchar(char c) {
+		stivale2_term_write(&c, 1);
+	}
+};
+
 extern "C" void main();
 
-typedef void (*term_write_t)(const char*, int len);
 
 int stivale2_memmap_entry_conv(int stivale2_id) {
 	switch(stivale2_id) {
@@ -58,15 +79,17 @@ int stivale2_memmap_entry_conv(int stivale2_id) {
 	}
 }
 
+stivale2_output_device stivale2_output_device_;
+
 extern uint64_t kernel_start;
 extern uint64_t kernel_end;
-
-term_write_t stivale2_term_write;
-
 
 extern "C" void stivale2_entry(stivale2_struct* bootinfo) {
 	stivale2_struct_tag_terminal* terminal_tag = stivale2_tag_find<stivale2_struct_tag_terminal>(bootinfo, STIVALE2_STRUCT_TAG_TERMINAL_ID);
 	stivale2_term_write = (term_write_t) terminal_tag->term_write;
+
+	log::debug_device = &stivale2_output_device_;
+	log::stdout_device = &stivale2_output_device_;
 
 	stivale2_struct_tag_framebuffer* framebuffer_tag = stivale2_tag_find<stivale2_struct_tag_framebuffer>(bootinfo, STIVALE2_STRUCT_TAG_FRAMEBUFFER_ID);
 

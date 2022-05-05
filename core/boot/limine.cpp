@@ -1,6 +1,9 @@
 #include <boot/limine.h>
 #include <boot/boot.h>
 
+#include <output/output.h>
+#include <utils/log.h>
+
 static volatile limine_terminal_request terminal_request = {
     .id = LIMINE_TERMINAL_REQUEST,
     .revision = 0
@@ -54,6 +57,22 @@ static volatile limine_smbios_request smbios_request = {
 	.revision = 0
 };
 
+class limine_output_device : public output::output_device {
+	public:
+		virtual void putstring(const char *str) {
+			int len = 0;
+			for (int i = 0; str[i] != 0; i++) {
+				len++;
+			}
+
+			terminal_request.response->write(terminal_request.response->terminals[0], str, len);
+		}
+
+		virtual void putchar(char c) {
+			terminal_request.response->write(terminal_request.response->terminals[0], &c, 1);
+		}
+};
+
 extern "C" void main();
 
 int limine_memmap_entry_conv(int limine_id) {
@@ -79,7 +98,12 @@ int limine_memmap_entry_conv(int limine_id) {
 	}
 }
 
+limine_output_device limine_output_device_;
+
 extern "C" void limine_entry() {
+	log::debug_device = &limine_output_device_;
+	log::stdout_device = &limine_output_device_;
+
 	if (framebuffer_request.response->framebuffers[0]->bpp != 32) {
 		terminal_request.response->write(terminal_request.response->terminals[0], "Not a 32-bit framebuffer\n", 31);
 		halt_cpu();
