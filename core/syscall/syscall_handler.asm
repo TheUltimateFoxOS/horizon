@@ -42,6 +42,7 @@ syscall_interrupt_stub:
 	push 0x30 ; interrupt number
 
 	; cli
+	sti
 	pusha
 	mov r15, cr0
 	push r15
