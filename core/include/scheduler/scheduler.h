@@ -63,4 +63,14 @@ namespace scheduler {
 	void read_running_tasks(task_t** tasks, int max_tasks);
 
 	extern "C" void task_entry();
+
+	#define INTERUPTS_ENABLED(statement) \
+		__asm__ __volatile__("sti"); \
+		statement; \
+		__asm__ __volatile__("cli");
+	
+	#define INTERRUPTS_DISABLED(statement) \
+		__asm__ __volatile__("cli"); \
+		statement; \
+		__asm__ __volatile__("sti");
 }

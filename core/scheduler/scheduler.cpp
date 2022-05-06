@@ -161,11 +161,13 @@ void scheduler::start() {
 void scheduler::kill_self() {
 	LAPIC_ID(id);
 
-	atomic_acquire_spinlock(task_queue_lock);
+	INTERRUPTS_DISABLED(
+		atomic_acquire_spinlock(task_queue_lock);
 
-	task_queue[id]->list[0]->kill_me = true;
+		task_queue[id]->list[0]->kill_me = true;
 
-	atomic_release_spinlock(task_queue_lock);
+		atomic_release_spinlock(task_queue_lock);
+	);
 
 	while (true) {
 		__asm__ __volatile__ ("sti; hlt");
@@ -182,24 +184,26 @@ task_t* scheduler::create_task(void* entry) {
 	task->first_sched = true;
 	task->registers.rax = (uint64_t) entry;
 
-	atomic_acquire_spinlock(task_queue_lock);
+	INTERRUPTS_DISABLED(
+		atomic_acquire_spinlock(task_queue_lock);
 
-	uint64_t min = 0xf0f0;
-	uint64_t min_id = 0;
+		uint64_t min = 0xf0f0;
+		uint64_t min_id = 0;
 
-	for (int i = 0; i < acpi::madt::lapic_count; i++) {
-		if (apic::cpu_started[i]) {
-			if (task_queue[i]->len < min) {
-				min = task_queue[i]->len;
-				min_id = i;
-				task->running_on_cpu = i;
+		for (int i = 0; i < acpi::madt::lapic_count; i++) {
+			if (apic::cpu_started[i]) {
+				if (task_queue[i]->len < min) {
+					min = task_queue[i]->len;
+					min_id = i;
+					task->running_on_cpu = i;
+				}
 			}
 		}
-	}
 
-	task_queue[min_id]->add(task);
+		task_queue[min_id]->add(task);
 
-	atomic_release_spinlock(task_queue_lock);
+		atomic_release_spinlock(task_queue_lock);
+	);
 
 	return task;
 }
