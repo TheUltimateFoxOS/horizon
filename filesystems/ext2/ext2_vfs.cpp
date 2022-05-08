@@ -19,9 +19,9 @@ ext2_mount::ext2_mount(int disk_id, char* name) {
 	this->fs->block_size = 1024;
 	this->fs->sectors_per_block = 2;
 
-	this->fs->superblock = (ext2_superblock_t*) memory::malloc(sizeof(ext2_superblock_t));
+	this->fs->superblock = (ext2_superblock_t*) memory::malloc(sizeof(ext2_superblock_t)); //Get the superblock data
 	memset(this->fs->superblock, 0, sizeof(ext2_superblock_t));
-	fs::read_disk_block(this->fs, 1, (uint8_t*) this->fs->superblock);
+	read_disk_block(this->fs, 1, (uint8_t*) this->fs->superblock);
 
 	this->fs->block_size = 1024 << this->fs->superblock->log2_block_size;
 	if (this->fs->block_size == 0) {
@@ -34,9 +34,9 @@ ext2_mount::ext2_mount(int disk_id, char* name) {
 		debugf("Warning: Sectors per block is 0, using 2 instead\n");
 	}
 
-	this->fs->block_buffer = (uint8_t*) memory::malloc(this->fs->block_size);
+	this->fs->block_buffer = (uint8_t*) memory::malloc(this->fs->block_size); //Create a buffer for reading/writing blocks
 
-	uint32_t bgd_size = (this->fs->superblock->total_blocks / this->fs->superblock->blocks_per_group + 1) * sizeof(ext2_block_group_descriptor_t);
+	uint32_t bgd_size = (this->fs->superblock->total_blocks / this->fs->superblock->blocks_per_group + 1) * sizeof(ext2_block_group_descriptor_t); //Get the information for the block group descs
 	uint32_t bgd_blocks = bgd_size / this->fs->block_size;
 	if (bgd_size % this->fs->block_size != 0) {
 		bgd_blocks++;
@@ -45,14 +45,13 @@ ext2_mount::ext2_mount(int disk_id, char* name) {
 	#warning Loading all the block group descriptors into memory is a terrible design
 	this->fs->block_group_descriptors = (ext2_block_group_descriptor_t*) memory::malloc(bgd_size);
 	memset(this->fs->block_group_descriptors, 0, bgd_size);
-	fs::read_disk_blocks(this->fs, this->fs->superblock->log2_block_size == 0 ? 2 : 1, bgd_blocks, (uint8_t*) this->fs->block_group_descriptors);
+	read_disk_blocks(this->fs, this->fs->superblock->log2_block_size == 0 ? 2 : 1, bgd_blocks, (uint8_t*) this->fs->block_group_descriptors);
 
 	this->fs->inodes_per_block = this->fs->block_size / sizeof(ext2_inode_t);
 	this->fs->inode_table_blocks = this->fs->superblock->inodes_per_group / this->fs->inodes_per_block;
 
-	ext2_inode_t inode;
-	memset(&inode, 0, sizeof(ext2_inode_t));
-	fs::read_inode(this->fs, 2, &inode);
+	ext2_inode_t inode; //Check that the root node is actually a directory
+	path_to_inode(this->fs, "/", &inode);
 	assert(inode.mode & 0xF000 == 0x4000);
 }
 
@@ -71,7 +70,7 @@ file_t* ext2_mount::open(char* path) {
 	file->mount = this;
 	strcpy(file->buffer, path);
 	file->data = memory::malloc(sizeof(ext2_inode_t));
-	fs::path_to_inode(this->fs, path, (ext2_inode_t*) file->data);
+	path_to_inode(this->fs, path, (ext2_inode_t*) file->data);
 	file->size = ((ext2_inode_t*) file->data)->size; //TO BE CHECKED
 
 	return file;

@@ -3,7 +3,6 @@
 #include <renderer/render2d.h>
 #include <renderer/font.h>
 #include <renderer/font_renderer.h>
-#include <renderer/window_renderer.h>
 
 #include <utils/log.h>
 #include <memory/page_frame_allocator.h>
@@ -54,8 +53,4 @@ void renderer::setup() {
 	font_renderer* _font_renderer = new font_renderer(&default_framebuffer, finished_font);
 	global_font_renderer = _font_renderer;
 	log::stdout_device = renderer::global_font_renderer;
-
-	debugf("Creating global_window_renderer\n");
-	window_renderer* window = new window_renderer(&default_framebuffer);
-	global_window_renderer = window;
 }

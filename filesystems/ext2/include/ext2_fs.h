@@ -145,8 +145,6 @@ namespace fs {
 	void read_inode(ext2_fs_t* fs, uint32_t inode_idx, ext2_inode_t* inode);
 	void write_inode(ext2_fs_t* fs, uint32_t inode_idx, ext2_inode_t* inode);
 
-	
-
-	ext2_dir_t readdir(ext2_fs_t* fs, int idx, ext2_inode_t* inode);
+	void readdir(ext2_fs_t* fs, int idx, ext2_inode_t* inode, ext2_dir_t* child_dir);
 	void path_to_inode(ext2_fs_t* fs, char* path, ext2_inode_t* inode);
 }

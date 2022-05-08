@@ -1,5 +1,8 @@
 #include <ps2_mouse.h>
 
+#include <renderer/framebuffer.h>
+#include <renderer/renderer.h>
+
 #include <utils/log.h>
 
 using namespace ps2;
@@ -70,7 +73,7 @@ void ps2_mouse::handle() {
 			break;
 	}
 
-	if(mouse_packet_ready) {
+	if (mouse_packet_ready) {
 		bool x_negative, y_negative, x_overflow, y_overflow;
 		int x = last_x;
 		int y = last_y;
@@ -123,10 +126,14 @@ void ps2_mouse::handle() {
 
 		if (x < 0) {
 			x = 0;
+		} else if (x > renderer::default_framebuffer.width - 1) {
+			x = renderer::default_framebuffer.width - 1;
 		}
 
 		if (y < 0) {
 			y = 0;
+		} else if (y > renderer::default_framebuffer.height - 1) {
+			y = renderer::default_framebuffer.height - 1;
 		}
 
 		update(x, y, left_button, right_button, middle_button);

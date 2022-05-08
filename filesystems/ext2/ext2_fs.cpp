@@ -30,7 +30,7 @@ void fs::write_disk_blocks(ext2_fs_t* fs, uint32_t block, uint32_t count, uint8_
     driver::global_disk_manager->write(fs->drive_number, block * fs->sectors_per_block, count * fs->sectors_per_block, (void*) buffer);
 }
 
-void fs::read_disk(ext2_fs_t* fs, uint32_t address, uint32_t size, uint8_t* buffer) {
+void fs::read_disk(ext2_fs_t* fs, uint32_t address, uint32_t size, uint8_t* buffer) { //Read a specific portion of the disk
     uint32_t sector = address / 512;
     uint32_t offset = address % 512;
     uint32_t copied = 0;
@@ -46,15 +46,17 @@ void fs::read_disk(ext2_fs_t* fs, uint32_t address, uint32_t size, uint8_t* buff
             to_copy = size - copied;
         }
 
-        memcpy(buffer + copied, copy_buffer + offset, to_copy);
+        memcpy(buffer + copied, (void*) (((uint64_t) copy_buffer) + offset), to_copy);
         copied += to_copy;
 
         sector++;
         offset = 0;
     }
+
+    memory::free(copy_buffer);
 }
 
-void fs::write_disk(ext2_fs_t* fs, uint32_t address, uint32_t size, uint8_t* buffer) {
+void fs::write_disk(ext2_fs_t* fs, uint32_t address, uint32_t size, uint8_t* buffer) { //Write a specific portion of the disk
     uint32_t sector = address / 512;
     uint32_t offset = address % 512;
     uint32_t copied = 0;
@@ -68,7 +70,7 @@ void fs::write_disk(ext2_fs_t* fs, uint32_t address, uint32_t size, uint8_t* buf
             driver::global_disk_manager->read(fs->drive_number, sector, 1, copy_buffer);
         }
 
-        memcpy(copy_buffer + offset, buffer + copied, 512 - offset);
+        memcpy((void*) (((uint64_t) copy_buffer) + offset), buffer + copied, 512 - offset);
         driver::global_disk_manager->write(fs->drive_number, sector, 1, copy_buffer);
 
         copied += 512 - offset;
@@ -76,9 +78,11 @@ void fs::write_disk(ext2_fs_t* fs, uint32_t address, uint32_t size, uint8_t* buf
         sector++;
         offset = 0;
     }
+
+    memory::free(copy_buffer);
 }
 
-void fs::read_inode(ext2_fs_t* fs, uint32_t inode_idx, ext2_inode_t* inode) {
+void fs::read_inode(ext2_fs_t* fs, uint32_t inode_idx, ext2_inode_t* inode) { //Read an inode from the disk
     uint32_t block_group = (inode_idx - 1) / fs->superblock->inodes_per_group;
     uint32_t inode_index = (inode_idx - 1) % fs->superblock->inodes_per_group;
 
@@ -94,7 +98,7 @@ void fs::read_inode(ext2_fs_t* fs, uint32_t inode_idx, ext2_inode_t* inode) {
     memcpy(inode, fs->block_buffer + offset, sizeof(ext2_inode_t));
 }
 
-void fs::write_inode(ext2_fs_t* fs, uint32_t inode_idx, ext2_inode_t* inode) {
+void fs::write_inode(ext2_fs_t* fs, uint32_t inode_idx, ext2_inode_t* inode) { //Write an inode to the disk
     uint32_t block_group = (inode_idx - 1) / fs->superblock->inodes_per_group;
     uint32_t inode_index = (inode_idx - 1) % fs->superblock->inodes_per_group;
 
@@ -113,28 +117,30 @@ void fs::write_inode(ext2_fs_t* fs, uint32_t inode_idx, ext2_inode_t* inode) {
     write_disk_block(fs, block, fs->block_buffer);
 }
 
-ext2_dir_t fs::readdir(ext2_fs_t* fs, int idx, ext2_inode_t* inode) {
-    ext2_inode_t tmp_inode;
-	memset(&inode, 0, sizeof(ext2_inode_t));
-	read_inode(fs, 2, &tmp_inode);
+void fs::readdir(ext2_fs_t* fs, int idx, ext2_inode_t* inode, ext2_dir_t* child_dir) { //Read a directory entry from a parent inode
+    memset(child_dir, 0, sizeof(ext2_dir_t)); //Set the inode to 0
 
-    clear_buffer(fs);
+    if (inode->mode & 0xF000 != 0x4000) { //Don't try to read anything that isn't a directory
+        return;
+    }
 }
 
 void fs::path_to_inode(ext2_fs_t* fs, char* path, ext2_inode_t* inode) {
     memset(inode, 0, sizeof(ext2_inode_t)); //Set the inode to 0
 
+    if (path[0] != '/') { //We can only handle absolute paths
+        return;
+    }
+
     ext2_inode_t tmp_inode;
 	memset(&inode, 0, sizeof(ext2_inode_t));
-	read_inode(fs, 2, &tmp_inode);
+	read_inode(fs, EXT2_ROOT_INODE, &tmp_inode);
 
-    if (strcmp(path, "/") == 0) { //We are looking for root, so we return the root inode
+    if (path[1] == 0) { //We are looking for root, so we return the root inode
         memcpy(inode, &tmp_inode, sizeof(ext2_inode_t));
         return;
-    }
-    if (*path != '/') {
+    } else {
+        //TODO
         return;
     }
-
-    //TODO
 }
