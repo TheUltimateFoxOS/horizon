@@ -33,7 +33,7 @@ int cmos_driver::cmos_command(uint8_t function) {
 }
 
 driver::clock_device::clock_result_t cmos_driver::time() {
-	int sec = cmos_command(CMOS_READ_SEC) / 2;
+	int sec = cmos_command(CMOS_READ_SEC);
 	int min = cmos_command(CMOS_READ_MIN);
 	int hour = cmos_command(CMOS_READ_HOUR);
 	int day = cmos_command(CMOS_READ_DAY);
