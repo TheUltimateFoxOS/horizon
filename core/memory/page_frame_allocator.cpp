@@ -188,7 +188,7 @@ void page_frame_allocator::reserve_page(void* address){
 }
 
 void page_frame_allocator::reserve_pages(void* address, uint64_t pageCount){
-	for (int t = 0; t < pageCount; t++){
+	for (uint64_t t = 0; t < pageCount; t++){
 		reserve_page((void*)((uint64_t)address + (t * 4096)));
 	}
 }

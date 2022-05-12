@@ -54,16 +54,13 @@ extern uint8_t logo[];
 #endif
 
 extern "C" void main() {
-
+	debugf("Hello, world!\n");
+	debugf("Booting FoxOS using the %s boot protocol...\n", boot::boot_info.boot_protocol_name);
 
 	output::serial_port serial_port = output::serial_port(COM1);
 	output::global_serial_port = &serial_port;
 	log::stdout_device = output::global_serial_port;
 	log::debug_device = output::global_serial_port;
-
-
-	debugf("Hello, world!\n");
-	debugf("Booting FoxOS using the %s boot protocol...\n", boot::boot_info.boot_protocol_name);
 
 	setup_gdt();
 	memory::prepare_memory();
