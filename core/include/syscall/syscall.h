@@ -63,4 +63,9 @@ namespace syscall {
 	void sys_mouse_get_buttons(interrupts::s_registers* regs);
 
 	void sys_memory_info(interrupts::s_registers* regs);
+
+	void sys_ipc_register(interrupts::s_registers* regs);
+	void sys_ipc_unregister(interrupts::s_registers* regs);
+	void sys_ipc_get_hid(interrupts::s_registers* regs);
+	void sys_ipc_send_message(interrupts::s_registers* regs);
 }

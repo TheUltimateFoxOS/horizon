@@ -18,6 +18,7 @@
 #include <utils/argparse.h>
 #include <utils/log.h>
 #include <utils/assert.h>
+#include <utils/ipc.h>
 
 #include <elf/elf_resolver.h>
 #include <elf/elf_loader.h>
@@ -149,6 +150,7 @@ extern "C" void main() {
 	BOOT_PROGRESS(30);
 
 	scheduler::setup();
+	ipc::init();
 	syscall::setup();
 
 	BOOT_PROGRESS(35);

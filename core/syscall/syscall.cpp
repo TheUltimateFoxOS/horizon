@@ -81,6 +81,10 @@ void syscall::setup() {
 	register_syscall(sys_mouse_get_pos, "sys_mouse_get_pos");
 	register_syscall(sys_mouse_reset, "sys_mouse_reset");
 	register_syscall(sys_memory_info, "sys_memory_info");
+	register_syscall(sys_ipc_register, "sys_ipc_register");
+	register_syscall(sys_ipc_unregister, "sys_ipc_unregister");
+	register_syscall(sys_ipc_get_hid, "sys_ipc_get_hid");
+	register_syscall(sys_ipc_send_message, "sys_ipc_send_message");
 }
 
 void syscall::register_syscall(void (*handler)(interrupts::s_registers*), const char* name) {
