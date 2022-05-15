@@ -239,29 +239,31 @@ void scheduler::set_cwd_self(const char* cwd) {
 }
 
 void scheduler::read_running_tasks(task_t** tasks, int max_tasks) {
-	atomic_acquire_spinlock(task_queue_lock);
+	INTERRUPTS_DISABLED(
+		atomic_acquire_spinlock(task_queue_lock);
 
-	int slot = 0;
+		int slot = 0;
 
-	for (int i = 0; i < acpi::madt::lapic_count; i++) {
-		if (apic::cpu_started[i]) {
-			int len = task_queue[i]->len;
+		for (int i = 0; i < acpi::madt::lapic_count; i++) {
+			if (apic::cpu_started[i]) {
+				int len = task_queue[i]->len;
 
-			for (int j = 0; j < len; j++) {
-				if (j < max_tasks) {
-					tasks[slot] = task_queue[i]->list[j];
-					debugf("Setting task slot %d to %p\n", slot, tasks[slot]);
-					max_tasks--;
-					slot++;
-				} else {
-					debugf("Too many tasks to read\n");
-					break;
+				for (int j = 0; j < len; j++) {
+					if (j < max_tasks) {
+						tasks[slot] = task_queue[i]->list[j];
+						debugf("Setting task slot %d to %p\n", slot, tasks[slot]);
+						max_tasks--;
+						slot++;
+					} else {
+						debugf("Too many tasks to read\n");
+						break;
+					}
 				}
 			}
 		}
-	}
 
-	atomic_release_spinlock(task_queue_lock);
+		atomic_release_spinlock(task_queue_lock);
+	);
 }
 
 
