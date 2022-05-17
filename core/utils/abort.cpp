@@ -11,6 +11,8 @@
 #include <apic/apic.h>
 #include <acpi/madt.h>
 
+#include <scheduler/scheduler.h>
+
 #include <stdint.h>
 
 extern uint8_t screen_of_death[];
@@ -57,6 +59,11 @@ __attribute__((noreturn)) void abortf(const char* fmt, ...) {
 	renderer::global_font_renderer->reset_color();
 	printf(" by creating an issue.\n");
 	printf("Feel free to fix this and submit a pull request!\n\n");
+
+	if (scheduler::task_queue[core_id]->list[0]->argv[0]) {
+		printf("Current task: %s\n", scheduler::task_queue[core_id]->list[0]->argv[0]);
+	}
+
 	printf("\nStarting stack trace:\n");
 
 	int max_lines = (renderer::global_renderer_2d->target->height - renderer::global_font_renderer->cursor_position.y) / 16;
