@@ -9,7 +9,7 @@
 %endmacro
 
 inc_bin default_font, "./resources/zap-light16.psf"
-inc_bin logo, "./resources/foxos.bmp"
+inc_bin logo, "./resources/foxos-new.bmp"
 inc_bin screen_of_death, "./resources/screen_of_death.bmp"
 
 inc_bin boot_animation_frame_0, "./resources/boot_animation/frame-0.bmp"
