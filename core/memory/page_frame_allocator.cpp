@@ -131,7 +131,7 @@ void page_frame_allocator::free_page(void* address){
 }
 
 void page_frame_allocator::free_pages(void* address, uint64_t page_count){
-	for (int t = 0; t < page_count; t++){
+	for (uint64_t t = 0; t < page_count; t++){
 		free_page((void*)((uint64_t)address + (t * 4096)));
 	}
 }
