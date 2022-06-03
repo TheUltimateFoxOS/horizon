@@ -18,6 +18,7 @@ void syscall::sys_spawn(interrupts::s_registers* regs) {
     const char** envp = (const char**) regs->rdx;
 
     scheduler::task_t* task = elf::load_elf(name, argv, envp);
+	task->lock = true;
     if (task == nullptr) {
         debugf("Failed to load elf: %s\n", name);
     } else {
@@ -48,6 +49,8 @@ void syscall::sys_spawn(interrupts::s_registers* regs) {
             task->pipe_enabled = self->pipe_enabled;
         }
     }
+
+	task->lock = false;
 
     regs->rax = (uint64_t) task;
 }
