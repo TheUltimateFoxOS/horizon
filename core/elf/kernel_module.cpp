@@ -38,7 +38,7 @@ void kernel_module_render_status(char* status, uint64_t color) {
 #endif
 }
 
-void elf::load_kernel_module(char* path, bool announce) {
+module_t* elf::load_kernel_module(char* path, bool announce) {
 	if (announce) {
 		printf("Loading kernel module %s", path);
 	}
@@ -54,7 +54,7 @@ void elf::load_kernel_module(char* path, bool announce) {
 
 	fs::vfs::global_vfs->read(file, elf_contents, file->size, 0);
 
-	load_kernel_module(elf_contents, file->size);
+	module_t* loaded_mod = load_kernel_module(elf_contents, file->size);
 
 	fs::vfs::global_vfs->close(file);
 	memory::global_allocator.free_pages(elf_contents, page_amount);
@@ -62,9 +62,11 @@ void elf::load_kernel_module(char* path, bool announce) {
 	if (announce) {
 		kernel_module_render_status((char*) "ok", 0xff00ff00);
 	}
+
+	return loaded_mod;
 }
 
-void elf::load_kernel_module(void* module, uint32_t size) {
+module_t* elf::load_kernel_module(void* module, uint32_t size) {
 	if (modules == nullptr) {
 		debugf("Allocating modules list\n");
 		modules = new list<module_t*>(10);
@@ -198,7 +200,7 @@ void elf::load_kernel_module(void* module, uint32_t size) {
 		if (strcmp((char*) module_data->name, module_blacklist[i]) == 0) {
 			debugf("Module %s is blacklisted!\n", module_data->name);
 			memory::global_allocator.free_pages(base_address, (uint64_t) size / 0x1000 + 1);
-			return;
+			return nullptr;
 		}
 	}
 
@@ -217,6 +219,8 @@ void elf::load_kernel_module(void* module, uint32_t size) {
 			: "r"(module_data->init)
 		);
 	}
+
+	return module_data;
 }
 
 

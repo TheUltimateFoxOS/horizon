@@ -13,6 +13,13 @@ namespace driver {
 			virtual void activate();
 			virtual bool is_presend();
 			virtual char* get_name();
+
+
+			void set_activated(bool activated);
+			bool get_activated();
+
+		private:
+			bool activated = false;
 	};
 
 	class driver_manager {

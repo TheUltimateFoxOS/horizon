@@ -85,6 +85,7 @@ void syscall::setup() {
 	register_syscall(sys_ipc_unregister, "sys_ipc_unregister");
 	register_syscall(sys_ipc_get_hid, "sys_ipc_get_hid");
 	register_syscall(sys_ipc_send_message, "sys_ipc_send_message");
+	register_syscall(sys_insmod, "sys_insmod");
 }
 
 void syscall::register_syscall(void (*handler)(interrupts::s_registers*), const char* name) {

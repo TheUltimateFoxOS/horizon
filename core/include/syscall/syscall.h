@@ -68,4 +68,6 @@ namespace syscall {
 	void sys_ipc_unregister(interrupts::s_registers* regs);
 	void sys_ipc_get_hid(interrupts::s_registers* regs);
 	void sys_ipc_send_message(interrupts::s_registers* regs);
+
+	void sys_insmod(interrupts::s_registers* regs);
 }

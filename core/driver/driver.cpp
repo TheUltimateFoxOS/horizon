@@ -36,6 +36,15 @@ char* device_driver::get_name() {
 	return (char*) "default";
 }
 
+bool device_driver::get_activated() {
+	return activated;
+}
+
+void device_driver::set_activated(bool activated) {
+	debugf("Setting activated for %s to %s\n", get_name(), activated ? "true" : "false");
+	this->activated = activated;
+}
+
 //#driver_manager::driver_manager-doc: driver_manager constructor.
 driver_manager::driver_manager() {
 	this->num_drivers = 0;
@@ -50,7 +59,7 @@ void driver_manager::add_driver(device_driver* driver) {
 
 //#driver_manager::set_status-doc: Print the device status onto the screen.
 void driver_manager::set_status(char* status, uint64_t color) {
-#ifndef NICE_BOOT_ANIMATION
+// #ifndef NICE_BOOT_ANIMATION
 	renderer::global_font_renderer->cursor_position.x = renderer::global_font_renderer->target_frame_buffer->width - 8 * (strlen(status) + 4);
 	
 	uint64_t old_color = renderer::global_font_renderer->color;
@@ -59,7 +68,7 @@ void driver_manager::set_status(char* status, uint64_t color) {
 	printf("%s", status);
 	renderer::global_font_renderer->color = old_color;
 	printf("]\n");
-#endif
+// #endif
 }
 
 //#driver_manager::activate_driver-doc: Activate a driver.
@@ -68,11 +77,16 @@ void driver_manager::activate_driver(bool force, device_driver* driver) {
 		driver->activate();
 		this->set_status((char*) "force", 0xffaa00ff);
 	} else {
-		if(driver->is_presend()) {
-			driver->activate();
-			this->set_status((char*) "ok", 0xff00ff00);
+		if (driver->get_activated()) {
+			this->set_status((char*) "already loaded", 0xff787878);
 		} else {
-			this->set_status((char*) "no device", 0xff787878);
+			if(driver->is_presend()) {
+				driver->activate();
+				driver->set_activated(true);
+				this->set_status((char*) "ok", 0xff00ff00);
+			} else {
+				this->set_status((char*) "no device", 0xff787878);
+			}
 		}
 	}
 }
