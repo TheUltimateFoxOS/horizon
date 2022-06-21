@@ -11,17 +11,19 @@ namespace memory {
 		cache_disabled = 4,
 		accessed = 5,
 		larger_pages = 7,
-		custom0 = 9,
-		custom1 = 10,
-		custom2 = 11,
+		custom_0 = 9,
+		custom_1 = 10,
+		custom_2 = 11,
 		NX = 63 // only if supported
 	};
 
 	struct page_directory_entry_t {
 		uint64_t value;
+
 		void set_flag(page_table_flags flag, bool enabled);
 		bool get_flag(page_table_flags flag);
 		void set_address(uint64_t address);
+	
 		uint64_t get_address();
 	};
 

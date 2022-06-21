@@ -3,9 +3,10 @@
 using namespace memory;
 
 void page_directory_entry_t::set_flag(page_table_flags flag, bool enabled){
-	uint64_t bit_selector = (uint64_t)1 << flag;
+	uint64_t bit_selector = (uint64_t) 1 << flag;
 	value &= ~bit_selector;
-	if (enabled){
+
+	if (enabled) {
 		value |= bit_selector;
 	}
 }

@@ -211,9 +211,21 @@ void ps2_keyboard::write(fs::vfs::file_t* file, void* buffer, size_t size, size_
 		
 		case 3: // opcode set print char
 			{
+				if (this->lock_keyboard_print) {
+					debugf("Keyboard print char didn't change as it is locked\n");
+				} else {
+					uint8_t mode = buf[1];
+					this->print_char = mode;
+					debugf("Keyboard print char changed to %s\n", mode ? "true" : "false");
+				}
+			}
+			break;
+
+		case 4: //opcode lock print char
+			{
 				uint8_t mode = buf[1];
-				this->print_char = mode;
-				debugf("Keyboard print char changed to %s\n", mode ? "true" : "false");
+				this->lock_keyboard_print = mode;
+				debugf("Keyboard lock print char changed to %s\n", mode ? "true" : "false");
 			}
 			break;
 		

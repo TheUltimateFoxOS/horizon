@@ -6,7 +6,7 @@ namespace memory {
 	class page_frame_allocator {
 		public:
 			void read_EFI_memory_map();
-			Bitmap page_bitmap;
+			bitmap page_bitmap;
 			void free_page(void* address);
 			void free_pages(void* address, uint64_t page_count);
 			void lock_page(void* address);

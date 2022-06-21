@@ -15,11 +15,11 @@ namespace memory {
 }
 
 
-page_table_manager::page_table_manager(page_table_t* PML4_address){
+page_table_manager::page_table_manager(page_table_t* PML4_address) {
 	this->PML4 = PML4_address;
 }
 
-void page_table_manager::map_memory(void* virtual_memory, void* physical_memory){
+void page_table_manager::map_memory(void* virtual_memory, void* physical_memory) {
 	page_map_indexer indexer = page_map_indexer((uint64_t) virtual_memory);
 	page_directory_entry_t PDE;
 
@@ -37,8 +37,7 @@ void page_table_manager::map_memory(void* virtual_memory, void* physical_memory)
 	} else {
 		PDP = (page_table_t*)((uint64_t)PDE.get_address() << 12);
 	}
-	
-	
+
 	PDE = PDP->entries[indexer.PD_i];
 	page_table_t* PD;
 	if (!PDE.get_flag(page_table_flags::present)){
@@ -64,11 +63,11 @@ void page_table_manager::map_memory(void* virtual_memory, void* physical_memory)
 		PDE.set_flag(page_table_flags::read_write, true);
 		PD->entries[indexer.PT_i] = PDE;
 	} else {
-		PT = (page_table_t*)((uint64_t)PDE.get_address() << 12);
+		PT = (page_table_t*) ((uint64_t) PDE.get_address() << 12);
 	}
 
 	PDE = PT->entries[indexer.P_i];
-	PDE.set_address((uint64_t)physical_memory >> 12);
+	PDE.set_address((uint64_t) physical_memory >> 12);
 	PDE.set_flag(page_table_flags::present, true);
 	PDE.set_flag(page_table_flags::read_write, true);
 	PT->entries[indexer.P_i] = PDE;
@@ -90,17 +89,20 @@ void* page_table_manager::virt_to_phys(void* virtual_address) {
 	if (!PDE.get_flag(page_table_flags::present)) {
 		return NULL;
 	}
-	page_table_t* PDP = (page_table_t*)((uint64_t) PDE.get_address() << 12);
+	page_table_t* PDP = (page_table_t*) ((uint64_t) PDE.get_address() << 12);
+
 	PDE = PDP->entries[indexer.PD_i];
 	if (!PDE.get_flag(page_table_flags::present)) {
 		return NULL;
 	}
-	page_table_t* PD = (page_table_t*)((uint64_t) PDE.get_address() << 12);
+	page_table_t* PD = (page_table_t*) ((uint64_t) PDE.get_address() << 12);
+
 	PDE = PD->entries[indexer.PT_i];
 	if (!PDE.get_flag(page_table_flags::present)) {
 		return NULL;
 	}
-	page_table_t* PT = (page_table_t*)((uint64_t)PDE.get_address() << 12);
+	page_table_t* PT = (page_table_t*) ((uint64_t)PDE.get_address() << 12);
+
 	PDE = PT->entries[indexer.P_i];
 	if (!PDE.get_flag(page_table_flags::present)) {
 		return NULL;

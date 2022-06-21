@@ -15,17 +15,17 @@
 using namespace memory;
 
 uint64_t memory::get_memory_size() {
-	static uint64_t memorySizeBytes = 0;
+	static uint64_t memory_size_bytes = 0;
 	
-	if (memorySizeBytes > 0) {
-		return memorySizeBytes; // cache the value
+	if (memory_size_bytes > 0) {
+		return memory_size_bytes; // cache the value
 	}
 
 	for (int i = 0; i < boot::boot_info.memmap_entries; i++){
-		memorySizeBytes += boot::boot_info.memmap[i].length;
+		memory_size_bytes += boot::boot_info.memmap[i].length;
 	}
 
-	return memorySizeBytes;
+	return memory_size_bytes;
 }
 
 extern uint64_t kernel_start;
@@ -40,8 +40,8 @@ void memory::prepare_memory() {
 	global_allocator = page_frame_allocator();
 	global_allocator.read_EFI_memory_map();
 
-	uint64_t kernel_size = (uint64_t)&kernel_end - (uint64_t)&kernel_start;
-	uint64_t kernel_pages = (uint64_t)kernel_size / 4096 + 1;
+	uint64_t kernel_size = (uint64_t) &kernel_end - (uint64_t) &kernel_start;
+	uint64_t kernel_pages = (uint64_t) kernel_size / 4096 + 1;
 
 	debugf("Kernel size: %d bytes (%d pages)\n", kernel_size, kernel_pages);
 

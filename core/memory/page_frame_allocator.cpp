@@ -33,6 +33,7 @@ void page_frame_allocator::read_EFI_memory_map() {
 			}
 		}
 	}
+
 	uint64_t memorysize = get_memory_size();
 	free_memory = memorysize;
 	uint64_t bitmapsize = memorysize / 4096 / 8 + 1;
@@ -56,21 +57,20 @@ void page_frame_allocator::init_bitmap(size_t bitmapsize, void* buffer_address){
 	page_bitmap.buffer = (uint8_t*) buffer_address;
 
 	for (int i = 0; i < bitmapsize; i++){
-		*(uint8_t*)(page_bitmap.buffer + i) = 0;
+		*(uint8_t*) (page_bitmap.buffer + i) = 0;
 	}
 }
 
 uint64_t page_bitmap_index = 0;
 void* page_frame_allocator::request_page(){
 	for (int i = 0; i < page_bitmap_index; i++) {
-		if(page_bitmap[i] == true) {
+		if (page_bitmap[i] == true) {
 			continue;
 		}
 
 		page_bitmap_index = i;
 		break;
 	}
-	
 
 	for (uint64_t x = page_bitmap_index; x < page_bitmap.size * 8; x++){
         if (page_bitmap[x] == true) {
@@ -84,7 +84,7 @@ void* page_frame_allocator::request_page(){
     return NULL; // Page Frame Swap to file
 }
 
-void* page_frame_allocator::request_pages(int amount){
+void* page_frame_allocator::request_pages(int amount) {
 	for (int i = 0; i < page_bitmap_index; i++) {
 		if(page_bitmap[i] == true) {
 			continue;
@@ -100,7 +100,9 @@ void* page_frame_allocator::request_pages(int amount){
 		}
 
 		for (int i = 0; i < amount; i++) {
-			if(page_bitmap[x + i] == true) goto next;
+			if(page_bitmap[x + i] == true) {
+				goto next;
+			}
 		}
 		
         lock_pages((void*)(x * 4096), amount);
@@ -115,7 +117,7 @@ void* page_frame_allocator::request_pages(int amount){
 }
 
 
-void page_frame_allocator::free_page(void* address){
+void page_frame_allocator::free_page(void* address) {
 	uint64_t index = (uint64_t)address / 4096;
 	if (page_bitmap[index] == false) {
 		return;
@@ -130,14 +132,14 @@ void page_frame_allocator::free_page(void* address){
 	}
 }
 
-void page_frame_allocator::free_pages(void* address, uint64_t page_count){
+void page_frame_allocator::free_pages(void* address, uint64_t page_count) {
 	for (uint64_t t = 0; t < page_count; t++){
-		free_page((void*)((uint64_t)address + (t * 4096)));
+		free_page((void*) ((uint64_t) address + (t * 4096)));
 	}
 }
 
 void page_frame_allocator::lock_page(void* address){
-	uint64_t index = (uint64_t)address / 4096;
+	uint64_t index = (uint64_t) address / 4096;
 	if (page_bitmap[index] == true) {
 		return;
 	}
@@ -148,13 +150,13 @@ void page_frame_allocator::lock_page(void* address){
 	}
 }
 
-void page_frame_allocator::lock_pages(void* address, uint64_t page_count){
+void page_frame_allocator::lock_pages(void* address, uint64_t page_count) {
 	for (int t = 0; t < page_count; t++){
-		lock_page((void*)((uint64_t)address + (t * 4096)));
+		lock_page((void*)((uint64_t) address + (t * 4096)));
 	}
 }
 
-void page_frame_allocator::unreserve_page(void* address){
+void page_frame_allocator::unreserve_page(void* address) {
 	uint64_t index = (uint64_t)address / 4096;
 	if (page_bitmap[index] == false) {
 		return;
@@ -169,13 +171,13 @@ void page_frame_allocator::unreserve_page(void* address){
 	}
 }
 
-void page_frame_allocator::unreserve_pages(void* address, uint64_t page_count){
+void page_frame_allocator::unreserve_pages(void* address, uint64_t page_count) {
 	for (int t = 0; t < page_count; t++){
-		unreserve_page((void*)((uint64_t)address + (t * 4096)));
+		unreserve_page((void*) ((uint64_t) address + (t * 4096)));
 	}
 }
 
-void page_frame_allocator::reserve_page(void* address){
+void page_frame_allocator::reserve_page(void* address) {
 	uint64_t index = (uint64_t)address / 4096;
 	if (page_bitmap[index] == true) {
 		return;
@@ -187,20 +189,20 @@ void page_frame_allocator::reserve_page(void* address){
 	}
 }
 
-void page_frame_allocator::reserve_pages(void* address, uint64_t pageCount){
+void page_frame_allocator::reserve_pages(void* address, uint64_t pageCount) {
 	for (uint64_t t = 0; t < pageCount; t++){
-		reserve_page((void*)((uint64_t)address + (t * 4096)));
+		reserve_page((void*) ((uint64_t) address + (t * 4096)));
 	}
 }
 
-uint64_t page_frame_allocator::get_free_RAM(){
+uint64_t page_frame_allocator::get_free_RAM() {
 	return free_memory;
 }
 
-uint64_t page_frame_allocator::get_used_RAM(){
+uint64_t page_frame_allocator::get_used_RAM() {
 	return used_memory;
 }
 
-uint64_t page_frame_allocator::get_reserved_RAM(){
+uint64_t page_frame_allocator::get_reserved_RAM() {
 	return reserved_memory;
 }

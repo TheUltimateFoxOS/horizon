@@ -2,11 +2,11 @@
 
 using namespace memory;
 
-bool Bitmap::operator[](uint64_t index){
+bool bitmap::operator[](uint64_t index) {
 	return get(index);
 }
 
-bool Bitmap::get(uint64_t index) {
+bool bitmap::get(uint64_t index) {
 	if (index > size * 8) {
 		return false;
 	}
@@ -22,7 +22,7 @@ bool Bitmap::get(uint64_t index) {
 	return false;
 }
 
-bool Bitmap::set(uint64_t index, bool value){
+bool bitmap::set(uint64_t index, bool value) {
 	if (index > size * 8) {
 		return false;
 	}
@@ -30,8 +30,9 @@ bool Bitmap::set(uint64_t index, bool value){
 	uint64_t byteIndex = index / 8;
 	uint8_t bitIndex = index % 8;
 	uint8_t bitIndexer = 0b10000000 >> bitIndex;
+
 	buffer[byteIndex] &= ~bitIndexer;
-	if (value){
+	if (value) {
 		buffer[byteIndex] |= bitIndexer;
 	}
 

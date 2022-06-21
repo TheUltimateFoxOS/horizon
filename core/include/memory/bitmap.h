@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 namespace memory {
-	class Bitmap {
+	class bitmap {
 		public:
 		size_t size;
 		uint8_t* buffer;
