@@ -14,7 +14,6 @@ namespace memory {
 	page_table_manager global_page_table_manager = NULL;
 }
 
-
 page_table_manager::page_table_manager(page_table_t* PML4_address) {
 	this->PML4 = PML4_address;
 }
@@ -26,7 +25,7 @@ void page_table_manager::map_memory(void* virtual_memory, void* physical_memory)
 	PDE = PML4->entries[indexer.PDP_i];
 	page_table_t* PDP;
 
-	if (!PDE.get_flag(page_table_flags::present)){
+	if (!PDE.get_flag(page_table_flags::present)) {
 		PDP = (page_table_t*) global_allocator.request_page();
 		memset(PDP, 0, 0x1000);
 
@@ -40,7 +39,7 @@ void page_table_manager::map_memory(void* virtual_memory, void* physical_memory)
 
 	PDE = PDP->entries[indexer.PD_i];
 	page_table_t* PD;
-	if (!PDE.get_flag(page_table_flags::present)){
+	if (!PDE.get_flag(page_table_flags::present)) {
 		PD = (page_table_t*) global_allocator.request_page();
 		memset(PD, 0, 0x1000);
 
@@ -54,7 +53,7 @@ void page_table_manager::map_memory(void* virtual_memory, void* physical_memory)
 
 	PDE = PD->entries[indexer.PT_i];
 	page_table_t* PT;
-	if (!PDE.get_flag(page_table_flags::present)){
+	if (!PDE.get_flag(page_table_flags::present)) {
 		PT = (page_table_t*) global_allocator.request_page();
 		memset(PT, 0, 0x1000);
 
@@ -74,7 +73,7 @@ void page_table_manager::map_memory(void* virtual_memory, void* physical_memory)
 }
 
 void page_table_manager::map_range(void* virtual_memory, void* physical_memory, size_t range) {
-	for (int i = 0; i < range; i += 1000) {
+	for (int i = 0; i < range; i += 0x1000) {
 		global_page_table_manager.map_memory((void*) ((uint64_t) virtual_memory + i), (void*) ((uint64_t) physical_memory + i));
 	}
 }

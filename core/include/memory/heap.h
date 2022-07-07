@@ -8,7 +8,9 @@ namespace memory {
 		size_t length;
 		heap_segment_header_t* next;
 		heap_segment_header_t* last;
+
 		bool free;
+
 		void combine_forward();
 		void combine_backward();
 		heap_segment_header_t* split(size_t split_length);

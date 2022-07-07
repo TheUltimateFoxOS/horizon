@@ -21,7 +21,7 @@ uint64_t memory::get_memory_size() {
 		return memory_size_bytes; // cache the value
 	}
 
-	for (int i = 0; i < boot::boot_info.memmap_entries; i++){
+	for (int i = 0; i < boot::boot_info.memmap_entries; i++) {
 		memory_size_bytes += boot::boot_info.memmap[i].length;
 	}
 
@@ -31,7 +31,7 @@ uint64_t memory::get_memory_size() {
 extern uint64_t kernel_start;
 extern uint64_t kernel_end;
 
-#define KERNEL_PHYSICAL_ADDRESS(virtual_address) (void*) ((uint64_t) boot::boot_info.physical_base_address + ((uint64_t) virtual_address - (uint64_t) &virtual_base))
+#define KERNEL_PHYSICAL_ADDRESS(virtual_address) (void*) ((uint64_t) boot::boot_info.physical_base_address + ((uint64_t) virtual_address - (uint64_t) boot::boot_info.virtual_base_address))
 
 void memory::prepare_memory() {	
 	uint64_t m_map_entries = boot::boot_info.memmap_entries;
@@ -44,6 +44,9 @@ void memory::prepare_memory() {
 	uint64_t kernel_pages = (uint64_t) kernel_size / 4096 + 1;
 
 	debugf("Kernel size: %d bytes (%d pages)\n", kernel_size, kernel_pages);
+
+	debugf("Locking kernel pages...\n");
+	global_allocator.lock_pages(KERNEL_PHYSICAL_ADDRESS(&kernel_start), kernel_pages);
 
 	debugf("Creating page table...\n");
 	page_table_t* pml4 = (page_table_t*) global_allocator.request_page();
@@ -110,7 +113,6 @@ void* memory::map_if_necessary(void* virtual_address) {
 		virtual_address = (void*) ((uint64_t) virtual_address & ~0x0fff);
 
 		if (!global_page_table_manager.virt_to_phys(virtual_address)) {
-
 			if ((uint64_t) virtual_address > (uint64_t) boot::boot_info.hhdm_base_address) {
 				debugf("Mapping %x -> %x since it isn't mapped!\n", virtual_address, (uint64_t) virtual_address - (uint64_t) boot::boot_info.hhdm_base_address);
 				global_page_table_manager.map_memory(virtual_address, (void*) ((uint64_t) virtual_address - (uint64_t) boot::boot_info.hhdm_base_address));

@@ -184,8 +184,57 @@ void interrupts::prepare_interrupts() {
 //#intr_common_handler_c-doc: The general purpose interrupt handler. This handler is called when an interrupt is received. The handler will check if there is a interrupt handler for the interrupt. If there is a interrupt handler, the handler will be called. If the interrupt is a exception, the handler will cause a panic if there is no signal handler.
 extern "C" void intr_common_handler_c(s_registers* regs) {
 	if(regs->interrupt_number <= 0x1f) {
+		char* interrupt_name = get_interrupt_name(regs->interrupt_number);
+		debugf("Kernel panic: %s", interrupt_name);
+
+		if (regs->interrupt_number == 0xa || regs->interrupt_number == 0xb || regs->interrupt_number == 0xc || regs->interrupt_number == 0xd) { //Selector error code
+			debugf_raw(".");
+
+			if (regs->error_code & 0x1) {
+				debugf_raw(" Exception was external to the CPU.");
+			}
+
+			uint64_t tmp = regs->error_code >> 1;
+			if (tmp & 0b00) {
+				debugf_raw(" Exception was in the GDT.");
+			} else if (tmp & 0b01) {
+				debugf_raw(" Exception was in the IDT.");
+			} else if (tmp & 0b10) {
+				debugf_raw(" Exception was in the LDT.");
+			} else if (tmp & 0b11) {
+				debugf_raw(" Exception was in the IDT.");
+			}
+
+			tmp >>= 2;
+			debugf_raw(" Index: %x.", tmp);
+		}
+
+		if (regs->interrupt_number == 0xe) { //Page fault error code
+			uint64_t faulting_address = regs->cr2;
+			debugf_raw(" at %x.", faulting_address);
+
+			if (!(regs->error_code & 0x1)) {
+				debugf_raw(" Page not present.");
+			}
+			if (regs->error_code & 0x2) {
+				debugf_raw(" Write operation failed.");
+			}
+			if (regs->error_code & 0x4) {
+				debugf_raw(" Processor was in user-mode.");
+			}
+			if (regs->error_code & 0x8) {
+				debugf_raw(" Overwritten CPU-reserved bits of page entry.");
+			}
+			if (regs->error_code & 0x10) {
+				debugf_raw(" Caused by an instruction fetch.");
+			}
+		}
+
+		debugf_raw("\n");
+		debugf("Error code: %x\n", regs->error_code);
+
 		if (!scheduler::handle_signal(regs->interrupt_number)) {
-			abortf(get_interrupt_name(regs->interrupt_number));
+			abortf(interrupt_name);
 		}
 	}
 

@@ -28,6 +28,6 @@ namespace memory {
 	};
 
 	struct page_table_t { 
-		page_directory_entry_t entries [512];
+		page_directory_entry_t entries[512];
 	}__attribute__((aligned(0x1000)));
 }

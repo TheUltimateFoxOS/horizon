@@ -15,7 +15,7 @@ bool bitmap::get(uint64_t index) {
 	uint8_t bitIndex = index % 8;
 	uint8_t bitIndexer = 0b10000000 >> bitIndex;
 
-	if ((buffer[byteIndex] & bitIndexer) > 0){
+	if ((buffer[byteIndex] & bitIndexer) > 0) {
 		return true;
 	}
 	

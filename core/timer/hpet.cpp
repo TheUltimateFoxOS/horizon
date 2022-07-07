@@ -14,17 +14,17 @@ namespace timer {
 hpet_timer::hpet_timer() {
 	acpi::hpet_table_t* hpet_table = (acpi::hpet_table_t*) acpi::find_table((char*) "HPET", 0);
 	this->hpet = (hpet_t*) hpet_table->address;
-	debugf("HPET at 0x%x\n", hpet);
+	debugf("HPET at 0x%x\n", this->hpet);
 
-	memory::global_page_table_manager.map_memory(hpet, hpet);
-	hpet->general_config = 1;
+	memory::global_page_table_manager.map_memory(this->hpet, this->hpet);
+	this->hpet->general_config = 1;
 }
 
 void hpet_timer::sleep(uint32_t ms) {
 	ms /= 8;
-	uint64_t ticks = hpet->counter_value + (ms * 10000000000000) / ((hpet->capabilities >> 32) & 0xffffffff);
+	uint64_t ticks = this->hpet->counter_value + (ms * 10000000000000) / ((this->hpet->capabilities >> 32) & 0xffffffff);
 
-	while (hpet->counter_value < ticks) {
+	while (this->hpet->counter_value < ticks) {
 		__asm__ __volatile__ ("pause" ::: "memory");
 	}
 }
