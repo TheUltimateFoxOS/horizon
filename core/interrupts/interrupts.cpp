@@ -3,10 +3,12 @@
 #include <interrupts/idt.h>
 
 #include <memory/page_frame_allocator.h>
+#include <memory/page_table_manager.h>
 
 #include <utils/port.h>
 #include <utils/abort.h>
 #include <utils/log.h>
+#include <utils/string.h>
 
 #include <scheduler/scheduler.h>
 
@@ -15,7 +17,11 @@
 using namespace interrupts;
 
 namespace interrupts {
+	__attribute__((aligned(0x1000)))
 	interrupts::idt_t idtr;
+
+	__attribute__((aligned(0x1000)))
+	interrupts::idt_desc_entry_t idt_d[256];
 }
 
 //#interrupts::get_panic_message-doc: Converts a exception number in a string.
@@ -95,11 +101,19 @@ void interrupts::set_idt_gate(void* handler, uint8_t entry_offset, uint8_t type_
 	interrupt->selector = selector;
 }
 
+extern "C" void load_idt(void* idt_ptr);
+
 //#interrupts::prepare_interrupts-doc: Sets up the IDT and the interrupt handlers. Also remaps the programable interrupt controller.
 void interrupts::prepare_interrupts() {
+	__asm__ __volatile__ ("cli");
+
 	debugf("Initialising idt...\n");
 	idtr.limit =  0x0FFF;
-	idtr.offset = (uint64_t) memory::global_allocator.request_page();
+	idtr.offset = (uint64_t) idt_d;
+	
+	memset(idt_d, 0, sizeof(interrupts::idt_desc_entry_t) * 256);
+
+	debugf("IDT at %p\n", idtr.offset);
 
 	set_idt_gate((void*) intr_stub_0, 0, idt_ta_interrupt_gate, 0x08);
 	set_idt_gate((void*) intr_stub_1, 1, idt_ta_interrupt_gate, 0x08);
@@ -139,7 +153,9 @@ void interrupts::prepare_interrupts() {
 
 	set_idt_gate((void*) intr_stub_255, 255, idt_ta_interrupt_gate, 0x08);
 
-	asm ("lidt %0" : : "m" (idtr));
+	debugf("IDTR at %p\n", &idtr);
+
+	// asm ("lidt %0" : : "m" (idtr));
 
 	Port8Bit pic1_data(0x21);
 	Port8Bit pic1_command(0x20);
@@ -177,6 +193,8 @@ void interrupts::prepare_interrupts() {
 
 	pic1_data.Write(0);
 	pci2_data.Write(0);
+
+	load_idt(&idtr);
 
 	__asm__ __volatile__ ("sti");
 }
