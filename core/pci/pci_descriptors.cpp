@@ -37,7 +37,7 @@ namespace pci {
 			case 0x10EC:
 				return "Realtek Semiconductor Co., Ltd.";
 		}
-		return to_hstring(vendor_ID);
+		return num_to_string(vendor_ID, 16);
 	}
 
 	//#get_device_name-doc: Get the device name of a pci device as a string.
@@ -72,7 +72,7 @@ namespace pci {
 						return "RTL8193";
 				}
 		}
-		return to_hstring(device_ID);
+		return num_to_string(device_ID, 16);
 	}
 
 	//#mass_storage_controller_subclass_name-doc: Get the subclass name of a mass storage controller as a string.
@@ -99,7 +99,7 @@ namespace pci {
 			case 0x80:
 				return "Other";
 		}
-		return to_hstring(subclass_code);
+		return num_to_string(subclass_code, 16);
 	}
 
 	//#serial_bus_controller_subclass_name-doc: Get the subclass name of a serial bus controller as a string.
@@ -128,7 +128,7 @@ namespace pci {
 			case 0x80:
 				return "SerialBusController - Other";
 		}
-		return to_hstring(subclass_code);
+		return num_to_string(subclass_code, 16);
 	}
 
 	//#bridge_device_subclass_name-doc: Get the subclass name of a bridge device as a string.
@@ -159,7 +159,7 @@ namespace pci {
 			case 0x80:
 				return "Other";
 		}
-		return to_hstring(subclass_code);
+		return num_to_string(subclass_code, 16);
 	}
 
 	//#get_subclass_name-doc: Get the subclass name of a device as a string.
@@ -177,7 +177,7 @@ namespace pci {
 			case 0x0C:
 				return serial_bus_controller_subclass_name(subclass_code);
 		}
-		return to_hstring(subclass_code);
+		return num_to_string(subclass_code, 16);
 	}
 
 	//#get_prog_IF_name-doc: Get the interface name of a device as a string.
@@ -224,6 +224,6 @@ namespace pci {
 						}
 				}
 		}
-		return to_hstring(prog_IF);
+		return num_to_string(prog_IF, 16);
 	}
 }
