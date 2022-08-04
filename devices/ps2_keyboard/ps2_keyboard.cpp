@@ -187,6 +187,8 @@ void ps2_keyboard::handle() {
 				current_char = tmp;
 		}
 	}
+
+	input::handle_special_keys(&special_keys_down);
 }
 
 void ps2_keyboard::write(fs::vfs::file_t* file, void* buffer, size_t size, size_t offset) {

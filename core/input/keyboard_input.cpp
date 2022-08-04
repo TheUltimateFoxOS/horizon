@@ -4,6 +4,7 @@
 #include <utils/abort.h>
 #include <utils/string.h>
 #include <fs/vfs.h>
+#include <scheduler/scheduler.h>
 
 using namespace input;
 
@@ -67,5 +68,17 @@ char input::keymap(char* keymap_id, uint8_t key, special_keys_down_t* special_ke
 		return cached_keymap.layout_alt[key];
 	} else {
 		return cached_keymap.layout_normal[key];
+	}
+}
+
+void input::handle_special_keys(input::special_keys_down_t* keys) {
+	if (keys->up_arrow) {
+		scheduler::handle_signal_all_tasks(scheduler::SIG_UP_ARROW);
+	} else if (keys->down_arrow) {
+		scheduler::handle_signal_all_tasks(scheduler::SIG_DOWN_ARROW);
+	} else if (keys->left_arrow) {
+		scheduler::handle_signal_all_tasks(scheduler::SIG_LEFT_ARROW);
+	} else if (keys->right_arrow) {
+		scheduler::handle_signal_all_tasks(scheduler::SIG_RIGHT_ARROW);
 	}
 }

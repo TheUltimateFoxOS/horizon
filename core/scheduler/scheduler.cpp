@@ -221,6 +221,34 @@ bool scheduler::handle_signal(int signum) {
 	}
 }
 
+void scheduler::handle_signal_all_tasks(int signum) {
+	LAPIC_ID(id);
+
+	signal_handler handlers[64] = { 0 };
+	int handlers_idx = 0;
+
+	atomic_acquire_spinlock(task_queue_lock);
+
+	INTERRUPTS_DISABLED(
+		for (int i = 0; i < acpi::madt::lapic_count; i++) {
+			if (apic::cpu_started[i]) {
+				for (int j = 0; j < task_queue[i]->len; j++) {
+					if (task_queue[i]->list[j]->signals[signum] != nullptr) {
+						handlers[handlers_idx++] = task_queue[i]->list[j]->signals[signum];
+					}
+				}
+			}
+		}
+
+		atomic_release_spinlock(task_queue_lock);
+	);
+
+	for (int i = 0; i < handlers_idx; i++) {
+		handlers[i](signum);
+	}
+}
+
+
 void scheduler::register_signal_handler_self(int signum, uint64_t handler) {
 	LAPIC_ID(id);
 

@@ -11,6 +11,14 @@ namespace scheduler {
 	typedef void (*pipe)(char* buffer, uint64_t size);
 	typedef void (*system)(char* in);
 
+	enum signal_handlers {
+		SIG_UP_ARROW = 33, // signals before signal 33 are exceptions
+		SIG_DOWN_ARROW,
+		SIG_LEFT_ARROW,
+		SIG_RIGHT_ARROW,
+		SIG_INTR
+	};
+
 	struct task_t {
 		interrupts::s_registers registers;
 		char fxsr_state[512] __attribute__((aligned(16)));
@@ -35,7 +43,7 @@ namespace scheduler {
 		pipe stderr_pipe;
 		bool pipe_enabled;
 
-		signal_handler signals[32];
+		signal_handler signals[64];
 
 		char cwd[128];
 
@@ -56,6 +64,8 @@ namespace scheduler {
 
 	bool handle_signal(int signum);
 	void register_signal_handler_self(int signum, uint64_t handler);
+
+	void handle_signal_all_tasks(int signum);
 
 	void set_cwd_self(const char* cwd);
 	const char* get_cwd_self();
