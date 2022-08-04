@@ -17,6 +17,27 @@ namespace input {
 			virtual char getchar();
 	};
 
+	enum special_key {
+		left_shift,
+		left_ctrl,
+		left_alt,
+		left_gui,
+
+		right_shift,
+		right_ctrl,
+		right_alt,
+		right_gui,
+			
+		caps_lock,
+		num_lock,
+		scroll_lock,
+
+		up_arrow,
+		down_arrow,
+		left_arrow,
+		right_arrow,
+	};
+
 	struct special_keys_down_t {
 		bool left_shift = false;
 		bool left_ctrl = false;
@@ -36,6 +57,8 @@ namespace input {
 		bool down_arrow = false;
 		bool left_arrow = false;
 		bool right_arrow = false;
+
+		special_key triggered_by;
 	};
 
 	extern input::special_keys_down_t global_special_keys_down;

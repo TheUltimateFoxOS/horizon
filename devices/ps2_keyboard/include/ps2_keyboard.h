@@ -11,26 +11,6 @@
 #include <fs/dev_fs.h>
 
 namespace ps2 {
-	enum special_key {
-		left_shift,
-		left_ctrl,
-		left_alt,
-		left_gui,
-
-		right_shift,
-		right_ctrl,
-		right_alt,
-		right_gui,
-			
-		caps_lock,
-		num_lock,
-		scroll_lock,
-
-		up_arrow,
-		down_arrow,
-		left_arrow,
-		right_arrow,
-	};
 
 	class ps2_keyboard : public driver::device_driver, public input::keyboard_input_device, public interrupts::interrupt_handler, public fs::dev_fs_file {
 		public:
@@ -42,8 +22,8 @@ namespace ps2 {
 
 			virtual char getchar();
 
-			virtual void special_key_down(special_key key);
-			virtual void special_key_up(special_key key);
+			virtual void special_key_down(input::special_key key);
+			virtual void special_key_up(input::special_key key);
 
 			virtual void handle();
 

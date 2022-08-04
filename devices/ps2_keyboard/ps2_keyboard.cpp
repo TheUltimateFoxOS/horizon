@@ -42,11 +42,13 @@ char ps2_keyboard::getchar() {
 	return current_char;
 }
 
-void ps2_keyboard::special_key_down(special_key key) {
+void ps2_keyboard::special_key_down(input::special_key key) {
+	special_keys_down.triggered_by = key;
 	input::handle_special_keys_down(&special_keys_down);
 }
 
-void ps2_keyboard::special_key_up(special_key key) {
+void ps2_keyboard::special_key_up(input::special_key key) {
+	special_keys_down.triggered_by = key;
 	input::handle_special_keys_up(&special_keys_down);
 }
 
@@ -63,56 +65,56 @@ void ps2_keyboard::handle() {
 				switch (key) {
 					case 0x38: //Right alt down
 						this->special_keys_down.right_alt = true;
-						special_key_down(special_key::right_alt);
+						special_key_down(input::special_key::right_alt);
 						break;
 					case 0xB8: //Right alt up
 						this->special_keys_down.right_alt = false;
-						special_key_up(special_key::right_alt);
+						special_key_up(input::special_key::right_alt);
 						break;
 
 					case 0x1D: //Right ctrl down
 						this->special_keys_down.right_ctrl = true;
-						special_key_down(special_key::right_ctrl);
+						special_key_down(input::special_key::right_ctrl);
 						break;
 					case 0x9D: //Right ctrl up
 						this->special_keys_down.right_ctrl = false;
-						special_key_up(special_key::right_ctrl);
+						special_key_up(input::special_key::right_ctrl);
 						break;
 
 					case 0x48: //Up arrow down
 						this->special_keys_down.up_arrow = true;
-						special_key_down(special_key::up_arrow);
+						special_key_down(input::special_key::up_arrow);
 						break;
 					case 0xC8: //Up arrow up
 						this->special_keys_down.up_arrow = false;
-						special_key_up(special_key::up_arrow);
+						special_key_up(input::special_key::up_arrow);
 						break;
 					
 					case 0x50: //Down arrow down
 						this->special_keys_down.down_arrow = true;
-						special_key_down(special_key::down_arrow);
+						special_key_down(input::special_key::down_arrow);
 						break;
 					case 0xD0: //Down arrow up
 						this->special_keys_down.down_arrow = false;
-						special_key_up(special_key::down_arrow);
+						special_key_up(input::special_key::down_arrow);
 						break;
 
 					case 0x4B: //Left arrow down
 						this->special_keys_down.left_arrow = true;
-						special_key_down(special_key::left_arrow);
+						special_key_down(input::special_key::left_arrow);
 						break;
 					case 0xCB: //Left arrow down
 						this->special_keys_down.left_arrow = false;
-						special_key_up(special_key::left_arrow);
+						special_key_up(input::special_key::left_arrow);
 						break;
 
 					case 0x4D: //Right arrow down
 						this->special_keys_down.right_arrow = true;
-						special_key_down(special_key::right_arrow);
+						special_key_down(input::special_key::right_arrow);
 						break;
 					case 0xCD: //Right arrow up
 						this->special_keys_down.right_arrow = false;
-						special_key_up(special_key::right_arrow);
+						special_key_up(input::special_key::right_arrow);
 						break;
 				}
 				break;
@@ -122,9 +124,9 @@ void ps2_keyboard::handle() {
 					case 0xBA: //Caps lock toggle
 						this->special_keys_down.caps_lock = !this->special_keys_down.caps_lock;
 						if (this->special_keys_down.caps_lock) {
-							special_key_down(special_key::caps_lock);
+							special_key_down(input::special_key::caps_lock);
 						} else {
-							special_key_up(special_key::caps_lock);
+							special_key_up(input::special_key::caps_lock);
 						}
 						break;
 				}
@@ -142,39 +144,39 @@ void ps2_keyboard::handle() {
 			
 			case 0x38: //Left alt down
 				this->special_keys_down.left_alt = true;
-				special_key_down(special_key::left_alt);
+				special_key_down(input::special_key::left_alt);
 				break;
 			case 0xB8: //Left alt up
 				this->special_keys_down.left_alt = false;
-				special_key_up(special_key::left_alt);
+				special_key_up(input::special_key::left_alt);
 				break;
 
 			case 0x1D: //Left ctrl down
 				this->special_keys_down.left_ctrl = true;
-				special_key_down(special_key::left_ctrl);
+				special_key_down(input::special_key::left_ctrl);
 				break;
 			case 0x9D: //Left ctrl up
 				this->special_keys_down.left_ctrl = false;
-				special_key_up(special_key::left_ctrl);
+				special_key_up(input::special_key::left_ctrl);
 				break;
 
 			case 0x2A: //Left shift down
 				this->special_keys_down.left_shift = true;
-				special_key_down(special_key::left_shift);
+				special_key_down(input::special_key::left_shift);
 				break;
 
 			case 0xAA: //Left shift up
 				this->special_keys_down.left_shift = false;
-				special_key_up(special_key::left_shift);
+				special_key_up(input::special_key::left_shift);
 				break;
 
 			case 0x36: //Right shift down
 				this->special_keys_down.right_shift = true;
-				special_key_down(special_key::right_shift);
+				special_key_down(input::special_key::right_shift);
 				break; 
 			case 0xB6: //Right shift up
 				this->special_keys_down.right_shift = false;
-				special_key_up(special_key::right_shift);
+				special_key_up(input::special_key::right_shift);
 				break;
 
 			default:
