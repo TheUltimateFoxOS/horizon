@@ -38,9 +38,12 @@ namespace input {
 		bool right_arrow = false;
 	};
 
+	extern input::special_keys_down_t global_special_keys_down;
+
 	char keymap(char* keymap_id, uint8_t key, special_keys_down_t* special_keys_down);
 
-	void handle_special_keys(input::special_keys_down_t* keys);
+	void handle_special_keys_up(input::special_keys_down_t* keys);
+	void handle_special_keys_down(input::special_keys_down_t* keys);
 
 	extern keyboard_input_device* default_keyboard_input_device;
 }

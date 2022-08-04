@@ -10,6 +10,7 @@ using namespace input;
 
 namespace input {
 	keyboard_input_device* default_keyboard_input_device = nullptr;
+	input::special_keys_down_t global_special_keys_down = { 0 };
 }
 
 void keyboard_input_device::getstring(char* buf) {
@@ -71,14 +72,13 @@ char input::keymap(char* keymap_id, uint8_t key, special_keys_down_t* special_ke
 	}
 }
 
-void input::handle_special_keys(input::special_keys_down_t* keys) {
-	if (keys->up_arrow) {
-		scheduler::handle_signal_all_tasks(scheduler::SIG_UP_ARROW);
-	} else if (keys->down_arrow) {
-		scheduler::handle_signal_all_tasks(scheduler::SIG_DOWN_ARROW);
-	} else if (keys->left_arrow) {
-		scheduler::handle_signal_all_tasks(scheduler::SIG_LEFT_ARROW);
-	} else if (keys->right_arrow) {
-		scheduler::handle_signal_all_tasks(scheduler::SIG_RIGHT_ARROW);
-	}
+
+void input::handle_special_keys_up(input::special_keys_down_t* keys) {
+	global_special_keys_down = *keys;
+	scheduler::handle_signal_all_tasks(scheduler::SIG_SPECIAL_KEY_UP);
+}
+
+void input::handle_special_keys_down(input::special_keys_down_t* keys) {
+	global_special_keys_down = *keys;
+	scheduler::handle_signal_all_tasks(scheduler::SIG_SPECIAL_KEY_DOWN);
 }

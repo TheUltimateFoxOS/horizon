@@ -7,7 +7,10 @@
 
 #include <elf/kernel_module.h>
 
+#include <input/keyboard_input.h>
+
 using namespace syscall;
+
 
 void syscall::sys_env(interrupts::s_registers* regs) {
 	LAPIC_ID(core_id);
@@ -106,6 +109,12 @@ void syscall::sys_env(interrupts::s_registers* regs) {
 						i--;
 					}
 				}
+			}
+			break;
+		
+		case 13: // get global_special_keys_down ptr
+			{
+				regs->rcx = (uint64_t) &input::global_special_keys_down;
 			}
 			break;
 

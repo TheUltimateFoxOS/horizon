@@ -43,11 +43,11 @@ char ps2_keyboard::getchar() {
 }
 
 void ps2_keyboard::special_key_down(special_key key) {
-
+	input::handle_special_keys_down(&special_keys_down);
 }
 
 void ps2_keyboard::special_key_up(special_key key) {
-
+	input::handle_special_keys_up(&special_keys_down);
 }
 
 void ps2_keyboard::handle() {
@@ -187,8 +187,6 @@ void ps2_keyboard::handle() {
 				current_char = tmp;
 		}
 	}
-
-	input::handle_special_keys(&special_keys_down);
 }
 
 void ps2_keyboard::write(fs::vfs::file_t* file, void* buffer, size_t size, size_t offset) {
