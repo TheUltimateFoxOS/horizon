@@ -5,65 +5,29 @@ var doc_files: {
 
 var template = `
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <link rel="stylesheet" href="https://theultimatefoxos.dev/style.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://theultimatefoxos.dev/main.js" defer></script>
-    <title>FoxOS - Docs</title>
+    {{content.head}}
+    <script src="/scripts/showdown.min.js"></script>
+    <title>FoxOS - Home</title>
   </head>
   <body>
-    <div class="fox-bar" id="fox-bar">
-      <a href="/">Home</a>
-      <a href="/about/">About us</a>
-      <a href="/FoxOS-kernel/">Docs</a>
-      <a href="/modules/">Kernel modules</a>
-      <a href="https://github.com/TheUltimateFoxOS">GitHub</a>
-      <a href="javascript:void(0);" class="icon" onclick="nav_bar_expand()">
-        <i class="fa fa-bars"></i>
-      </a>
-    </div>
-    
-    <header class="fox-header" style="padding:50px 16px">
-      <h1 class="fox-header-title">FoxOS</h1>
-      <p class="fox-header-subtitle">Welcome to the FoxOS website!</p>
-    </header>
+    {{content.navbar}}
     
     <div class="fox-text">
 `;
 
 var index_template = `
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <link rel="stylesheet" href="https://theultimatefoxos.dev/style.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://theultimatefoxos.dev/main.js" defer></script>
-    <title>FoxOS - Docs</title>
+    {{content.head}}
+    <script src="/scripts/showdown.min.js"></script>
+    <title>FoxOS - Home</title>
   </head>
   <body>
-    <div class="fox-bar" id="fox-bar">
-      <a href="/">Home</a>
-      <a href="/about/">About us</a>
-      <a href="/FoxOS-kernel/">Docs</a>
-      <a href="/modules/">Kernel modules</a>
-      <a href="https://github.com/TheUltimateFoxOS">GitHub</a>
-      <a href="javascript:void(0);" class="icon" onclick="nav_bar_expand()">
-        <i class="fa fa-bars"></i>
-      </a>
-    </div>
-    
-    <header class="fox-header" style="padding:50px 16px">
-      <h1 class="fox-header-title">FoxOS</h1>
-      <p class="fox-header-subtitle">Welcome to the FoxOS website!</p>
-    </header>
-    
+    {{content.navbar}}
+	
     <div class="fox-text">
       <ul class="fox-a-nodecoration fox-ul">
 `;
@@ -211,9 +175,7 @@ export function gen_index(save_in: string) {
 
 
 	var html = index_template;
-	html += "      <ul>\n";
 	html += gen_hierarchy([hierarchy], 0);
-	html += "      </ul>\n";
 	html += "    </div>\n  </body>\n</html>";
 	Deno.writeTextFileSync(save_in, html);
 	Deno.writeTextFileSync(save_in.replace(".html", ".json"), JSON.stringify(hierarchy, null, "\t"));
