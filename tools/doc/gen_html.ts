@@ -1,4 +1,7 @@
-var doc_files: string[] = [];
+var doc_files: {
+	html_name: string;
+	path: string;
+}[] = [];
 
 var template = `
 <!DOCTYPE html>
@@ -109,7 +112,7 @@ function gen_function(func: {
 	return html;
 }
 
-export function gen_html(save_in: string, funcs: {
+export function gen_html(save_in: string, path: string, funcs: {
 	return_type: string;
 	class_name: string;
 	function_name: string;
@@ -118,7 +121,10 @@ export function gen_html(save_in: string, funcs: {
 	signature: string;
 	description: string;
 }[]) {
-	doc_files.push(save_in.split("/").pop() as string);
+	doc_files.push({
+		html_name: save_in.split("/").pop() as string,
+		path: path
+	});
 
 	var html = "";
 	for (var func of funcs) {
@@ -128,12 +134,84 @@ export function gen_html(save_in: string, funcs: {
 	Deno.writeTextFileSync(save_in, template + html + "    </div>\n  </body>\n</html>");
 }
 
-export function gen_index(save_in: string) {
-	var html = index_template;
-	for (var func of doc_files) {
-		html += "        <li><a href=\"" + func + "\">" + func.replace(".html", "") + "</a></li>\n"
+interface file_hierarchy {
+	next: file_hierarchy[] | undefined;
+	folder_name: string;
+	files: {
+		html_name: string;
+		file_name: string;
+	}[];
+};
+
+function gen_hierarchy(hierarchy: file_hierarchy[], level: number) {
+	// recursively generate the html for the hierarchy
+	var html = "";
+	for (var folder of hierarchy) {
+		html += "      <li>\n";
+		html += "        <p>" + folder.folder_name + "</p>\n";
+		html += "        <ul>\n";
+		if (folder.next != undefined) {
+			html += gen_hierarchy(folder.next, level + 1);
+		}
+		for (var file of folder.files) {
+			html += "          <li><a href=\"" + file.html_name + "\">" + file.file_name + "</a></li>\n";
+		}
+		html += "        </ul>\n";
+		html += "      </li>\n";
 	}
-	html += "      </ul>\n"
+	return html;
+}
+
+export function gen_index(save_in: string) {
+	var hierarchy: file_hierarchy = {
+		next: undefined,
+		folder_name: "horizon",
+		files: []
+	};
+
+	for (var func of doc_files) {
+		var path = func.path.split("/");
+		var current = hierarchy;
+		for (var i = 0; i < path.length; i++) {
+			var folder_name = path[i];
+			if (i == path.length - 1) {
+				current.files.push({
+					html_name: func.html_name,
+					file_name: func.path.split("/").pop() as string
+				});
+			} else {
+				var next = current.next;
+				if (next == undefined) {
+					next = [];
+					current.next = next;
+				}
+				var found = false;
+				for (var j = 0; j < next.length; j++) {
+					if (next[j].folder_name == folder_name) {
+						found = true;
+						current = next[j];
+						break;
+					}
+				}
+				if (!found) {
+					var new_folder = {
+						next: undefined,
+						folder_name: folder_name,
+						files: []
+					};
+					next.push(new_folder);
+					current = new_folder;
+				}
+			}
+		}
+	}
+
+
+	var html = index_template;
+	html += "      <ul>\n";
+	html += gen_hierarchy([hierarchy], 0);
+	html += "      </ul>\n";
 	html += "    </div>\n  </body>\n</html>";
 	Deno.writeTextFileSync(save_in, html);
+	Deno.writeTextFileSync(save_in.replace(".html", ".json"), JSON.stringify(hierarchy, null, "\t"));
 }

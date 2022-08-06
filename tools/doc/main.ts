@@ -18,7 +18,7 @@ function print_progress(progress: number) {
 
 function main() {
 	const files = getFiles({
-		root: './core/',
+		root: './',
 		exclude: ['.git'],
 	});
 
@@ -29,10 +29,16 @@ function main() {
 
 	for (const file of files) {
 		try {
-			if (file.ext == "h" || file.ext == "psf" || file.ext == "bmp") {
+			var ignore = [ "h", "psf", "ts", "bmp", "", "md", "flags", "module", "txt", "html" ];
+			if (ignore.includes(file.ext)) {
 				continue;
 			}
 
+			var exclude_regex = eval(`/# ?exclude:${file.path.replaceAll("/", "_")}/g`);
+			var exclude_match = exclude_regex.exec(docs_file); 
+			if (exclude_match) {
+				continue;
+			}
 			var doc = get_documentation(file.path, file.ext);
 
 			var new_doc: {
@@ -47,7 +53,7 @@ function main() {
 
 			for (var d of doc) {
 				num_functions++;
-				var doc_regex = eval(`/# ?${file.name}:${d.function_name}: ?([\\w\\d ;:_\\-#+\\*.,'/]*)/g`);
+				var doc_regex = eval(`/# ?${file.path.replaceAll("/", "_")}:${d.function_name}: ?([\\w\\d ;:_\\-#+\\*.,'/]*)/g`);
 				var doc_match = doc_regex.exec(docs_file);
 				if (doc_match) {
 					num_functions_documented++;
@@ -64,11 +70,11 @@ function main() {
 							description: "No description",
 						}
 					});
-					console.error(`Could not find doc for ${file.name}:${d.function_name}`);
+					console.error(`Could not find doc for ${file.path.replaceAll("/", "_")}:${d.function_name}`);
 				}
 			}
 
-			gen_html(`./docs/${file.name}.html`, new_doc);
+			gen_html(`./docs/${file.path.replaceAll("/", "_")}.html`, file.path, new_doc);
 		} catch (e) {
 			console.error(e);
 			continue;

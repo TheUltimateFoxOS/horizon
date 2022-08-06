@@ -1,180 +1,186 @@
-#main.cpp:main: The main entry point of the kernel
-#gdt.cpp:setup_gdt: Loads the Global Descriptor Table
-#output.cpp:output_device::putstring: Prints a string to the output device
-#output.cpp:output_device::putchar: Prints a character to the output device
-#serial_port.cpp:serial_port::putstring: Prints a string to the serial port
-#serial_port.cpp:serial_port::putchar: Prints a character to the serial port
-#serial_port.cpp:serial_port::is_transmit_empty: Checks if the serial port is ready to transmit
-#serial_port.cpp:serial_port::serial_port: Constructor for the serial port class
-#sys_memory.cpp:syscall::sys_memory_free: Syscall to free a block of memory
-#sys_memory.cpp:syscall::sys_memory_alloc: Syscall to allocate a block of memory
-#sys_write.cpp:syscall::sys_write: Syscall to write to an file descriptor
-#sys_socket_disconnect.cpp:syscall::sys_socket_disconnect: Syscall to disconnect a socket
-#sys_mkdir.cpp:syscall::sys_mkdir: Syscall to create a directory
-#sys_time.cpp:syscall::sys_time: Syscall to get the current unix time
-#sys_memory_info.cpp:syscall::sys_memory_info: Syscall to get the memory information
-#sys_sound_push_note.cpp:syscall::sys_sound_push_note: Syscall to push a note to the sound device queue
-#syscall_handler.asm:syscall_interrupt_stub: The syscall interrupt stub
-#sys_socket_recv.cpp:syscall::sys_socket_recv: Syscall to receive data from a socket
-#sys_delete_dir.cpp:syscall::sys_delete_dir: Syscall to delete a directory
-#sys_socket_send.cpp:syscall::sys_socket_send: Syscall to send data to a socket
-#sys_ipc_send_message.cpp:syscall::sys_ipc_send_message: Syscall to send a message to an ipc handler
-#sys_env.cpp:syscall::sys_env: Syscall to get the either process specific or global environment
-#sys_socket_connect.cpp:syscall::sys_socket_connect: Syscall to connect to a socket
-#sys_mouse_get_buttons.cpp:syscall::sys_mouse_get_buttons: Syscall to get the mouse buttons state
-#sys_thread.cpp:syscall::sys_thread: Syscall to create a thread
-#sys_get_file_size.cpp:syscall::sys_get_file_size: Syscall to get the size of a file
-#sys_ipc_get_hid.cpp:syscall::sys_ipc_get_hid: Syscall to get the handler id of an ipc handler
-#sys_exit.cpp:syscall::sys_exit: Syscall to exit the current process
-#sys_sound_sync.cpp:syscall::sys_sound_sync: Syscall to wait for the sound device to finish playing the queue
-#sys_touch.cpp:syscall::sys_touch: Syscall to create a new file
-#sys_open.cpp:syscall::sys_open: Syscall to open a file
-#sys_read.cpp:syscall::sys_read: Syscall to read from a file
-#sys_delete.cpp:syscall::sys_delete: Syscall to delete a file
-#sys_close.cpp:syscall::sys_close: Syscall to close a file
-#sys_ipc_register.cpp:syscall::sys_ipc_register: Syscall to register an ipc handler
-#sys_dns_resolve.cpp:syscall::sys_dns_resolve: Syscall to resolve a hostname to an ip address
-#sys_mouse_get_pos.cpp:syscall::sys_mouse_get_pos: Syscall to get the mouse position
-#sys_fs_at.cpp:syscall::sys_fs_at: Syscall to get the mounted filesystem
-#syscall.cpp:syscall::setup: Sets up the syscall table
-#syscall.cpp:test_syscall: Test syscall
-#syscall.cpp:syscall::get_id_syscall: Syscall to get the id of an syscall
-#sys_spawn.cpp:syscall::sys_spawn: Syscall to spawn a new process
-#sys_mouse_reset.cpp:syscall::sys_mouse_reset: Syscall to reset the mouse
-#sys_dir_at.cpp:syscall::sys_dir_at: Syscall to get the contents of a directory
-#sys_ipc_unregister.cpp:syscall::sys_ipc_unregister: Syscall to unregister an ipc handler
-#sys_sound_get_channel_count.cpp:syscall::sys_sound_get_channel_count: Syscall to get the number of sound channels available
-#sys_delay.cpp:syscall::sys_delay: Syscall to delay the current process
-#sys_icmp_echo_request.cpp:syscall::sys_icmp_echo_request: Syscall to send an icmp echo request
-#sys_insmod.cpp:syscall::sys_insmod: Syscall to load a kernel module
-#argparse.cpp:setup_global_argparser: Sets up the global argparser
-#argparse.cpp:argparser::get_arg: Gets an argument from the argparser
-#argparse.cpp:argparser::is_arg: Checks if an argument is present in the argparser
-#argparse.cpp:argparser::argparser: Constructor for the argparser class
-#vsprintf.cpp:vsprintf: Prints a formatted string to a buffer
-#vsprintf.cpp:print_num: Prints a number to a buffer
-#lock.asm:atomic_spinlock: Waits for a spinlock to be unlocked
-#lock.asm:atomic_unlock: Unlocks a spinlock
-#lock.asm:atomic_lock: Locks a spinlock
-#mmio.cpp:MMIO::write64: Writes a 64 bit value to a mmio register
-#mmio.cpp:MMIO::write32: Writes a 32 bit value to a mmio register
-#mmio.cpp:MMIO::write16: Writes a 16 bit value to a mmio register
-#mmio.cpp:MMIO::write8: Writes a 8 bit value to a mmio register
-#mmio.cpp:MMIO::read64: Reads a 64 bit value from a mmio register
-#mmio.cpp:MMIO::read32: Reads a 32 bit value from a mmio register
-#mmio.cpp:MMIO::read16: Reads a 16 bit value from a mmio register
-#mmio.cpp:MMIO::read8: Reads a 8 bit value from a mmio register
-#assert.cpp:__assert_fail: If an assertion fails, this function is called
-#port.cpp:outl: Writes a 32 bit value to a port
-#port.cpp:inl: Reads a 32 bit value from a port
-#port.cpp:outw: Writes a 16 bit value to a port
-#port.cpp:inw: Reads a 16 bit value from a port
-#port.cpp:outb: Writes a 8 bit value to a port
-#port.cpp:inb: Reads a 8 bit value from a port
-#port.cpp:io_wait: Waits for a port to be ready
-#port.cpp:Port32Bit::Write: Writes a 32 bit value to a port
-#port.cpp:Port32Bit::Read: Reads a 32 bit value from a port
-#port.cpp:Port32Bit::~Port32Bit: Destructor for the class
-#port.cpp:Port32Bit::Port32Bit: Constructor for the class
-#port.cpp:Port16Bit::Write: Writes a 16 bit value to a port
-#port.cpp:Port16Bit::Read: Reads a 16 bit value from a port
-#port.cpp:Port16Bit::~Port16Bit: Destructor for the class
-#port.cpp:Port16Bit::Port16Bit: Constructor for the class
-#port.cpp:Port8Bit::Write: Writes a 8 bit value to a port
-#port.cpp:Port8Bit::Read: Reads a 8 bit value from a port
-#port.cpp:Port8Bit::~Port8Bit: Destructor for the class
-#port.cpp:Port8Bit::Port8Bit: Constructor for the class
-#abort.cpp:abortf: Causes a kernel panic
-#string.cpp:strcmp: Compares two strings
-#string.cpp:memcmp: Compares two memory regions
-#string.cpp:memset: Sets a memory region to a value
-#string.cpp:memcpy: Copies a memory region
-#string.cpp:sprintf: Prints a formatted string to a buffer
-#string.cpp:strcat: Concatenates two strings
-#string.cpp:strchr: Searches for a character in a string
-#string.cpp:strnlen: Gets the length of a string
-#string.cpp:strlen: Gets the length of a string
-#string.cpp:strcpy: Copies a string
-#log.cpp:printf: Prints a formatted string to the screen
-#log.cpp:debugf_intrnl: Internal function used for debugf
-#fxsr.asm:fxrstor_if_supported: Restores the fpu state if it is supported
-#fxsr.asm:fxsave_if_supported: Saves the fpu state if it is supported
-#unix_time.cpp:from_unix_time: Converts unix time to a struct
-#unix_time.cpp:to_unix_time: Converts a struct to unix time
-#ipc.cpp:ipc::init: Initializes the ipc system
-#ipc.cpp:ipc_manager::send_message: Sends a message to a process
-#ipc.cpp:ipc_manager::get_hid: Gets the handler id of an ipc handler
-#ipc.cpp:ipc_manager::unregister_callback: Unregisters an ipc handler
-#ipc.cpp:ipc_manager::register_callback: Registers an ipc handler
-#ipc.cpp:ipc_manager::ipc_manager: Constructor for the ipc manager class
-#cstr.cpp:num_to_string: Converts a number to a string
-#elf_loader.cpp:elf::load_elf: Loads an elf file
-#elf_loader.cpp:elf_apply_relocations: Applies relocations to an elf file
-#elf_resolver.cpp:elf::resolve_symbol: Resolves a symbol in the kernel and the loaded modules
-#elf_resolver.cpp:elf::setup: Sets up the elf resolver system
-#elf_resolver.cpp:elf_symbol_resolver::resolve: Resolves a symbol in an elf file
-#elf_resolver.cpp:elf_symbol_resolver::elf_symbol_resolver: Constructor for the elf symbol resolver class
-#kernel_module.cpp:elf::fs_init_all: Calls the fs_init function for all modules
-#kernel_module.cpp:elf::device_init_all: Calls the device_init function for all modules
-#kernel_module.cpp:elf::load_kernel_module: Loads a kernel module
-#kernel_module.cpp:kernel_module_render_status: Renders the status of loading process of a kernel module
-#function_patch.cpp:unpatch: Unpatches a function
-#function_patch.cpp:elf::patch: Patches a function
-#boot_screen_renderer.cpp:boot_screen_renderer::handle: Handles the timer interrupt for the boot screen renderer
-#boot_screen_renderer.cpp:boot_screen_renderer::set_progress: Sets the progress of the boot screen progress bar
-#boot_screen_renderer.cpp:boot_screen_renderer::putstring: Does nothing
-#boot_screen_renderer.cpp:boot_screen_renderer::putchar: Does nothing
-#boot_screen_renderer.cpp:boot_screen_renderer::~boot_screen_renderer: Destructor for the class
-#boot_screen_renderer.cpp:boot_screen_renderer::boot_screen_renderer: Constructor for the class
-#font_renderer.cpp:font_renderer::write: Handler for the font_renderer dev fs file
-#font_renderer.cpp:font_renderer::get_name: Gets the name of the dev fs file
-#font_renderer.cpp:font_renderer::reset_color: Resets the color of the font renderer
-#font_renderer.cpp:font_renderer::set_color: Sets the color of the font renderer
-#font_renderer.cpp:font_renderer::clear_line: Clears the current line
-#font_renderer.cpp:font_renderer::clear: Clears the screen
-#font_renderer.cpp:font_renderer::putstring: Writes a string to the screen
-#font_renderer.cpp:font_renderer::putchar: Writes a character to the screen
-#font_renderer.cpp:font_renderer::font_renderer: Constructor for the class
-#timer.cpp:timer::setup: Sets up the timers in the system
-#timer.cpp:timer_device::sleep: Sleeps for a certain amount of time
-#pit.cpp:pit_timer::sleep: Sleeps for a certain amount of time
-#pit.cpp:pit_timer::handle: Handles the timer interrupt for the pit timer
-#pit.cpp:pit_timer::set_divisor: Sets the divisor of the pit timer
-#pit.cpp:pit_timer::pit_timer: Constructor for the pit timer class
-#hpet.cpp:hpet_timer::is_available: Checks if the hpet timer is available
-#hpet.cpp:hpet_timer::sleep: Sleeps for a certain amount of time
-#hpet.cpp:hpet_timer::hpet_timer: Constructor for the hpet timer class
-#sound.cpp:sound_device::get_channel_count: Gets the number of channels of the sound device
-#sound.cpp:sound_device::sync: Waits until the sound device queue is empty
-#sound.cpp:sound_device::push_note: Pushes a note to the sound device queue
-#sound.cpp:sound_device::sound_device: Constructor for the sound device class
-#scheduler.cpp:scheduler::get_cwd_self: Gets the current working directory of the current process
-#scheduler.cpp:scheduler::read_running_tasks: Get a list of all running tasks
-#scheduler.cpp:scheduler::set_cwd_self: Sets the current working directory of the current process
-#scheduler.cpp:scheduler::register_signal_handler_self: Registers a signal handler for the current process
-#scheduler.cpp:scheduler::handle_signal_all_tasks: Sends an signal to all tasks
-#scheduler.cpp:scheduler::handle_signal: Sends an signal to the current task
-#scheduler.cpp:scheduler::create_task: Creates a new task
-#scheduler.cpp:scheduler::kill_self: Kills the current task
-#scheduler.cpp:scheduler::start: Starts the scheduler
-#scheduler.cpp:scheduler::setup: Sets up the scheduler
-#scheduler.cpp:scheduler_interrupt: Handles the timer interrupt for the scheduler
-#ubsan.cpp:__ubsan_handle_pointer_overflow: Sanitizer handler for a pointer overflow
-#ubsan.cpp:__ubsan_handle_invalid_builtin: Sanitizer handler for an invalid builtin
-#ubsan.cpp:__ubsan_handle_implicit_conversion: Sanitizer handler for an implicit conversion
-#ubsan.cpp:__ubsan_handle_missing_return: Sanitizer handler for a missing return
-#ubsan.cpp:__ubsan_handle_builtin_unreachable: Sanitizer handler for a builtin unreachable
-#ubsan.cpp:__ubsan_handle_alignment_assumption: Sanitizer handler for an alignment assumption
-#ubsan.cpp:__ubsan_handle_type_mismatch_v1: Sanitizer handler for a type mismatch
-#ubsan.cpp:__ubsan_handle_out_of_bounds: Sanitizer handler for an out of bounds access
-#ubsan.cpp:__ubsan_handle_divrem_overflow: Sanitizer handler for a division overflow
-#ubsan.cpp:__ubsan_handle_mul_overflow: Sanitizer handler for a multiplication overflow
-#ubsan.cpp:__ubsan_handle_negate_overflow: Sanitizer handler for a negation overflow
-#ubsan.cpp:__ubsan_handle_sub_overflow: Sanitizer handler for a subtraction overflow
-#ubsan.cpp:__ubsan_handle_add_overflow: Sanitizer handler for an addition overflow
-#ubsan.cpp:__ubsan_handle_vla_bound_not_positive: Sanitizer handler for a vla bound not positive
-#ubsan.cpp:__ubsan_handle_nullability_return_v1: Sanitizer handler for a nullability return
-#ubsan.cpp:__ubsan_handle_nonnull_return_v1: Sanitizer handler for a nonnull return
-#ubsan.cpp:__ubsan_handle_nullability_arg: Sanitizer handler for a nullability argument
-#ubsan.cpp:__ubsan_handle_nonnull_arg: Sanitizer handler for a nonnull argument
-#ubsan.cpp:__ubsan_handle_load_invalid_value: Sanitizer handler for a load invalid value
+#core_main.cpp:main: The main entry point of the kernel
+#core_gdt.cpp:setup_gdt: Loads the Global Descriptor Table
+#core_output_output.cpp:output_device::putstring: Prints a string to the output device
+#core_output_output.cpp:output_device::putchar: Prints a character to the output device
+#core_output_serial_port.cpp:serial_port::putstring: Prints a string to the serial port
+#core_output_serial_port.cpp:serial_port::putchar: Prints a character to the serial port
+#core_output_serial_port.cpp:serial_port::is_transmit_empty: Checks if the serial port is ready to transmit
+#core_output_serial_port.cpp:serial_port::serial_port: Constructor for the serial port class
+#core_syscall_sys_memory.cpp:syscall::sys_memory_free: Syscall to free a block of memory
+#core_syscall_sys_memory.cpp:syscall::sys_memory_alloc: Syscall to allocate a block of memory
+#core_syscall_sys_write.cpp:syscall::sys_write: Syscall to write to an file descriptor
+#core_syscall_sys_socket_disconnect.cpp:syscall::sys_socket_disconnect: Syscall to disconnect a socket
+#core_syscall_sys_mkdir.cpp:syscall::sys_mkdir: Syscall to create a directory
+#core_core_syscall_sys_time.cpp:syscall::sys_time: Syscall to get the current unix time
+#core_syscall_sys_memory_info.cpp:syscall::sys_memory_info: Syscall to get the memory information
+#core_syscall_sys_sound_push_note.cpp:syscall::sys_sound_push_note: Syscall to push a note to the sound device queue
+#core_syscall_syscall_handler.asm:syscall_interrupt_stub: The syscall interrupt stub
+#core_syscall_sys_socket_recv.cpp:syscall::sys_socket_recv: Syscall to receive data from a socket
+#core_syscall_sys_delete_dir.cpp:syscall::sys_delete_dir: Syscall to delete a directory
+#core_syscall_sys_socket_send.cpp:syscall::sys_socket_send: Syscall to send data to a socket
+#core_syscall_sys_ipc_send_message.cpp:syscall::sys_ipc_send_message: Syscall to send a message to an ipc handler
+#core_syscall_sys_env.cpp:syscall::sys_env: Syscall to get the either process specific or global environment
+#core_syscall_sys_socket_connect.cpp:syscall::sys_socket_connect: Syscall to connect to a socket
+#core_syscall_sys_mouse_get_buttons.cpp:syscall::sys_mouse_get_buttons: Syscall to get the mouse buttons state
+#core_syscall_sys_thread.cpp:syscall::sys_thread: Syscall to create a thread
+#core_syscall_sys_get_file_size.cpp:syscall::sys_get_file_size: Syscall to get the size of a file
+#core_syscall_sys_ipc_get_hid.cpp:syscall::sys_ipc_get_hid: Syscall to get the handler id of an ipc handler
+#core_syscall_sys_exit.cpp:syscall::sys_exit: Syscall to exit the current process
+#core_syscall_sys_sound_sync.cpp:syscall::sys_sound_sync: Syscall to wait for the sound device to finish playing the queue
+#core_syscall_sys_touch.cpp:syscall::sys_touch: Syscall to create a new file
+#core_syscall_sys_open.cpp:syscall::sys_open: Syscall to open a file
+#core_syscall_sys_read.cpp:syscall::sys_read: Syscall to read from a file
+#core_syscall_sys_delete.cpp:syscall::sys_delete: Syscall to delete a file
+#core_syscall_sys_close.cpp:syscall::sys_close: Syscall to close a file
+#core_syscall_sys_ipc_register.cpp:syscall::sys_ipc_register: Syscall to register an ipc handler
+#core_syscall_sys_dns_resolve.cpp:syscall::sys_dns_resolve: Syscall to resolve a hostname to an ip address
+#core_syscall_sys_mouse_get_pos.cpp:syscall::sys_mouse_get_pos: Syscall to get the mouse position
+#core_syscall_sys_fs_at.cpp:syscall::sys_fs_at: Syscall to get the mounted filesystem
+#core_syscall_syscall.cpp:syscall::setup: Sets up the syscall table
+#core_syscall_syscall.cpp:test_syscall: Test syscall
+#core_syscall_syscall.cpp:syscall::get_id_syscall: Syscall to get the id of an syscall
+#core_syscall_sys_spawn.cpp:syscall::sys_spawn: Syscall to spawn a new process
+#core_syscall_sys_mouse_reset.cpp:syscall::sys_mouse_reset: Syscall to reset the mouse
+#core_syscall_sys_dir_at.cpp:syscall::sys_dir_at: Syscall to get the contents of a directory
+#core_syscall_sys_ipc_unregister.cpp:syscall::sys_ipc_unregister: Syscall to unregister an ipc handler
+#core_syscall_sys_sound_get_channel_count.cpp:syscall::sys_sound_get_channel_count: Syscall to get the number of sound channels available
+#core_syscall_sys_delay.cpp:syscall::sys_delay: Syscall to delay the current process
+#core_syscall_sys_icmp_echo_request.cpp:syscall::sys_icmp_echo_request: Syscall to send an icmp echo request
+#core_syscall_sys_insmod.cpp:syscall::sys_insmod: Syscall to load a kernel module
+#core_utils_argparse.cpp:setup_global_argparser: Sets up the global argparser
+#core_utils_argparse.cpp:argparser::get_arg: Gets an argument from the argparser
+#core_utils_argparse.cpp:argparser::is_arg: Checks if an argument is present in the argparser
+#core_utils_argparse.cpp:argparser::argparser: Constructor for the argparser class
+#core_utils_vsprintf.cpp:vsprintf: Prints a formatted string to a buffer
+#core_utils_vsprintf.cpp:print_num: Prints a number to a buffer
+#core_utils_lock.asm:atomic_spinlock: Waits for a spinlock to be unlocked
+#core_utils_lock.asm:atomic_unlock: Unlocks a spinlock
+#core_utils_lock.asm:atomic_lock: Locks a spinlock
+#core_utils_mmio.cpp:MMIO::write64: Writes a 64 bit value to a mmio register
+#core_utils_mmio.cpp:MMIO::write32: Writes a 32 bit value to a mmio register
+#core_utils_mmio.cpp:MMIO::write16: Writes a 16 bit value to a mmio register
+#core_utils_mmio.cpp:MMIO::write8: Writes a 8 bit value to a mmio register
+#core_utils_mmio.cpp:MMIO::read64: Reads a 64 bit value from a mmio register
+#core_utils_mmio.cpp:MMIO::read32: Reads a 32 bit value from a mmio register
+#core_utils_mmio.cpp:MMIO::read16: Reads a 16 bit value from a mmio register
+#core_utils_mmio.cpp:MMIO::read8: Reads a 8 bit value from a mmio register
+#core_utils_assert.cpp:__assert_fail: If an assertion fails, this function is called
+#core_utils_port.cpp:outl: Writes a 32 bit value to a port
+#core_utils_port.cpp:inl: Reads a 32 bit value from a port
+#core_utils_port.cpp:outw: Writes a 16 bit value to a port
+#core_utils_port.cpp:inw: Reads a 16 bit value from a port
+#core_utils_port.cpp:outb: Writes a 8 bit value to a port
+#core_utils_port.cpp:inb: Reads a 8 bit value from a port
+#core_utils_port.cpp:io_wait: Waits for a port to be ready
+#core_utils_port.cpp:Port32Bit::Write: Writes a 32 bit value to a port
+#core_utils_port.cpp:Port32Bit::Read: Reads a 32 bit value from a port
+#core_utils_port.cpp:Port32Bit::~Port32Bit: Destructor for the class
+#core_utils_port.cpp:Port32Bit::Port32Bit: Constructor for the class
+#core_utils_port.cpp:Port16Bit::Write: Writes a 16 bit value to a port
+#core_utils_port.cpp:Port16Bit::Read: Reads a 16 bit value from a port
+#core_utils_port.cpp:Port16Bit::~Port16Bit: Destructor for the class
+#core_utils_port.cpp:Port16Bit::Port16Bit: Constructor for the class
+#core_utils_port.cpp:Port8Bit::Write: Writes a 8 bit value to a port
+#core_utils_port.cpp:Port8Bit::Read: Reads a 8 bit value from a port
+#core_utils_port.cpp:Port8Bit::~Port8Bit: Destructor for the class
+#core_utils_port.cpp:Port8Bit::Port8Bit: Constructor for the class
+#core_utils_abort.cpp:abortf: Causes a kernel panic
+#core_utils_string.cpp:strcmp: Compares two strings
+#core_utils_string.cpp:memcmp: Compares two memory regions
+#core_utils_string.cpp:memset: Sets a memory region to a value
+#core_utils_string.cpp:memcpy: Copies a memory region
+#core_utils_string.cpp:sprintf: Prints a formatted string to a buffer
+#core_utils_string.cpp:strcat: Concatenates two strings
+#core_utils_string.cpp:strchr: Searches for a character in a string
+#core_utils_string.cpp:strnlen: Gets the length of a string
+#core_utils_string.cpp:strlen: Gets the length of a string
+#core_utils_string.cpp:strcpy: Copies a string
+#core_utils_log.cpp:printf: Prints a formatted string to the screen
+#core_utils_log.cpp:debugf_intrnl: Internal function used for debugf
+#core_utils_fxsr.asm:fxrstor_if_supported: Restores the fpu state if it is supported
+#core_utils_fxsr.asm:fxsave_if_supported: Saves the fpu state if it is supported
+#core_utils_unix_time.cpp:from_unix_time: Converts unix time to a struct
+#core_utils_unix_time.cpp:to_unix_time: Converts a struct to unix time
+#core_utils_ipc.cpp:ipc::init: Initializes the ipc system
+#core_utils_ipc.cpp:ipc_manager::send_message: Sends a message to a process
+#core_utils_ipc.cpp:ipc_manager::get_hid: Gets the handler id of an ipc handler
+#core_utils_ipc.cpp:ipc_manager::unregister_callback: Unregisters an ipc handler
+#core_utils_ipc.cpp:ipc_manager::register_callback: Registers an ipc handler
+#core_utils_ipc.cpp:ipc_manager::ipc_manager: Constructor for the ipc manager class
+#core_utils_cstr.cpp:num_to_string: Converts a number to a string
+#core_elf_elf_loader.cpp:elf::load_elf: Loads an elf file
+#core_elf_elf_loader.cpp:elf_apply_relocations: Applies relocations to an elf file
+#core_elf_elf_resolver.cpp:elf::resolve_symbol: Resolves a symbol in the kernel and the loaded modules
+#core_elf_elf_resolver.cpp:elf::setup: Sets up the elf resolver system
+#core_elf_elf_resolver.cpp:elf_symbol_resolver::resolve: Resolves a symbol in an elf file
+#core_elf_elf_resolver.cpp:elf_symbol_resolver::elf_symbol_resolver: Constructor for the elf symbol resolver class
+#core_elf_kernel_module.cpp:elf::fs_init_all: Calls the fs_init function for all modules
+#core_elf_kernel_module.cpp:elf::device_init_all: Calls the device_init function for all modules
+#core_elf_kernel_module.cpp:elf::load_kernel_module: Loads a kernel module
+#core_elf_kernel_module.cpp:kernel_module_render_status: Renders the status of loading process of a kernel module
+#core_elf_function_patch.cpp:unpatch: Unpatches a function
+#core_elf_function_patch.cpp:elf::patch: Patches a function
+#core_renderer_boot_screen_renderer.cpp:boot_screen_renderer::handle: Handles the timer interrupt for the boot screen renderer
+#core_renderer_boot_screen_renderer.cpp:boot_screen_renderer::set_progress: Sets the progress of the boot screen progress bar
+#core_renderer_boot_screen_renderer.cpp:boot_screen_renderer::putstring: Does nothing
+#core_renderer_boot_screen_renderer.cpp:boot_screen_renderer::putchar: Does nothing
+#core_renderer_boot_screen_renderer.cpp:boot_screen_renderer::~boot_screen_renderer: Destructor for the class
+#core_renderer_boot_screen_renderer.cpp:boot_screen_renderer::boot_screen_renderer: Constructor for the class
+#core_renderer_font_renderer.cpp:font_renderer::write: Handler for the font_renderer dev fs file
+#core_renderer_font_renderer.cpp:font_renderer::get_name: Gets the name of the dev fs file
+#core_renderer_font_renderer.cpp:font_renderer::reset_color: Resets the color of the font renderer
+#core_renderer_font_renderer.cpp:font_renderer::set_color: Sets the color of the font renderer
+#core_renderer_font_renderer.cpp:font_renderer::clear_line: Clears the current line
+#core_renderer_font_renderer.cpp:font_renderer::clear: Clears the screen
+#core_renderer_font_renderer.cpp:font_renderer::putstring: Writes a string to the screen
+#core_renderer_font_renderer.cpp:font_renderer::putchar: Writes a character to the screen
+#core_renderer_font_renderer.cpp:font_renderer::font_renderer: Constructor for the class
+#core_timer_timer.cpp:timer::setup: Sets up the timers in the system
+#core_timer_timer.cpp:timer_device::sleep: Sleeps for a certain amount of time
+#core_timer_pit.cpp:pit_timer::sleep: Sleeps for a certain amount of time
+#core_timer_pit.cpp:pit_timer::handle: Handles the timer interrupt for the pit timer
+#core_timer_pit.cpp:pit_timer::set_divisor: Sets the divisor of the pit timer
+#core_timer_pit.cpp:pit_timer::pit_timer: Constructor for the pit timer class
+#core_timer_hpet.cpp:hpet_timer::is_available: Checks if the hpet timer is available
+#core_timer_hpet.cpp:hpet_timer::sleep: Sleeps for a certain amount of time
+#core_timer_hpet.cpp:hpet_timer::hpet_timer: Constructor for the hpet timer class
+#core_sound_sound.cpp:sound_device::get_channel_count: Gets the number of channels of the sound device
+#core_sound_sound.cpp:sound_device::sync: Waits until the sound device queue is empty
+#core_sound_sound.cpp:sound_device::push_note: Pushes a note to the sound device queue
+#core_sound_sound.cpp:sound_device::sound_device: Constructor for the sound device class
+#core_scheduler_scheduler.cpp:scheduler::get_cwd_self: Gets the current working directory of the current process
+#core_scheduler_scheduler.cpp:scheduler::read_running_tasks: Get a list of all running tasks
+#core_scheduler_scheduler.cpp:scheduler::set_cwd_self: Sets the current working directory of the current process
+#core_scheduler_scheduler.cpp:scheduler::register_signal_handler_self: Registers a signal handler for the current process
+#core_scheduler_scheduler.cpp:scheduler::handle_signal_all_tasks: Sends an signal to all tasks
+#core_scheduler_scheduler.cpp:scheduler::handle_signal: Sends an signal to the current task
+#core_scheduler_scheduler.cpp:scheduler::create_task: Creates a new task
+#core_scheduler_scheduler.cpp:scheduler::kill_self: Kills the current task
+#core_scheduler_scheduler.cpp:scheduler::start: Starts the scheduler
+#core_scheduler_scheduler.cpp:scheduler::setup: Sets up the scheduler
+#core_scheduler_scheduler.cpp:scheduler_interrupt: Handles the timer interrupt for the scheduler
+#core_sanitizers_ubsan.cpp:__ubsan_handle_pointer_overflow: Sanitizer handler for a pointer overflow
+#core_sanitizers_ubsan.cpp:__ubsan_handle_invalid_builtin: Sanitizer handler for an invalid builtin
+#core_sanitizers_ubsan.cpp:__ubsan_handle_implicit_conversion: Sanitizer handler for an implicit conversion
+#core_sanitizers_ubsan.cpp:__ubsan_handle_missing_return: Sanitizer handler for a missing return
+#core_sanitizers_ubsan.cpp:__ubsan_handle_builtin_unreachable: Sanitizer handler for a builtin unreachable
+#core_sanitizers_ubsan.cpp:__ubsan_handle_alignment_assumption: Sanitizer handler for an alignment assumption
+#core_sanitizers_ubsan.cpp:__ubsan_handle_type_mismatch_v1: Sanitizer handler for a type mismatch
+#core_sanitizers_ubsan.cpp:__ubsan_handle_out_of_bounds: Sanitizer handler for an out of bounds access
+#core_sanitizers_ubsan.cpp:__ubsan_handle_divrem_overflow: Sanitizer handler for a division overflow
+#core_sanitizers_ubsan.cpp:__ubsan_handle_mul_overflow: Sanitizer handler for a multiplication overflow
+#core_sanitizers_ubsan.cpp:__ubsan_handle_negate_overflow: Sanitizer handler for a negation overflow
+#core_sanitizers_ubsan.cpp:__ubsan_handle_sub_overflow: Sanitizer handler for a subtraction overflow
+#core_sanitizers_ubsan.cpp:__ubsan_handle_add_overflow: Sanitizer handler for an addition overflow
+#core_sanitizers_ubsan.cpp:__ubsan_handle_vla_bound_not_positive: Sanitizer handler for a vla bound not positive
+#core_sanitizers_ubsan.cpp:__ubsan_handle_nullability_return_v1: Sanitizer handler for a nullability return
+#core_sanitizers_ubsan.cpp:__ubsan_handle_nonnull_return_v1: Sanitizer handler for a nonnull return
+#core_sanitizers_ubsan.cpp:__ubsan_handle_nullability_arg: Sanitizer handler for a nullability argument
+#core_sanitizers_ubsan.cpp:__ubsan_handle_nonnull_arg: Sanitizer handler for a nonnull argument
+#core_sanitizers_ubsan.cpp:__ubsan_handle_load_invalid_value: Sanitizer handler for a load invalid value
+
+
+#exclude:filesystems_fat32_fatfs_ff.cpp
+#exclude:filesystems_fat32_fatfs_ffsystem.cpp
+#exclude:filesystems_fat32_fatfs_diskio.cpp
+#exclude:filesystems_fat32_fatfs_ffunicode.cpp
