@@ -180,6 +180,75 @@
 #core_sanitizers_ubsan.cpp:__ubsan_handle_load_invalid_value: Sanitizer handler for a load invalid value
 
 
+#filesystems_foxfs_main.cpp:fs_init: fs_init for the foxfs module
+#filesystems_foxfs_main.cpp:device_init: device_init for the foxfs module
+#filesystems_foxfs_main.cpp:init: init for the foxfs module
+#filesystems_foxfs_foxfs_vfs.cpp:foxfs_mount::delete_dir: Deletes a directory
+#filesystems_foxfs_foxfs_vfs.cpp:foxfs_mount::delete_: Deletes a file
+#filesystems_foxfs_foxfs_vfs.cpp:foxfs_mount::dir_at: Gets the directory at a certain index
+#filesystems_foxfs_foxfs_vfs.cpp:foxfs_mount::mkdir: Creates a directory
+#filesystems_foxfs_foxfs_vfs.cpp:foxfs_mount::touch: Creates a file
+#filesystems_foxfs_foxfs_vfs.cpp:foxfs_mount::write: Writes to a file
+#filesystems_foxfs_foxfs_vfs.cpp:foxfs_mount::read: Reads from a file
+#filesystems_foxfs_foxfs_vfs.cpp:foxfs_mount::close: Closes a file
+#filesystems_foxfs_foxfs_vfs.cpp:foxfs_mount::open: Opens a file
+#filesystems_foxfs_foxfs_vfs.cpp:foxfs_mount::~foxfs_mount: Destructor for the foxfs mount class
+#filesystems_foxfs_foxfs_vfs.cpp:foxfs_mount::foxfs_mount: Constructor for the foxfs mount class
+#filesystems_foxfs_foxfs_fs.cpp:fs::create_dirent: Creates a dirent
+#filesystems_foxfs_foxfs_fs.cpp:fs::path_to_dirent: Converts a path to a dirent
+#filesystems_foxfs_foxfs_fs.cpp:segment_path: Splits a path into segments
+#filesystems_foxfs_foxfs_fs.cpp:fs::readdir: Reads a directory
+#filesystems_foxfs_foxfs_fs.cpp:fs::write_dirent: Writes a directory entry
+#filesystems_foxfs_foxfs_fs.cpp:fs::update_dirent_write: Updates a directory entry
+#filesystems_foxfs_foxfs_fs.cpp:fs::write_dirent_data: Writes directory entry data
+#filesystems_foxfs_foxfs_fs.cpp:fs::read_dirent: Reads a directory entry
+#filesystems_foxfs_foxfs_fs.cpp:fs::update_dirent_read: Updates a directory entry
+#filesystems_foxfs_foxfs_fs.cpp:fs::read_dirent_data: Reads directory entry data
+#filesystems_foxfs_foxfs_fs.cpp:fs::create_data_block: Creates a data block
+#filesystems_foxfs_foxfs_fs.cpp:fs::write_disk_block: Writes a block to the disk
+#filesystems_foxfs_foxfs_fs.cpp:fs::read_disk_block: Reads a block from the disk
+
+#filesystems_fat32_main.cpp:fs_init: fs_init for the fat32 module
+#filesystems_fat32_main.cpp:device_init: device_init for the fat32 module
+#filesystems_fat32_main.cpp:init: init for the fat32 module
+#filesystems_fat32_fat32_vfs.cpp:fat32_mount::delete_dir: Deletes a directory
+#filesystems_fat32_fat32_vfs.cpp:fat32_mount::delete_: Deletes a file
+#filesystems_fat32_fat32_vfs.cpp:fat32_mount::dir_at: Gets the directory at a certain index
+#filesystems_fat32_fat32_vfs.cpp:fat32_mount::mkdir: Creates a directory
+#filesystems_fat32_fat32_vfs.cpp:fat32_mount::touch: Creates a file
+#filesystems_fat32_fat32_vfs.cpp:fat32_mount::write: Writes to a file
+#filesystems_fat32_fat32_vfs.cpp:fat32_mount::read: Reads from a file
+#filesystems_fat32_fat32_vfs.cpp:fat32_mount::close: Closes a file
+#filesystems_fat32_fat32_vfs.cpp:fat32_mount::open: Opens a file
+#filesystems_fat32_fat32_vfs.cpp:fat32_mount::~fat32_mount: Destructor for the fat32 mount class
+#filesystems_fat32_fat32_vfs.cpp:fat32_mount::fat32_mount: Constructor for the fat32 mount class
+#filesystems_fat32_fat32_utils.cpp:fs::get_fattime: Gets the current time formatted for the FAT32 filesystem
+#filesystems_fat32_fat32_utils.cpp:fs::is_fat32: Checks if a filesystem is FAT32
+
+#filesystems_ext2_main.cpp:fs_init: fs_init for the ext2 module
+#filesystems_ext2_main.cpp:device_init: device_init for the ext2 module
+#filesystems_ext2_main.cpp:init: init for the ext2 module
+#filesystems_ext2_ext2_vfs.cpp:ext2_mount::delete_: Deletes a file
+#filesystems_ext2_ext2_vfs.cpp:ext2_mount::touch: Creates a file
+#filesystems_ext2_ext2_vfs.cpp:ext2_mount::dir_at: Gets the directory at a certain index
+#filesystems_ext2_ext2_vfs.cpp:ext2_mount::mkdir: Creates a directory
+#filesystems_ext2_ext2_vfs.cpp:ext2_mount::write: Writes to a file
+#filesystems_ext2_ext2_vfs.cpp:ext2_mount::read: Reads from a file
+#filesystems_ext2_ext2_vfs.cpp:ext2_mount::close: Closes a file
+#filesystems_ext2_ext2_vfs.cpp:ext2_mount::open: Opens a file
+#filesystems_ext2_ext2_vfs.cpp:ext2_mount::~ext2_mount: Destructor for the ext2 mount class
+#filesystems_ext2_ext2_vfs.cpp:ext2_mount::ext2_mount: Constructor for the ext2 mount class
+#filesystems_ext2_ext2_utils.cpp:fs::is_ext2: Checks if a filesystem is EXT2
+#filesystems_ext2_ext2_fs.cpp:fs::path_to_inode: Converts a path to an inode
+#filesystems_ext2_ext2_fs.cpp:fs::readdir: Reads a directory
+#filesystems_ext2_ext2_fs.cpp:fs::write_inode: Writes an inode to the disk
+#filesystems_ext2_ext2_fs.cpp:fs::read_inode: Reads an inode from the disk
+#filesystems_ext2_ext2_fs.cpp:fs::write_disk_blocks: Writes blocks to the disk
+#filesystems_ext2_ext2_fs.cpp:fs::read_disk_blocks: Reads blocks from the disk
+#filesystems_ext2_ext2_fs.cpp:clear_buffer: Clears a buffer
+#filesystems_ext2_ext2_fs.cpp:fs::read_disk_block: Reads a block from the disk
+#filesystems_ext2_ext2_fs.cpp:fs::write_disk_block: Writes a block to the disk
+
 #exclude:filesystems_fat32_fatfs_ff.cpp
 #exclude:filesystems_fat32_fatfs_ffsystem.cpp
 #exclude:filesystems_fat32_fatfs_diskio.cpp
