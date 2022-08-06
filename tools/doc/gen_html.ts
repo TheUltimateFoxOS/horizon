@@ -114,7 +114,7 @@ function gen_hierarchy(hierarchy: file_hierarchy[], level: number) {
 	for (var folder of hierarchy) {
 		html += "      <li>\n";
 		html += "        <p>" + folder.folder_name + "</p>\n";
-		html += "        <ul>\n";
+		html += "        <ul class=\"fox-ul\">\n";
 		if (folder.next != undefined) {
 			html += gen_hierarchy(folder.next, level + 1);
 		}
