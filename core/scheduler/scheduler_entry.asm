@@ -5,6 +5,7 @@
 ; NOTE: the addres to the target task needs to be in rax
 ; we do this to prevent jumping to random code if the task returns
 
+;#task_entry-discard
 task_entry:
 	sti
 
