@@ -68,6 +68,8 @@ var index_template = `
       <ul class="fox-a-nodecoration fox-ul">
 `;
 
+var github_link = "https://github.com/TheUltimateFoxOS/horizon/tree/main/";
+
 function gen_function(func: {
 	return_type: string;
 	class_name: string;
@@ -130,6 +132,7 @@ export function gen_html(save_in: string, path: string, funcs: {
 	for (var func of funcs) {
 		html += gen_function(func);
 	}
+	html += "<a href=\"" + github_link + path + "\">Show file on GitHub</a><br/>\n"
 
 	Deno.writeTextFileSync(save_in, template + html + "    </div>\n  </body>\n</html>");
 }
