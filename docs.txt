@@ -1,0 +1,55 @@
+#main.cpp:main: The main entry point of the kernel
+#gdt.cpp:setup_gdt: Loads the Global Descriptor Table
+#output.cpp:output_device::putstring: Prints a string to the output device
+#output.cpp:output_device::putchar: Prints a character to the output device
+#serial_port.cpp:serial_port::putstring: Prints a string to the serial port
+#serial_port.cpp:serial_port::putchar: Prints a character to the serial port
+#serial_port.cpp:serial_port::is_transmit_empty: Checks if the serial port is ready to transmit
+#serial_port.cpp:serial_port::serial_port: Constructor for the serial port class
+#sys_memory.cpp:syscall::sys_memory_free: Syscall to free a block of memory
+#sys_memory.cpp:syscall::sys_memory_alloc: Syscall to allocate a block of memory
+#sys_write.cpp:syscall::sys_write: Syscall to write to an file descriptor
+#sys_socket_disconnect.cpp:syscall::sys_socket_disconnect: Syscall to disconnect a socket
+#sys_mkdir.cpp:syscall::sys_mkdir: Syscall to create a directory
+#sys_time.cpp:syscall::sys_time: Syscall to get the current unix time
+#sys_memory_info.cpp:syscall::sys_memory_info: Syscall to get the memory information
+#sys_sound_push_note.cpp:syscall::sys_sound_push_note: Syscall to push a note to the sound device queue
+#syscall_handler.asm:syscall_interrupt_stub: The syscall interrupt stub
+#sys_socket_recv.cpp:syscall::sys_socket_recv: Syscall to receive data from a socket
+#sys_delete_dir.cpp:syscall::sys_delete_dir: Syscall to delete a directory
+#sys_socket_send.cpp:syscall::sys_socket_send: Syscall to send data to a socket
+#sys_ipc_send_message.cpp:syscall::sys_ipc_send_message: Syscall to send a message to an ipc handler
+#sys_env.cpp:syscall::sys_env: Syscall to get the either process specific or global environment
+#sys_socket_connect.cpp:syscall::sys_socket_connect: Syscall to connect to a socket
+#sys_mouse_get_buttons.cpp:syscall::sys_mouse_get_buttons: Syscall to get the mouse buttons state
+#sys_thread.cpp:syscall::sys_thread: Syscall to create a thread
+#sys_get_file_size.cpp:syscall::sys_get_file_size: Syscall to get the size of a file
+#sys_ipc_get_hid.cpp:syscall::sys_ipc_get_hid: Syscall to get the handler id of an ipc handler
+#sys_exit.cpp:syscall::sys_exit: Syscall to exit the current process
+#sys_sound_sync.cpp:syscall::sys_sound_sync: Syscall to wait for the sound device to finish playing the queue
+#sys_touch.cpp:syscall::sys_touch: Syscall to create a new file
+#sys_open.cpp:syscall::sys_open: Syscall to open a file
+#sys_read.cpp:syscall::sys_read: Syscall to read from a file
+#sys_delete.cpp:syscall::sys_delete: Syscall to delete a file
+#sys_close.cpp:syscall::sys_close: Syscall to close a file
+#sys_ipc_register.cpp:syscall::sys_ipc_register: Syscall to register an ipc handler
+#sys_dns_resolve.cpp:syscall::sys_dns_resolve: Syscall to resolve a hostname to an ip address
+#sys_mouse_get_pos.cpp:syscall::sys_mouse_get_pos: Syscall to get the mouse position
+#sys_fs_at.cpp:syscall::sys_fs_at: Syscall to get the mounted filesystem
+#syscall.cpp:syscall::setup: Sets up the syscall table
+#syscall.cpp:test_syscall: Test syscall
+#syscall.cpp:syscall::get_id_syscall: Syscall to get the id of an syscall
+#sys_spawn.cpp:syscall::sys_spawn: Syscall to spawn a new process
+#sys_mouse_reset.cpp:syscall::sys_mouse_reset: Syscall to reset the mouse
+#sys_dir_at.cpp:syscall::sys_dir_at: Syscall to get the contents of a directory
+#sys_ipc_unregister.cpp:syscall::sys_ipc_unregister: Syscall to unregister an ipc handler
+#sys_sound_get_channel_count.cpp:syscall::sys_sound_get_channel_count: Syscall to get the number of sound channels available
+#sys_delay.cpp:syscall::sys_delay: Syscall to delay the current process
+#sys_icmp_echo_request.cpp:syscall::sys_icmp_echo_request: Syscall to send an icmp echo request
+#sys_insmod.cpp:syscall::sys_insmod: Syscall to load a kernel module
+#argparse.cpp:setup_global_argparser: Sets up the global argparser
+#argparse.cpp:argparser::get_arg: Gets an argument from the argparser
+#argparse.cpp:argparser::is_arg: Checks if an argument is present in the argparser
+#argparse.cpp:argparser::argparser: Constructor for the argparser class
+#vsprintf.cpp:vsprintf: Prints a formatted string to a buffer
+#vsprintf.cpp:print_num: Prints a number to a buffer

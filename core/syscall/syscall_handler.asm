@@ -36,6 +36,8 @@
     pop rax
 %endmacro
 
+;# syscall_interrupt_stub-signature: void syscall_interrupt_stub()
+
 [global syscall_interrupt_stub]
 syscall_interrupt_stub:
 	push 0
@@ -79,6 +81,10 @@ max_syscall equ 255
 
 [global syscall_table]
 [global syscall_table_size]
+
+
+;#syscall_table-discard
+;#syscall_table_end-discard
 
 syscall_table:
 	times  max_syscall * 8 db 0
