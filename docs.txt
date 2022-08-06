@@ -120,3 +120,18 @@
 #kernel_module.cpp:kernel_module_render_status: Renders the status of loading process of a kernel module
 #function_patch.cpp:unpatch: Unpatches a function
 #function_patch.cpp:elf::patch: Patches a function
+#boot_screen_renderer.cpp:boot_screen_renderer::handle: Handles the timer interrupt for the boot screen renderer
+#boot_screen_renderer.cpp:boot_screen_renderer::set_progress: Sets the progress of the boot screen progress bar
+#boot_screen_renderer.cpp:boot_screen_renderer::putstring: Does nothing
+#boot_screen_renderer.cpp:boot_screen_renderer::putchar: Does nothing
+#boot_screen_renderer.cpp:boot_screen_renderer::~boot_screen_renderer: Destructor for the class
+#boot_screen_renderer.cpp:boot_screen_renderer::boot_screen_renderer: Constructor for the class
+#font_renderer.cpp:font_renderer::write: Handler for the font_renderer dev fs file
+#font_renderer.cpp:font_renderer::get_name: Gets the name of the dev fs file
+#font_renderer.cpp:font_renderer::reset_color: Resets the color of the font renderer
+#font_renderer.cpp:font_renderer::set_color: Sets the color of the font renderer
+#font_renderer.cpp:font_renderer::clear_line: Clears the current line
+#font_renderer.cpp:font_renderer::clear: Clears the screen
+#font_renderer.cpp:font_renderer::putstring: Writes a string to the screen
+#font_renderer.cpp:font_renderer::putchar: Writes a character to the screen
+#font_renderer.cpp:font_renderer::font_renderer: Constructor for the class
