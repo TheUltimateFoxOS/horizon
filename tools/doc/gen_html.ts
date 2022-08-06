@@ -8,8 +8,7 @@ var template = `
 <html lang="en">
   <head>
     {{content.head}}
-    <script src="/scripts/showdown.min.js"></script>
-    <title>FoxOS - Home</title>
+    <title>FoxOS - {{title}}</title>
   </head>
   <body>
     {{content.navbar}}
@@ -22,12 +21,11 @@ var index_template = `
 <html lang="en">
   <head>
     {{content.head}}
-    <script src="/scripts/showdown.min.js"></script>
-    <title>FoxOS - Home</title>
+    <title>FoxOS - Documentation</title>
   </head>
   <body>
     {{content.navbar}}
-	
+
     <div class="fox-text">
       <ul class="fox-a-nodecoration fox-ul">
 `;
@@ -98,7 +96,7 @@ export function gen_html(save_in: string, path: string, funcs: {
 	}
 	html += "<a href=\"" + github_link + path + "\">Show file on GitHub</a><br/>\n"
 
-	Deno.writeTextFileSync(save_in, template + html + "    </div>\n  </body>\n</html>");
+	Deno.writeTextFileSync(save_in, template.replace("{{title}}", path.split("/").pop() as string) + html + "    </div>\n  </body>\n</html>");
 }
 
 interface file_hierarchy {
