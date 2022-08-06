@@ -31,4 +31,4 @@ jobs:
         run: deno run -A tools/doc/main.ts
       
       - name: Deploy
-        run: curl -XPOST -u "${{ secrets.PAT_USERNAME }}:${{ secrets.PAT_TOKEN }}" -H "Accept: application/vnd.github.everest-preview+json" -H "Content-Type: application/json" https://api.github.com/repos//TheUltimateFoxOS/theultimatefoxos.github.io/dispatches --data '{"event_type": "build_application"}'
+        run: curl -XPOST -u "${{ secrets.PAT_USERNAME }}:${{ secrets.PAT_TOKEN }}" -H "Accept: application/vnd.github.everest-preview+json" -H "Content-Type: application/json" https://api.github.com/repos//TheUltimateFoxOS/theultimatefoxos.github.io/dispatches --data "{\"event_type\": \"build_application\"}"
