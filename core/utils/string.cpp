@@ -60,7 +60,8 @@ int sprintf(char *buf, const char *fmt, ...) {
 	return i;
 }
 
-__attribute__((naked)) void* memcpy(void* dest, const void* src, int n) {
+__attribute__((naked))
+void* memcpy(void* dest, const void* src, int n) {
 	__asm__ __volatile__ (	"movq %rdi, %rax;"
 							"movq %rdx, %rcx;"
 							"shrq $3, %rcx;"
@@ -71,7 +72,8 @@ __attribute__((naked)) void* memcpy(void* dest, const void* src, int n) {
 							"ret;");
 }
 
-__attribute__((naked)) void* memset(void* start, uint8_t value, uint64_t num) {
+__attribute__((naked))
+void* memset(void* start, uint8_t value, uint64_t num) {
 	__asm__ __volatile__ (	"movq %rdi, %r9;"
 							"movq %rdx, %rcx;"
 							"andl $7, %edx;"

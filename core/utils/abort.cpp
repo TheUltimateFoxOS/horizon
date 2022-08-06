@@ -17,7 +17,8 @@
 
 extern uint8_t screen_of_death[];
 
-__attribute__((noreturn)) void abortf(const char* fmt, ...) {
+__attribute__((noreturn))
+void abortf(const char* fmt, ...) {
 	__asm__ volatile("cli");
 
 	LAPIC_ID(core_id);
@@ -71,6 +72,7 @@ __attribute__((noreturn)) void abortf(const char* fmt, ...) {
 
 	debugf("Starting stack trace using %d as max lines!\n", max_lines);
 
+	//#elf::unwind-discard
 	elf::unwind(max_lines, rbp, [](int frame_num, uint64_t rip) {
 		if(elf::resolve_symbol(elf::resolve_symbol(rip)) != 0) {
 			char str[512] = {0};

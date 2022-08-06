@@ -12,7 +12,7 @@ export function _do_documentation_cpp(text: string) {
 
 		var maybe_discard_regex = eval(`/\\/{2} ?# ?${_function.function_name}-discard/g`);
 		if (maybe_discard_regex.exec(text)) {
-			console.warn(`Discarding ${_function.function_name}`);
+			// console.warn(`Discarding ${_function.function_name}`);
 			continue;
 		}
 

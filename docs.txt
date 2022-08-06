@@ -53,3 +53,70 @@
 #argparse.cpp:argparser::argparser: Constructor for the argparser class
 #vsprintf.cpp:vsprintf: Prints a formatted string to a buffer
 #vsprintf.cpp:print_num: Prints a number to a buffer
+#lock.asm:atomic_spinlock: Waits for a spinlock to be unlocked
+#lock.asm:atomic_unlock: Unlocks a spinlock
+#lock.asm:atomic_lock: Locks a spinlock
+#mmio.cpp:MMIO::write64: Writes a 64 bit value to a mmio register
+#mmio.cpp:MMIO::write32: Writes a 32 bit value to a mmio register
+#mmio.cpp:MMIO::write16: Writes a 16 bit value to a mmio register
+#mmio.cpp:MMIO::write8: Writes a 8 bit value to a mmio register
+#mmio.cpp:MMIO::read64: Reads a 64 bit value from a mmio register
+#mmio.cpp:MMIO::read32: Reads a 32 bit value from a mmio register
+#mmio.cpp:MMIO::read16: Reads a 16 bit value from a mmio register
+#mmio.cpp:MMIO::read8: Reads a 8 bit value from a mmio register
+#assert.cpp:__assert_fail: If an assertion fails, this function is called
+#port.cpp:outl: Writes a 32 bit value to a port
+#port.cpp:inl: Reads a 32 bit value from a port
+#port.cpp:outw: Writes a 16 bit value to a port
+#port.cpp:inw: Reads a 16 bit value from a port
+#port.cpp:outb: Writes a 8 bit value to a port
+#port.cpp:inb: Reads a 8 bit value from a port
+#port.cpp:io_wait: Waits for a port to be ready
+#port.cpp:Port32Bit::Write: Writes a 32 bit value to a port
+#port.cpp:Port32Bit::Read: Reads a 32 bit value from a port
+#port.cpp:Port32Bit::~Port32Bit: Destructor for the class
+#port.cpp:Port32Bit::Port32Bit: Constructor for the class
+#port.cpp:Port16Bit::Write: Writes a 16 bit value to a port
+#port.cpp:Port16Bit::Read: Reads a 16 bit value from a port
+#port.cpp:Port16Bit::~Port16Bit: Destructor for the class
+#port.cpp:Port16Bit::Port16Bit: Constructor for the class
+#port.cpp:Port8Bit::Write: Writes a 8 bit value to a port
+#port.cpp:Port8Bit::Read: Reads a 8 bit value from a port
+#port.cpp:Port8Bit::~Port8Bit: Destructor for the class
+#port.cpp:Port8Bit::Port8Bit: Constructor for the class
+#abort.cpp:abortf: Causes a kernel panic
+#string.cpp:strcmp: Compares two strings
+#string.cpp:memcmp: Compares two memory regions
+#string.cpp:memset: Sets a memory region to a value
+#string.cpp:memcpy: Copies a memory region
+#string.cpp:sprintf: Prints a formatted string to a buffer
+#string.cpp:strcat: Concatenates two strings
+#string.cpp:strchr: Searches for a character in a string
+#string.cpp:strnlen: Gets the length of a string
+#string.cpp:strlen: Gets the length of a string
+#string.cpp:strcpy: Copies a string
+#log.cpp:printf: Prints a formatted string to the screen
+#log.cpp:debugf_intrnl: Internal function used for debugf
+#fxsr.asm:fxrstor_if_supported: Restores the fpu state if it is supported
+#fxsr.asm:fxsave_if_supported: Saves the fpu state if it is supported
+#unix_time.cpp:from_unix_time: Converts unix time to a struct
+#unix_time.cpp:to_unix_time: Converts a struct to unix time
+#ipc.cpp:ipc::init: Initializes the ipc system
+#ipc.cpp:ipc_manager::send_message: Sends a message to a process
+#ipc.cpp:ipc_manager::get_hid: Gets the handler id of an ipc handler
+#ipc.cpp:ipc_manager::unregister_callback: Unregisters an ipc handler
+#ipc.cpp:ipc_manager::register_callback: Registers an ipc handler
+#ipc.cpp:ipc_manager::ipc_manager: Constructor for the ipc manager class
+#cstr.cpp:num_to_string: Converts a number to a string
+#elf_loader.cpp:elf::load_elf: Loads an elf file
+#elf_loader.cpp:elf_apply_relocations: Applies relocations to an elf file
+#elf_resolver.cpp:elf::resolve_symbol: Resolves a symbol in the kernel and the loaded modules
+#elf_resolver.cpp:elf::setup: Sets up the elf resolver system
+#elf_resolver.cpp:elf_symbol_resolver::resolve: Resolves a symbol in an elf file
+#elf_resolver.cpp:elf_symbol_resolver::elf_symbol_resolver: Constructor for the elf symbol resolver class
+#kernel_module.cpp:elf::fs_init_all: Calls the fs_init function for all modules
+#kernel_module.cpp:elf::device_init_all: Calls the device_init function for all modules
+#kernel_module.cpp:elf::load_kernel_module: Loads a kernel module
+#kernel_module.cpp:kernel_module_render_status: Renders the status of loading process of a kernel module
+#function_patch.cpp:unpatch: Unpatches a function
+#function_patch.cpp:elf::patch: Patches a function

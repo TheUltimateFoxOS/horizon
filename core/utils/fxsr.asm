@@ -1,5 +1,6 @@
 [bits 64]
 
+;#fxsave_if_supported-signature: void fxsave_if_supported(char* buffer)
 [global fxsave_if_supported]
 fxsave_if_supported:
 	mov rax, 1
@@ -13,7 +14,7 @@ fxsave_if_supported:
 .exit:
 	ret
 
-
+;#fxrstor_if_supported-signature: void fxrstor_if_supported(char* buffer)
 [global fxrstor_if_supported]
 fxrstor_if_supported:
 	mov rax, 1
