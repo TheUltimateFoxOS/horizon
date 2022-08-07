@@ -46,7 +46,7 @@ function gen_function(func: {
 	html = html + "        <h2>" + func.function_name + "</h2>\n"
 	html = html + "        <b>Signature:</b> <code>" + func.signature + "</code><br/>\n"
 	
-	if (func.class_name != "") {
+	if (func.class_name.trim() != "") {
 		html = html + "        <b>Class/Namespace:</b> <code>" + func.class_name + "</code><br/>\n"
 	}
 
@@ -56,7 +56,7 @@ function gen_function(func: {
 
 	html = html + "        <b>Description:</b> " + func.description + "<br/>\n"
 
-	if (func.params != "") {
+	if (func.params.trim() != "") {
 		html = html + "        <br/>\n"
 		html = html + "        <b>Parameters:</b><br/>\n"
 		html = html + "        <ul>\n"
@@ -66,7 +66,7 @@ function gen_function(func: {
 
 		html = html + "        </ul>\n"
 	}
-	if (func.return_type != "") {
+	if (func.return_type.trim() != "") {
 		html = html + "        <br/>\n"
 		html = html + "        <b>Return:</b> <code>" + func.return_type + "</code>\n"
 	}
