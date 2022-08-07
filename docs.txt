@@ -249,6 +249,62 @@
 #filesystems_ext2_ext2_fs.cpp:fs::read_disk_block: Reads a block from the disk
 #filesystems_ext2_ext2_fs.cpp:fs::write_disk_block: Writes a block to the disk
 
+#features_smbios32_sys_sm32_get_cpu_info.cpp:syscall::sys_sm32_get_cpu_info: Syscall to get the CPU information from the smbios32 table
+#features_smbios32_smbios32.cpp:smbios32::type_to_str: Converts a smbios32 table type to a string
+#features_smbios32_smbios32.cpp:smbios32::get_string: Gets a string from the smbios32 table
+#features_smbios32_smbios32.cpp:smbios32::find_smbios_structure: Finds a smbios32 structure in the smbios32 table
+#features_smbios32_smbios32.cpp:smbios32::next: Calculates the next smbios32 structure in the smbios32 table
+#features_smbios32_smbios32.cpp:smbios32::print_smbios_entry: Prints a smbios32 entry
+#features_smbios32_sm32_dev_fs_file.cpp:sm32_dev_fs_file::get_name: Gets the name of the dev 
+#features_smbios32_sm32_dev_fs_file.cpp:sm32_dev_fs_file::prepare_file: Prepares the dev fs file after it is opend
+#features_smbios32_sm32_dev_fs_file.cpp:sm32_dev_fs_file::read: Reads from the dev fs file
+#features_smbios32_sm32_dev_fs_file.cpp:sm32_dev_fs_file::sm32_dev_fs_file: Constructor for the dev fs file class
+#features_smbios32_main.cpp:init: init function for the smbios32 module
+#features_laihost_main.cpp:init: init function for the laihost module
+#features_laihost_main.cpp:sci_interrupt_handler: System control interrupt handler
+#features_laihost_main.cpp:get_sci_interrupt: Gets the system control interrupt vector
+#features_laihost_laihost.cpp:memcmp: Compares two memory regions
+#features_laihost_laihost.cpp:memset: Sets a memory region to a value
+#features_laihost_laihost.cpp:memcpy: Copies a memory region
+#features_laihost_laihost.cpp:laihost_scan: Function needed by the lai library. Scans the acpi tables for a certain table
+#features_laihost_laihost.cpp:laihost_sync_wake: Function needed by the lai library.
+#features_laihost_laihost.cpp:laihost_sync_wait: Function needed by the lai library.
+#features_laihost_laihost.cpp:laihost_handle_amldebug: Function needed by the lai library. Handles the amldebug output.
+#features_laihost_laihost.cpp:laihost_timer: Function needed by the lai library.
+#features_laihost_laihost.cpp:laihost_sleep: Function needed by the lai library. Sleeps for a certain amount of time.
+#features_laihost_laihost.cpp:laihost_pci_readd: Function needed by the lai library. Reads a dword from a pci device.
+#features_laihost_laihost.cpp:laihost_pci_readw: Function needed by the lai library. Reads a word from a pci device.
+#features_laihost_laihost.cpp:laihost_pci_readb: Function needed by the lai library. Reads a byte from a pci device.
+#features_laihost_laihost.cpp:laihost_pci_writed: Function needed by the lai library. Writes a dword to a pci device.
+#features_laihost_laihost.cpp:laihost_pci_writew: Function needed by the lai library. Writes a word to a pci device.
+#features_laihost_laihost.cpp:laihost_pci_writeb: Function needed by the lai library. Writes a byte to a pci device.
+#features_laihost_laihost.cpp:laihost_ind: Function needed by the lai library. Reads an double word value from an io port.
+#features_laihost_laihost.cpp:laihost_inw: Function needed by the lai library. Reads a word from an io port.
+#features_laihost_laihost.cpp:laihost_inb: Function needed by the lai library. Reads a byte from an io port.
+#features_laihost_laihost.cpp:laihost_outd: Function needed by the lai library. Writes an double word value to an io port.
+#features_laihost_laihost.cpp:laihost_outw: Function needed by the lai library. Writes a word to an io port.
+#features_laihost_laihost.cpp:laihost_outb: Function needed by the lai library. Writes a byte to an io port.
+#features_laihost_laihost.cpp:laihost_free: Function needed by the lai library. Frees a memory region.
+#features_laihost_laihost.cpp:laihost_realloc: Function needed by the lai library. Reallocates a memory region.
+#features_laihost_laihost.cpp:laihost_malloc: Function needed by the lai library. Allocates a memory region.
+#features_laihost_laihost.cpp:laihost_panic: Function needed by the lai library. Panics the system.
+#features_laihost_laihost.cpp:laihost_log: Function needed by the lai library. Logs a message.
+#features_laihost_laihost.cpp:laihost_unmap: Function needed by the lai library. Unmaps a memory region.
+#features_laihost_laihost.cpp:laihost_map: Function needed by the lai library. Maps a memory region.
+#features_graphics_sys_fb_info.cpp:syscall::sys_fb_info: Syscall to get the framebuffer information.
+#features_graphics_sys_copy_to_fb.cpp:syscall::sys_copy_to_fb: Syscall to copy a frame to the framebuffer.
+#features_graphics_sys_copy_from_fb.cpp:syscall::sys_copy_from_fb: Syscall to copy a frame from the framebuffer.
+#features_graphics_main.cpp:init: init function for the graphics module
+#features_acpi_dump_main.cpp:init: init function for the acpi_dump module
+#features_acpi_dump_main.cpp:enumerate_xsdt: Enumerates the xsdt table
+#features_acpi_dump_main.cpp:enumerate_rsdt: Enumerates the rsdt table
+#features_acpi_dump_main.cpp:register_sdt: Registers a sdt table
+#features_acpi_dump_acpi_vfs.cpp:acpi_vfs::dir_at: Gets the directory entry at a certain index
+#features_acpi_dump_acpi_vfs.cpp:acpi_vfs::read: Reads from the acpi vfs file
+#features_acpi_dump_acpi_vfs.cpp:acpi_vfs::close: Closes the acpi vfs file
+#features_acpi_dump_acpi_vfs.cpp:acpi_vfs::open: Opens the acpi vfs file
+#features_acpi_dump_acpi_vfs.cpp:acpi_vfs::acpi_vfs: Constructor for the acpi vfs file class
+
 #exclude:filesystems_fat32_fatfs_ff.cpp
 #exclude:filesystems_fat32_fatfs_ffsystem.cpp
 #exclude:filesystems_fat32_fatfs_diskio.cpp

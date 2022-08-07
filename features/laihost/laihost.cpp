@@ -42,7 +42,8 @@ extern "C" {
 		}
 	}
 
-	__attribute__((noreturn)) void laihost_panic(const char* msg) {
+	__attribute__((noreturn))
+	void laihost_panic(const char* msg) {
 		abortf("laihost: %s\n", msg);
 	}
 

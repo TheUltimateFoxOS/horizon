@@ -29,7 +29,7 @@ function main() {
 
 	for (const file of files) {
 		try {
-			var ignore = [ "h", "psf", "ts", "bmp", "", "md", "flags", "module", "txt", "html" ];
+			var ignore = [ "h", "psf", "ts", "bmp", "", "md", "flags", "module", "txt", "html", "json" ];
 			if (ignore.includes(file.ext)) {
 				continue;
 			}
