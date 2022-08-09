@@ -69,6 +69,6 @@ export function get_documentation(file: string, extension: string) {
 		case "asm":
 			return _do_documentation_asm(text);
 		default:
-			throw new Error(`Unknown extension ${extension}`);
+			throw new Error(`Unknown extension ${extension} for file ${file}`);
 	}
 }

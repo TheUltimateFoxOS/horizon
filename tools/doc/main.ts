@@ -19,18 +19,31 @@ function print_progress(progress: number) {
 function main() {
 	const files = getFiles({
 		root: './',
-		exclude: ['.git'],
 	});
 
 	var docs_file = Deno.readTextFileSync("./docs.txt");
+
+	var ignore_ext = [];
+	var exclude_regex = eval(`/# ?ignore-ext:\\s*(.*)\\s*/g`);
+	var exclude_regex_result = exclude_regex.exec(docs_file);
+	if (exclude_regex_result) {
+		ignore_ext = exclude_regex_result[1].split(",").map(function (ext: string) {
+			return ext.trim();
+		});
+	}
+
+	ignore_ext.push("");
 
 	var num_functions = 0;
 	var num_functions_documented = 0;
 
 	for (const file of files) {
+		if (file.path.includes(".git")) {
+			continue;
+		}
+		
 		try {
-			var ignore = [ "h", "psf", "ts", "bmp", "", "md", "flags", "module", "txt", "html", "json" ];
-			if (ignore.includes(file.ext)) {
+			if (ignore_ext.includes(file.ext)) {
 				continue;
 			}
 
