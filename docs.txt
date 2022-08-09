@@ -228,6 +228,66 @@
 #core_pci_pci_io.cpp:pci::enable_mmio: Enables MMIO on a PCI device
 #core_pci_pci_io.cpp:pci::become_bus_master: Makes a PCI device a bus master
 
+#core_fs_vfs.cpp:vfs_manager::vfs_manager: Constructor for the vfs manager class
+#core_fs_vfs.cpp:vfs_manager::open: Opens a file
+#core_fs_vfs.cpp:vfs_manager::close: Closes a file
+#core_fs_vfs.cpp:vfs_manager::read: Reads from a file
+#core_fs_vfs.cpp:vfs_manager::write: Writes to a file
+#core_fs_vfs.cpp:vfs_manager::delete_: Deletes a file
+#core_fs_vfs.cpp:vfs_manager::mkdir: Creates a directory
+#core_fs_vfs.cpp:vfs_manager::dir_at: Gets the directory at a path
+#core_fs_vfs.cpp:vfs_manager::touch: Creates a file
+#core_fs_vfs.cpp:vfs_manager::delete_dir: Deletes a directory
+#core_fs_vfs.cpp:vfs_manager::register_mount: Registers a mount point
+#core_fs_vfs.cpp:vfs_manager::unregister_mount: Unregisters a mount point
+#core_fs_vfs.cpp:vfs_manager::fs_at: Gets the filesystem at a index
+#core_fs_vfs.cpp:vfs_mount::open: Opens a file
+#core_fs_vfs.cpp:vfs_mount::close: Closes a file
+#core_fs_vfs.cpp:vfs_mount::read: Reads from a file
+#core_fs_vfs.cpp:vfs_mount::write: Writes to a file
+#core_fs_vfs.cpp:vfs_mount::delete_: Deletes a file
+#core_fs_vfs.cpp:vfs_mount::mkdir: Creates a directory
+#core_fs_vfs.cpp:vfs_mount::dir_at: Gets the directory at a path
+#core_fs_vfs.cpp:vfs_mount::touch: Creates a file
+#core_fs_vfs.cpp:vfs_mount::delete_dir: Deletes a directory
+#core_fs_vfs.cpp:fs::vfs::setup: Sets up the vfs
+#core_fs_fd.cpp:file_descriptor::file_descriptor: Constructor for the file descriptor class
+#core_fs_fd.cpp:file_descriptor::~file_descriptor: Destructor for the file descriptor class
+#core_fs_fd.cpp:file_descriptor::close: Closes a file
+#core_fs_fd.cpp:file_descriptor::open: Opens a file
+#core_fs_fd.cpp:file_descriptor::read: Reads from a file
+#core_fs_fd.cpp:file_descriptor::write: Writes to a file
+#core_fs_fd.cpp:file_descriptor::delete_: Deletes a file
+#core_fs_fd.cpp:file_descriptor_manager::file_descriptor_manager: Constructor for the file descriptor manager class
+#core_fs_fd.cpp:file_descriptor_manager::alloc_fd: Allocates a file descriptor
+#core_fs_fd.cpp:file_descriptor_manager::free_fd: Frees a file descriptor
+#core_fs_fd.cpp:file_descriptor_manager::register_fd: Registers a file descriptor
+#core_fs_fd.cpp:file_descriptor_manager::get_fd: Gets a file descriptor
+#core_fs_gpt.cpp:fs::gpt::read_gpt: Reads the GPT from a disk and sets up virtual disks for each partition
+#core_fs_dev_fs.cpp:dev_fs_file::read: Reads from a file
+#core_fs_dev_fs.cpp:dev_fs_file::write: Writes to a file
+#core_fs_dev_fs.cpp:dev_fs_file::get_name: Gets the name of a file
+#core_fs_dev_fs.cpp:dev_fs_file::prepare_file: Prepares a file for use
+#core_fs_dev_fs.cpp:dev_fs::dev_fs: Constructor for the dev_fs class
+#core_fs_dev_fs.cpp:dev_fs::register_file: Registers a file
+#core_fs_dev_fs.cpp:dev_fs::unregister_file: Unregisters a file
+#core_fs_dev_fs.cpp:dev_fs::open: Opens a file
+#core_fs_dev_fs.cpp:dev_fs::close: Closes a file
+#core_fs_dev_fs.cpp:dev_fs::read: Reads from a file
+#core_fs_dev_fs.cpp:dev_fs::write: Writes to a file
+#core_fs_dev_fs.cpp:dev_fs::dir_at: Gets the directory at a path
+#core_fs_modules_mount.cpp:modules_mount::modules_mount: Constructor for the modules mount class
+#core_fs_modules_mount.cpp:modules_mount::open: Opens a file
+#core_fs_modules_mount.cpp:modules_mount::close: Closes a file
+#core_fs_modules_mount.cpp:modules_mount::read: Reads from a file
+#core_fs_modules_mount.cpp:modules_mount::dir_at: Gets the directory at a path
+#core_fs_saf.cpp:saf_mount::saf_mount: Constructor for the saf mount class
+#core_fs_saf.cpp:saf_mount::open: Opens a file
+#core_fs_saf.cpp:saf_mount::close: Closes a file
+#core_fs_saf.cpp:saf_mount::read: Reads from a file
+#core_fs_saf.cpp:saf_mount::dir_at: Gets the directory at a path
+#core_fs_saf.cpp:saf_mount::resolve: Resolves a path to a file
+#core_fs_saf.cpp:saf_mount::process_path: Processes a path
 
 #filesystems_foxfs_main.cpp:fs_init: fs_init for the foxfs module
 #filesystems_foxfs_main.cpp:device_init: device_init for the foxfs module
