@@ -231,6 +231,7 @@ extern "C" void main() {
 
 	BOOT_PROGRESS(80);
 
+	//#scheduler::create_task-discard
 	// scheduler::create_task((void*) (void (*)()) []() {
 	// 	int i = 1000;
 	// 	while (i--) {

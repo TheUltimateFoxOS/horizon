@@ -10,8 +10,8 @@ export function _do_documentation_asm(text: string) {
 		if (match[1].charAt(0) == '.') {
 			continue;
 		} else {
-			match[1] = match[1].substring(0, match[1].length - 1);
 			match[1] = match[1].trim();
+			match[1] = match[1].substring(0, match[1].length - 1);
 
 			var signature_regex = eval(`/^; ?# ?${match[1]}-signature: ?([\\w\\d ;\\":_\\-#+\\*.,'()]*);?/gm`);
 			var signature = signature_regex.exec(text);

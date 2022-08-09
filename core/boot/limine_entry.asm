@@ -1,6 +1,7 @@
 [global _start_limine]
 [extern limine_entry]
 
+;#_start_limine-signature: void _start_limine()
 _start_limine: 
 	push qword 0
 	push qword 0
@@ -9,6 +10,7 @@ _start_limine:
 	call cpu_init
 	call limine_entry
 
+;#cpu_init-signature: void cpu_init()
 cpu_init:
 	cli
 	push rbx

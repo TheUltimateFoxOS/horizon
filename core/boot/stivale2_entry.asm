@@ -4,6 +4,7 @@
 ; This is here to mark the end of the stack trace.
 ; The boot loader passes the bootinfo struct just dont touch it and call kernel_main
 
+;#_start_stivale2-signature: void _start_stivale2(stivale2_struct* bootinfo)
 _start_stivale2: 
 	push qword 0
 	push qword 0
@@ -12,7 +13,7 @@ _start_stivale2:
 	call cpu_init
 	call stivale2_entry
 
-
+;#cpu_init-signature: void cpu_init()
 cpu_init:
 	cli
 	push rbx

@@ -179,6 +179,55 @@
 #core_sanitizers_ubsan.cpp:__ubsan_handle_nonnull_arg: Sanitizer handler for a nonnull argument
 #core_sanitizers_ubsan.cpp:__ubsan_handle_load_invalid_value: Sanitizer handler for a load invalid value
 
+#core_boot_limine_entry.asm:cpu_init: Initializes the CPU
+#core_boot_limine_entry.asm:_start_limine: The main entry point for the limine boot protocol
+#core_boot_stivale2.cpp:boot::print_boot_info: Prints the boot information
+#core_boot_stivale2.cpp:stivale2_entry: The c entry point for the stivale2 boot protocol
+#core_boot_stivale2.cpp:stivale2_memmap_entry_conv: Converts a stivale2 memory map entry to a memory map entry for the kernel
+#core_boot_stivale2.cpp:putchar: Writes a character to the screen
+#core_boot_stivale2.cpp:putstring: Writes a string to the screen
+#core_boot_stivale2_entry.asm:cpu_init: Initializes the CPU
+#core_boot_stivale2_entry.asm:_start_stivale2: The main entry point for the stivale2 boot protocol
+#core_boot_boot.cpp:bootinfo_dev_fs_file::get_name: Gets the name of the dev fs file
+#core_boot_boot.cpp:bootinfo_dev_fs_file::prepare_file: Prepares the dev fs file
+#core_boot_boot.cpp:bootinfo_dev_fs_file::read: Reads the dev fs file
+#core_boot_boot.cpp:print_boot_info: Prints the boot information
+#core_boot_boot.cpp:bootinfo_dev_fs_file::bootinfo_dev_fs_file: Constructor for the dev fs file class
+#core_boot_boot.cpp:memmap_id_to_str: Converts a memory map id to a string
+#core_boot_boot.cpp:_start: Dummy function to make the linker happy
+#core_boot_limine.cpp:boot::print_boot_info: Prints the boot information
+#core_boot_limine.cpp:limine_entry: The c entry point for the limine boot protocol
+#core_boot_limine.cpp:limine_memmap_entry_conv: Converts a limine memory map entry to a memory map entry for the kernel
+#core_boot_limine.cpp:putchar: Writes a character to the screen
+#core_boot_limine.cpp:putstring: Writes a string to the screen
+
+#core_pci_pci.cpp:enumerate_function: Enumerates a PCI function
+#core_pci_pci.cpp:enumerate_device: Enumerates a PCI device
+#core_pci_pci.cpp:enumerate_bus: Enumerates the PCI bus
+#core_pci_pci.cpp:enumerate_mcfg: Enumerates the PCI bus using the MCFG table
+#core_pci_pci.cpp:enumerate_legacy: Enumerates the PCI bus using the legacy method
+#core_pci_pci.cpp:pci::enumerate_pci: Enumerates the PCI bus either using the MCFG table or the legacy method
+#core_pci_pci_bar.cpp:read_bar: Reads a PCI BAR
+#core_pci_pci_bar.cpp:pci::get_bar: Gets a PCI BAR
+#core_pci_pci_bar.cpp:pci::get_io_port: Gets the IO port of a PCI BAR
+#core_pci_pci_descriptors.cpp:get_vendor_name: Gets the vendor name of a PCI device
+#core_pci_pci_descriptors.cpp:get_device_name: Gets the device name of a PCI device
+#core_pci_pci_descriptors.cpp:mass_storage_controller_subclass_name: Gets the mass storage controller subclass name of a PCI device
+#core_pci_pci_descriptors.cpp:serial_bus_controller_subclass_name: Gets the serial bus controller subclass name of a PCI device
+#core_pci_pci_descriptors.cpp:bridge_device_subclass_name: Gets the bridge device subclass name of a PCI device
+#core_pci_pci_descriptors.cpp:get_subclass_name: Gets the subclass name of a PCI device
+#core_pci_pci_descriptors.cpp:get_prog_IF_name: Gets the programming interface name of a PCI device
+#core_pci_pci_io.cpp:pci::pci_readd: Reads a dword from a PCI register
+#core_pci_pci_io.cpp:pci::pci_writed: Writes a dword to a PCI register
+#core_pci_pci_io.cpp:pci::pci_writeb: Writes a byte to a PCI register
+#core_pci_pci_io.cpp:pci::pci_readb: Reads a byte from a PCI register
+#core_pci_pci_io.cpp:pci::pci_writew: Writes a word to a PCI register
+#core_pci_pci_io.cpp:pci::pci_readw: Reads a word from a PCI register
+#core_pci_pci_io.cpp:pci::device_has_functions: Checks if a PCI device has functions
+#core_pci_pci_io.cpp:pci::get_device_header: Gets the device header of a PCI device using the legacy method
+#core_pci_pci_io.cpp:pci::enable_mmio: Enables MMIO on a PCI device
+#core_pci_pci_io.cpp:pci::become_bus_master: Makes a PCI device a bus master
+
 
 #filesystems_foxfs_main.cpp:fs_init: fs_init for the foxfs module
 #filesystems_foxfs_main.cpp:device_init: device_init for the foxfs module
