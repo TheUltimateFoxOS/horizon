@@ -1,6 +1,7 @@
 import getFiles from "https://deno.land/x/getfiles/mod.ts";
 import { get_documentation } from "./doc.ts";
 import { gen_html, gen_index } from "./gen_html.ts";
+import { notify } from "./notify.ts";
 
 function print_progress(progress: number) {
 	const toolbar_width = 80;
@@ -97,7 +98,12 @@ function main() {
 	gen_index("./docs/index.html");
 
 	console.log("Documented " + num_functions + " functions from witch " + num_functions_documented + " have a description. This are " + Math.round(num_functions_documented / num_functions * 100) + "% of the functions.")
-	print_progress((num_functions_documented / num_functions) * 100)
+	print_progress((num_functions_documented / num_functions) * 100);
+
+	if (Deno.args.length == 1) {
+		console.log("Notifying...");
+		notify(Deno.args[0], num_functions_documented, num_functions);
+	}
 }
 
 main();

@@ -393,6 +393,97 @@
 #core_memory_page_frame_allocator.cpp:page_frame_allocator::get_used_RAM: Gets the amount of used RAM
 #core_memory_page_frame_allocator.cpp:page_frame_allocator::get_reserved_RAM: Gets the amount of reserved RAM
 
+#core_net_dhcp.cpp:dhcp_protocol::dhcp_protocol: Constructor for the dhcp protocol class
+#core_net_dhcp.cpp:dhcp_protocol::~dhcp_protocol: Destructor for the dhcp protocol class
+#core_net_dhcp.cpp:dhcp_protocol::request: Requests a DHCP lease
+#core_net_dhcp.cpp:dhcp_protocol::on_udp_message: Handles a UDP message
+#core_net_dhcp.cpp:dhcp_protocol::get_dhcp_options: Gets the DHCP options
+#core_net_dhcp.cpp:dhcp_protocol::make_dhcp_packet: Makes a DHCP packet
+#core_net_ipv4.cpp:ipv4_handler::ipv4_handler: Constructor for the ipv4 handler class
+#core_net_ipv4.cpp:ipv4_handler::~ipv4_handler: Destructor for the ipv4 handler class
+#core_net_ipv4.cpp:ipv4_handler::send: Sends an IPv4 packet
+#core_net_ipv4.cpp:ipv4_handler::on_internet_protocol_received: Handles an IPv4 packet
+#core_net_ipv4.cpp:ipv4_provider::ipv4_provider: Constructor for the ipv4 provider class
+#core_net_ipv4.cpp:ipv4_provider::~ipv4_provider: Destructor for the ipv4 provider class
+#core_net_ipv4.cpp:ipv4_provider::on_ether_frame_received: Handles an Ethernet frame
+#core_net_ipv4.cpp:ipv4_provider::send: Sends an IPv4 packet
+#core_net_ipv4.cpp:ipv4_provider::checksum: Calculates the checksum of an IPv4 packet
+#core_net_etherframe.cpp:ether_frame_handler::ether_frame_handler: Constructor for the ether frame handler class
+#core_net_etherframe.cpp:ether_frame_handler::~ether_frame_handler: Destructor for the ether frame handler class
+#core_net_etherframe.cpp:ether_frame_handler::on_ether_frame_received: Handles an Ethernet frame
+#core_net_etherframe.cpp:ether_frame_handler::send: Sends an Ethernet frame
+#core_net_etherframe.cpp:ether_frame_provider::ether_frame_provider: Constructor for the ether frame provider class
+#core_net_etherframe.cpp:ether_frame_provider::~ether_frame_provider: Destructor for the ether frame provider class
+#core_net_etherframe.cpp:ether_frame_provider::recv: Receives an Ethernet frame
+#core_net_etherframe.cpp:ether_frame_provider::send_f: Sends an Ethernet frame
+#core_net_arp.cpp:address_resolution_protocol::address_resolution_protocol: Constructor for the address resolution protocol class
+#core_net_arp.cpp:address_resolution_protocol::~address_resolution_protocol: Destructor for the address resolution protocol class
+#core_net_arp.cpp:address_resolution_protocol::on_ether_frame_received: Handles an Ethernet frame
+#core_net_arp.cpp:address_resolution_protocol::broadcast_mac: Broadcasts an ARP packet
+#core_net_arp.cpp:address_resolution_protocol::request_mac_address: Requests the MAC address of a host
+#core_net_arp.cpp:address_resolution_protocol::get_mac_from_cache: Gets the MAC address of a host from the cache
+#core_net_arp.cpp:address_resolution_protocol::resolve: Resolves an IP address to a MAC address
+#core_net_ntp.cpp:network_time_protocol::network_time_protocol: Constructor for the network time protocol class
+#core_net_ntp.cpp:network_time_protocol::on_udp_message: Handles a UDP message
+#core_net_ntp.cpp:network_time_protocol::time: Gets the time
+#core_net_tcp.cpp:tcp_handler::tcp_handler: Constructor for the tcp handler class
+#core_net_tcp.cpp:tcp_handler::~tcp_handler: Destructor for the tcp handler class
+#core_net_tcp.cpp:tcp_handler::on_tcp_message: Handles a TCP message
+#core_net_tcp.cpp:tcp_socket::tcp_socket: Constructor for the tcp socket class
+#core_net_tcp.cpp:tcp_socket::~tcp_socket: Destructor for the tcp socket class
+#core_net_tcp.cpp:tcp_socket::handle_tcp_message: Handles a TCP message
+#core_net_tcp.cpp:tcp_socket::send: Sends a TCP message
+#core_net_tcp.cpp:tcp_socket::disconnect: Disconnects the socket
+#core_net_tcp.cpp:tcp_provider::tcp_provider: Constructor for the tcp provider class
+#core_net_tcp.cpp:tcp_provider::on_internet_protocol_received: Handles an IPv4 packet
+#core_net_tcp.cpp:tcp_provider::connect: Connects to a host
+#core_net_tcp.cpp:tcp_provider::listen: Listens for incoming connections
+#core_net_tcp.cpp:tcp_provider::disconnect: Disconnects the socket
+#core_net_tcp.cpp:tcp_provider::send: Sends a TCP message
+#core_net_tcp.cpp:tcp_provider::retransmit: Retransmits a TCP message
+#core_net_tcp.cpp:tcp_provider::bind: Binds the socket to a port
+#core_net_dns.cpp:domain_name_service_provider::domain_name_service_provider: Constructor for the domain name service provider class
+#core_net_dns.cpp:domain_name_service_provider::~domain_name_service_provider: Destructor for the domain name service provider class
+#core_net_dns.cpp:domain_name_service_provider::resolv_domain_to_hostname: Resolves a domain name to a hostname
+#core_net_dns.cpp:domain_name_service_provider::resolv_hostname_to_domain: Resolves a hostname to a domain name
+#core_net_dns.cpp:domain_name_service_provider::resolv_skip_name: Skips a name
+#core_net_dns.cpp:domain_name_service_provider::dns_request: Sends a DNS request
+#core_net_dns.cpp:domain_name_service_provider::resolve_A: Resolves an A record
+#core_net_dns.cpp:domain_name_service_provider::on_udp_message: Handles a UDP message
+#core_net_icmp.cpp:icmp_provider::icmp_provider: Constructor for the icmp provider class
+#core_net_icmp.cpp:icmp_provider::~icmp_provider: Destructor for the icmp provider class
+#core_net_icmp.cpp:icmp_provider::on_internet_protocol_received: Handles an IPv4 packet
+#core_net_icmp.cpp:icmp_provider::send_echo_request: Sends an ICMP echo request
+#core_net_icmp.cpp:icmp_provider::send_echo_reqest_and_wait: Sends an ICMP echo request and waits for an echo reply
+#core_net_socket_manager.cpp:socket_manager_socket::socket_manager_socket: Constructor for the socket manager socket class
+#core_net_socket_manager.cpp:socket_manager_socket::~socket_manager_socket: Destructor for the socket manager socket class
+#core_net_socket_manager.cpp:socket_manager_socket::connect: Connects to a host
+#core_net_socket_manager.cpp:socket_manager_socket::disconnect: Disconnects the socket
+#core_net_socket_manager.cpp:socket_manager_socket::send: Sends a TCP message
+#core_net_socket_manager.cpp:socket_manager_socket::receive: Receives a TCP message
+#core_net_socket_manager.cpp:socket_manager_socket::on_tcp_message: Handles a TCP message
+#core_net_socket_manager.cpp:socket_manager_socket::on_udp_message: Handles a UDP message
+#core_net_socket_manager.cpp:socket_manager::socket_manager: Constructor for the socket manager class
+#core_net_socket_manager.cpp:socket_manager::alloc_socket: Allocates a socket
+#core_net_socket_manager.cpp:socket_manager::free_socket: Frees a socket
+#core_net_socket_manager.cpp:socket_manager::register_socket: Registers a socket
+#core_net_socket_manager.cpp:socket_manager::get_socket: Gets a socket
+#core_net_udp.cpp:udp_handler::udp_handler: Constructor for the udp handler class
+#core_net_udp.cpp:udp_handler::~udp_handler: Destructor for the udp handler class
+#core_net_udp.cpp:udp_handler::on_udp_message: Handles a UDP message
+#core_net_udp.cpp:udp_socket::udp_socket: Constructor for the udp socket class
+#core_net_udp.cpp:udp_socket::~udp_socket: Destructor for the udp socket class
+#core_net_udp.cpp:udp_socket::handle_udp_message: Handles a UDP message
+#core_net_udp.cpp:udp_socket::send: Sends a UDP message
+#core_net_udp.cpp:udp_socket::disconnect: Disconnects the socket
+#core_net_udp.cpp:udp_provider::udp_provider: Constructor for the udp provider class
+#core_net_udp.cpp:udp_provider::on_internet_protocol_received: Handles an IPv4 packet
+#core_net_udp.cpp:udp_provider::connect: Connects to a host
+#core_net_udp.cpp:udp_provider::listen: Listens for incoming connections
+#core_net_udp.cpp:udp_provider::disconnect: Disconnects the socket
+#core_net_udp.cpp:udp_provider::send: Sends a UDP message
+#core_net_udp.cpp:udp_provider::bind: Binds the socket to a port
+
 #filesystems_foxfs_main.cpp:fs_init: fs_init for the foxfs module
 #filesystems_foxfs_main.cpp:device_init: device_init for the foxfs module
 #filesystems_foxfs_main.cpp:init: init for the foxfs module
