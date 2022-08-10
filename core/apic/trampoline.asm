@@ -9,6 +9,7 @@
 
 %define to_target(addr) ((addr - ap_trampoline) + SMP_TRAMPOLINE_ADDR)
 
+;#ap_trampoline-signature: void ap_trampoline()
 ap_trampoline:
 	cli
 	cld
@@ -36,7 +37,7 @@ ap_trampoline:
 
 [bits 64]
 
-
+;#ap_trampoline_64-signature: void ap_trampoline_64()
 ap_trampoline_64:
 	mov ax, 0x10
 	mov ds, ax
@@ -75,6 +76,8 @@ ap_trampoline_64:
 
 	jmp $
 
+
+;#ap_trampoline_data-discard
 ap_trampoline_data:
 	.status: db 0
 	.pagetable: dq 0

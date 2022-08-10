@@ -1,5 +1,6 @@
 [bits 64]
 
+;#load_gdt-signature: void load_gdt(gdt_descriptor_t* gdt_descriptor);
 [global load_gdt]
 load_gdt:
 	lgdt [rdi]

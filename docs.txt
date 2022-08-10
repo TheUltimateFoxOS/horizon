@@ -484,6 +484,45 @@
 #core_net_udp.cpp:udp_provider::send: Sends a UDP message
 #core_net_udp.cpp:udp_provider::bind: Binds the socket to a port
 
+#core_syscall_sys_time.cpp:syscall::sys_time: Syscall to get the current time
+#core_input_keyboard_input.cpp:keyboard_input_device::getstring: Gets a string from the keyboard
+#core_input_keyboard_input.cpp:keyboard_input_device::getchar: Gets a character from the keyboard
+#core_input_keyboard_input.cpp:input::keymap: Maps a keycode to a char
+#core_input_keyboard_input.cpp:input::handle_special_keys_up: Handles special keys that are released
+#core_input_keyboard_input.cpp:input::handle_special_keys_down: Handles special keys that are pressed
+#core_input_mouse_input.cpp:mouse_input_device::update: Updates the mouse
+#core_input_mouse_input.cpp:mouse_input_device::reset: Resets the mouse
+#core_renderer_renderer.cpp:renderer::setup: Sets up the renderer
+#core_renderer_render2d.cpp:render2d::render2d: Constructor for the render2d class
+#core_renderer_render2d.cpp:render2d::put_pix: Puts a pixel on the screen
+#core_renderer_render2d.cpp:render2d::load_bitmap: Loads a bitmap
+#core_renderer_render2d.cpp:render2d::get_bitmap_info: Gets the bitmap info
+#core_renderer_render2d.cpp:render2d::next_line: Goes to the next line
+
+#core_apic_apic.cpp:apic::setup: Sets up the APIC
+#core_apic_apic.cpp:apic::smp_spinup: Spins up the other processors
+#core_acpi_acpi.cpp:acpi::find_table_xsdt: Finds a table in the XSDT
+#core_acpi_acpi.cpp:acpi::find_table_rsdt: Finds a table in the RSDT
+#core_acpi_acpi.cpp:acpi::find_table: Finds a table in the RSDT or XSDT
+#core_acpi_acpi.cpp:acpi::early_setup: Sets up the ACPI
+#core_acpi_acpi.cpp:acpi::init: Initializes the ACPI
+#core_acpi_acpi.cpp:acpi::dsdt_init: Initializes the DSDT
+#core_acpi_acpi.cpp:acpi::shutdown: Shuts down the ACPI
+#core_acpi_acpi.cpp:acpi::reboot: Reboots the system
+#core_acpi_madt.cpp:acpi::madt::parse_madt: Parses the MADT
+#core_apic_apic_io.cpp:apic::lapic_write: Writes to the local APIC
+#core_apic_apic_io.cpp:apic::lapic_read: Reads from the local APIC
+#core_apic_apic_io.cpp:apic::lapic_wait: Waits for the local APIC
+#core_apic_apic_io.cpp:apic::lapic_eoi: Sends an EOI to the local APIC
+#core_apic_apic_io.cpp:apic::lapic_enable: Enables the local APIC
+#core_apic_apic_io.cpp:apic::lapic_ipi: Sends an IPI to the local APIC
+#core_apic_trampoline.cpp:apic::ap_trampoline_c: Trampoline code for the AP
+#core_apic_trampoline.asm:ap_trampoline: 16 bit trampoline code for the AP
+#core_apic_trampoline.asm:ap_trampoline_64: 64 bit trampoline code for the AP
+
+#core_gdt.asm:load_gdt: Loads the GDT
+#core_interrupts_interrupts.asm:load_idt: Loads the IDT
+
 #filesystems_foxfs_main.cpp:fs_init: fs_init for the foxfs module
 #filesystems_foxfs_main.cpp:device_init: device_init for the foxfs module
 #filesystems_foxfs_main.cpp:init: init for the foxfs module
@@ -614,4 +653,4 @@
 #exclude:filesystems_fat32_fatfs_diskio.cpp
 #exclude:filesystems_fat32_fatfs_ffunicode.cpp
 
-#ignore-ext:h,psf,ts,bmp,md,flags,module,txt,html,json,build,c,yml,o
+#ignore-ext:h,psf,ts,bmp,md,flags,module,txt,html,json,build,c,yml,o,ld
