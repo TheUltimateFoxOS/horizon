@@ -289,6 +289,110 @@
 #core_fs_saf.cpp:saf_mount::resolve: Resolves a path to a file
 #core_fs_saf.cpp:saf_mount::process_path: Processes a path
 
+#core_driver_clock.cpp:clock_device::time: Gets the time
+#core_driver_virtual_disk.cpp:virtual_disk_device::virtual_disk_device: Constructor for the virtual disk device class
+#core_driver_virtual_disk.cpp:virtual_disk_device::~virtual_disk_device: Destructor for the virtual disk device class
+#core_driver_virtual_disk.cpp:virtual_disk_device::read: Reads from the disk
+#core_driver_virtual_disk.cpp:virtual_disk_device::write: Writes to the disk
+#core_driver_disk.cpp:disk_device::disk_device: Constructor for the disk device class
+#core_driver_disk.cpp:disk_device::~disk_device: Destructor for the disk device class
+#core_driver_disk.cpp:disk_device::read: Reads from the disk
+#core_driver_disk.cpp:disk_device::write: Writes to the disk
+#core_driver_disk.cpp:disk_device::get_disk_label: Gets the disk label
+#core_driver_disk.cpp:disk_driver_manager::disk_driver_manager: Constructor for the disk driver manager class
+#core_driver_disk.cpp:disk_driver_manager::add_disk: Adds a disk to the disk driver manager
+#core_driver_disk.cpp:disk_driver_manager::read: Reads from a disk
+#core_driver_disk.cpp:disk_driver_manager::write: Writes to a disk
+#core_driver_disk.cpp:raw_disk_dev_fs::raw_disk_dev_fs: Constructor for the raw disk dev fs class
+#core_driver_disk.cpp:raw_disk_dev_fs::get_name: Gets the name of a file
+#core_driver_disk.cpp:raw_disk_dev_fs::write: Writes to a file
+#core_driver_driver.cpp:device_driver::device_driver: Constructor for the device driver class
+#core_driver_driver.cpp:device_driver::~device_driver: Destructor for the device driver class
+#core_driver_driver.cpp:device_driver::activate: Activates the device driver
+#core_driver_driver.cpp:device_driver::is_presend: Checks if the device is presend
+#core_driver_driver.cpp:device_driver::get_name: Gets the name of a device driver
+#core_driver_driver.cpp:device_driver::get_activated: Gets the activated state of a device driver
+#core_driver_driver.cpp:device_driver::set_activated: Sets the activated state of a device driver
+#core_driver_driver.cpp:driver_manager::driver_manager: Constructor for the driver manager class
+#core_driver_driver.cpp:driver_manager::add_driver: Adds a driver to the driver manager
+#core_driver_driver.cpp:driver_manager::set_status: Sets the status of a driver
+#core_driver_driver.cpp:driver_manager::activate_driver: Activates a driver
+#core_driver_driver.cpp:driver_manager::activate_all: Activates all drivers
+#core_driver_driver.cpp:driver_manager::find_driver_by_name: Finds a driver by name
+#core_driver_nic.cpp:driver::load_network_stack: Loads the network stack
+#core_driver_nic.cpp:nic_device::nic_device: Constructor for the nic device class
+#core_driver_nic.cpp:nic_device::~nic_device: Destructor for the nic device class
+#core_driver_nic.cpp:nic_device::send: Sends a packet
+#core_driver_nic.cpp:nic_device::register_nic_data_manager: Registers a nic data manager
+#core_driver_nic.cpp:nic_device::get_mac: Gets the mac address of the nic
+#core_driver_nic.cpp:nic_device::get_ip: Gets the ip address of the nic
+#core_driver_nic.cpp:nic_device::set_ip: Sets the ip address of the nic
+#core_driver_nic.cpp:nic_device::load_network_stack: Loads the network stack
+#core_driver_nic.cpp:nic_data_manager::nic_data_manager: Constructor for the nic data manager class
+#core_driver_nic.cpp:nic_data_manager::~nic_data_manager: Destructor for the nic data manager class
+#core_driver_nic.cpp:nic_data_manager::send: Sends a packet
+#core_driver_nic.cpp:nic_data_manager::recv: Receives a packet
+#core_driver_nic.cpp:nic_driver_manager::nic_driver_manager: Constructor for the nic driver manager class
+#core_driver_nic.cpp:nic_driver_manager::add_nic: Adds a nic to the nic driver manager
+#core_driver_nic.cpp:nic_driver_manager::get_nic: Gets a nic from the nic driver manager
+
+#core_interrupts_idt.cpp:idt_desc_entry_t::set_offset: Sets the offset of the idt entry
+#core_interrupts_idt.cpp:idt_desc_entry_t::get_offset: Gets the offset of the idt entry
+#core_interrupts_interrupt_handler.cpp:interrupt_handler::interrupt_handler: Constructor for the interrupt handler class
+#core_interrupts_interrupt_handler.cpp:interrupt_handler::~interrupt_handler: Destructor for the interrupt handler class
+#core_interrupts_interrupt_handler.cpp:interrupt_handler::handle: Handles an interrupt
+#core_interrupts_interrupt_handler.cpp:interrupts::register_interrupt_handler: Registers an interrupt handler
+#core_interrupts_interrupts_stub.asm:intr_common_handler: Common handler for interrupts
+#core_interrupts_interrupts.cpp:interrupts::get_interrupt_name: Gets the name of an interrupt
+#core_interrupts_interrupts.cpp:interrupts::set_idt_gate: Sets an idt gate
+#core_interrupts_interrupts.cpp:interrupts::prepare_interrupts: Prepares the interrupts
+#core_interrupts_interrupts.cpp:intr_common_handler_c: Common handler for interrupts
+#core_interrupts_interrupts.cpp:elf::unwind: Unwinds the stack
+
+#core_memory_pagetable.cpp:page_directory_entry_t::set_flag: Sets the flags of the page directory entry
+#core_memory_pagetable.cpp:page_directory_entry_t::get_flag: Gets the flags of the page directory entry
+#core_memory_pagetable.cpp:page_directory_entry_t::get_address: Gets the address of the page directory entry
+#core_memory_pagetable.cpp:page_directory_entry_t::set_address: Sets the address of the page directory entry
+#core_memory_bitmap.cpp:bitmap::operator[]: Gets the value of a bit in the bitmap
+#core_memory_bitmap.cpp:bitmap::get: Gets the value of a bit in the bitmap
+#core_memory_bitmap.cpp:bitmap::set: Sets the value of a bit in the bitmap
+#core_memory_page_table_manager.cpp:page_table_manager::page_table_manager: Constructor for the page table manager class
+#core_memory_page_table_manager.cpp:page_table_manager::map_memory: Maps a page of memory
+#core_memory_page_table_manager.cpp:page_table_manager::map_range: Maps a range of pages of memory
+#core_memory_page_table_manager.cpp:page_table_manager::virt_to_phys: Converts a virtual address to a physical address
+#core_memory_memory.cpp:memory::get_memory_size: Gets the size of the memory
+#core_memory_memory.cpp:memory::prepare_memory: Prepares the memory
+#core_memory_heap.cpp:memory::initialize_heap: Initializes the heap
+#core_memory_heap.cpp:memory::free: Frees a block of memory
+#core_memory_heap.cpp:memory::malloc: Allocates a block of memory
+#core_memory_heap.cpp:memory::realloc: Reallocates a block of memory
+#core_memory_heap.cpp:heap_segment_header_t::split: Splits a heap segment header
+#core_memory_heap.cpp:memory::expand_heap: Expands the heap
+#core_memory_heap.cpp:heap_segment_header_t::combine_forward: Combines a heap segment header forward
+#core_memory_heap.cpp:heap_segment_header_t::combine_backward: Combines a heap segment header backward
+#core_memory_heap.cpp:new: Allocates a block of memory
+#core_memory_heap.cpp:new[]: Allocates a block of memory
+#core_memory_heap.cpp:delete: Frees a block of memory
+#core_memory_heap.cpp:delete[]: Frees a block of memory
+#core_memory_page_map_indexer.cpp:page_map_indexer::page_map_indexer: Constructor for the page map indexer class
+#core_memory_page_frame_allocator.cpp:page_frame_allocator::read_EFI_memory_map: Reads the EFI memory map
+#core_memory_page_frame_allocator.cpp:page_frame_allocator::init_bitmap: Initializes the bitmap
+#core_memory_page_frame_allocator.cpp:page_frame_allocator::request_page_internal: Requests a page of memory
+#core_memory_page_frame_allocator.cpp:page_frame_allocator::request_page: Requests a page of memory
+#core_memory_page_frame_allocator.cpp:page_frame_allocator::request_pages_internal: Requests pages of memory
+#core_memory_page_frame_allocator.cpp:page_frame_allocator::request_pages: Requests pages of memory
+#core_memory_page_frame_allocator.cpp:page_frame_allocator::free_page: Frees a page of memory
+#core_memory_page_frame_allocator.cpp:page_frame_allocator::free_pages: Frees pages of memory
+#core_memory_page_frame_allocator.cpp:page_frame_allocator::lock_page: Locks a page of memory
+#core_memory_page_frame_allocator.cpp:page_frame_allocator::lock_pages: Locks pages of memory
+#core_memory_page_frame_allocator.cpp:page_frame_allocator::unreserve_page: Unreserves a page of memory
+#core_memory_page_frame_allocator.cpp:page_frame_allocator::unreserve_pages: Unreserves pages of memory
+#core_memory_page_frame_allocator.cpp:page_frame_allocator::reserve_page: Reserves a page of memory
+#core_memory_page_frame_allocator.cpp:page_frame_allocator::reserve_pages: Reserves pages of memory
+#core_memory_page_frame_allocator.cpp:page_frame_allocator::get_free_RAM: Gets the amount of free RAM
+#core_memory_page_frame_allocator.cpp:page_frame_allocator::get_used_RAM: Gets the amount of used RAM
+#core_memory_page_frame_allocator.cpp:page_frame_allocator::get_reserved_RAM: Gets the amount of reserved RAM
+
 #filesystems_foxfs_main.cpp:fs_init: fs_init for the foxfs module
 #filesystems_foxfs_main.cpp:device_init: device_init for the foxfs module
 #filesystems_foxfs_main.cpp:init: init for the foxfs module
@@ -352,7 +456,7 @@
 #filesystems_ext2_ext2_fs.cpp:fs::readdir: Reads a directory
 #filesystems_ext2_ext2_fs.cpp:fs::write_inode: Writes an inode to the disk
 #filesystems_ext2_ext2_fs.cpp:fs::read_inode: Reads an inode from the disk
-#filesystems_ext2_ext2_fs.cpp:fs::write_disk_blocks: Writes blocks to the disk
+#filesystems_ext2_ext2_fs.cpp:fs::write_disk_blocks: Writes bldeno run -A tools/doc/main.tsocks to the disk
 #filesystems_ext2_ext2_fs.cpp:fs::read_disk_blocks: Reads blocks from the disk
 #filesystems_ext2_ext2_fs.cpp:clear_buffer: Clears a buffer
 #filesystems_ext2_ext2_fs.cpp:fs::read_disk_block: Reads a block from the disk
@@ -419,4 +523,4 @@
 #exclude:filesystems_fat32_fatfs_diskio.cpp
 #exclude:filesystems_fat32_fatfs_ffunicode.cpp
 
-#ignore-ext:h,psf,ts,bmp,md,flags,module,txt,html,json,build,c,yml
+#ignore-ext:h,psf,ts,bmp,md,flags,module,txt,html,json,build,c,yml,o
