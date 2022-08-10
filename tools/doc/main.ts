@@ -67,7 +67,7 @@ function main() {
 
 			for (var d of doc) {
 				num_functions++;
-				var doc_regex = eval(`/# ?${file.path.replaceAll("/", "_")}:${d.function_name}: ?([\\w\\d ;:_\\-#+\\*.,'/]*)/g`);
+				var doc_regex = eval(`/# ?${file.path.replaceAll("/", "_")}:${d.function_name.replaceAll("[", "\\[").replaceAll("]", "\\]")}: ?([\\w\\d ;:_\\-#+\\*.,'/]*)/g`);
 				var doc_match = doc_regex.exec(docs_file);
 				if (doc_match) {
 					num_functions_documented++;
