@@ -44,6 +44,7 @@ void pc_speaker_driver::activate() {
 		}
 	}
 
+	//#scheduler::create_task-discard
 	scheduler::task_t* task = scheduler::create_task((void*) (void (*)()) []() {
 		register uint64_t driver_reg asm("rbx");
 		pc_speaker_driver* driver = (pc_speaker_driver*) driver_reg;

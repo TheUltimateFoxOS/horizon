@@ -648,9 +648,120 @@
 #features_acpi_dump_acpi_vfs.cpp:acpi_vfs::open: Opens the acpi vfs file
 #features_acpi_dump_acpi_vfs.cpp:acpi_vfs::acpi_vfs: Constructor for the acpi vfs file class
 
+#devices_pc_speaker_pc_speaker.cpp:pc_speaker_driver::pc_speaker_driver: Constructor for the pc speaker driver class
+#devices_pc_speaker_pc_speaker.cpp:pc_speaker_driver::get_channel_count: Gets the number of channels of the pc speaker
+#devices_pc_speaker_pc_speaker.cpp:pc_speaker_driver::activate: Activates the pc speaker driver
+#devices_pc_speaker_pc_speaker.cpp:pc_speaker_driver::is_presend: Checks if the pc speaker is presend
+#devices_pc_speaker_pc_speaker.cpp:pc_speaker_driver::get_name: Gets the name of the pc speaker driver
+#devices_pc_speaker_pc_speaker.cpp:pc_speaker_driver::turn_off: Turns off the pc speaker
+#devices_pc_speaker_pc_speaker.cpp:pc_speaker_driver::turn_on: Turns on the pc speaker
+#devices_pc_speaker_pc_speaker.cpp:pc_speaker_driver::set_frequency: Sets the frequency of the pc speaker
+#devices_pc_speaker_pc_speaker.cpp:pc_speaker_driver::note_to_frequency: Converts a note to a frequency
+#devices_pc_speaker_main.cpp:init: init function for the pc speaker module
+#devices_ata_ata.cpp:advanced_technology_attachment::advanced_technology_attachment: Constructor for the advanced technology attachment class
+#devices_ata_ata.cpp:advanced_technology_attachment::is_presend: Checks if the advanced technology attachment is presend
+#devices_ata_ata.cpp:advanced_technology_attachment::activate: Activates the advanced technology attachment
+#devices_ata_ata.cpp:advanced_technology_attachment::read28: Reads from the advanced technology attachment
+#devices_ata_ata.cpp:advanced_technology_attachment::write28: Writes to the advanced technology attachment
+#devices_ata_ata.cpp:advanced_technology_attachment::flush: Flushes the advanced technology attachment
+#devices_ata_ata.cpp:advanced_technology_attachment::read: Reads from the advanced technology attachment
+#devices_ata_ata.cpp:advanced_technology_attachment::write: Writes to the advanced technology attachment
+#devices_ata_ata.cpp:advanced_technology_attachment::get_name: Gets the name of the advanced technology attachment driver
+#devices_ata_main.cpp:ata_pci_device_found: Function called when a pci device is found
+#devices_ata_main.cpp:init: init function for the ata module
+#devices_cmos_cmos.cpp:cmos_driver::cmos_read: Reads from the cmos
+#devices_cmos_cmos.cpp:cmos_driver::cmos_convert: Converts from a cmos value
+#devices_cmos_cmos.cpp:cmos_driver::cmos_command: Sends a cmos command to the cmos
+#devices_cmos_cmos.cpp:cmos_driver::time: Gets the time from the cmos
+#devices_cmos_main.cpp:device_init: device init function for the cmos module
+#devices_ps2_keyboard_ps2_keyboard.cpp:ps2_keyboard::ps2_keyboard: Constructor for the ps2 keyboard driver class
+#devices_ps2_keyboard_ps2_keyboard.cpp:ps2_keyboard::activate: Activates the ps2 keyboard driver
+#devices_ps2_keyboard_ps2_keyboard.cpp:ps2_keyboard::is_presend: Checks if the ps2 keyboard is presend
+#devices_ps2_keyboard_ps2_keyboard.cpp:ps2_keyboard::get_name: Gets the name of the ps2 keyboard driver
+#devices_ps2_keyboard_ps2_keyboard.cpp:ps2_keyboard::getchar: Gets a character from the ps2 keyboard
+#devices_ps2_keyboard_ps2_keyboard.cpp:ps2_keyboard::special_key_down: handler for special key down events
+#devices_ps2_keyboard_ps2_keyboard.cpp:ps2_keyboard::special_key_up: handler for special key up events
+#devices_ps2_keyboard_ps2_keyboard.cpp:ps2_keyboard::handle: interrupt handler for the ps2 keyboard
+#devices_ps2_keyboard_ps2_keyboard.cpp:ps2_keyboard::write: Writes to the ps2 keyboard dev fs file
+#devices_ps2_keyboard_ps2_keyboard.cpp:ps2_keyboard::read: Reads from the ps2 keyboard dev fs file
+#devices_ps2_keyboard_main.cpp:device_init: device init function for the ps2 keyboard module
+#devices_am79C973_main.cpp:am79C973_found: Function called when a am79C973 is found
+#devices_am79C973_main.cpp:init: init function for the am79C973 module
+#devices_am79C973_am79C973.cpp:am79C973_driver::~am79C973_driver: Destructor for the am79C973 driver class
+#devices_am79C973_am79C973.cpp:am79C973_driver::activate: Activates the am79C973 driver
+#devices_am79C973_am79C973.cpp:am79C973_driver::handle: interrupt handler for the am79C973 driver
+#devices_am79C973_am79C973.cpp:am79C973_driver::send: Sends a packet
+#devices_am79C973_am79C973.cpp:am79C973_driver::receive: Receives a packet
+#devices_am79C973_am79C973.cpp:am79C973_driver::get_name: Gets the name of the am79C973 driver
+#devices_am79C973_am79C973.cpp:am79C973_driver::get_mac: Gets the mac of the am79C973 driver
+#devices_am79C973_am79C973.cpp:am79C973_driver::get_ip: Gets the ip of the am79C973 driver
+#devices_am79C973_am79C973.cpp:am79C973_driver::set_ip: Sets the ip of the am79C973 driver
+#devices_e1000_e1000.cpp:e1000_driver::~e1000_driver: Destructor for the e1000 driver class
+#devices_e1000_e1000.cpp:e1000_driver::write_command: Writes a command to the e1000
+#devices_e1000_e1000.cpp:e1000_driver::read_command: Reads a command from the e1000
+#devices_e1000_e1000.cpp:e1000_driver::detect_eeprom: Detects the eeprom of the e1000
+#devices_e1000_e1000.cpp:e1000_driver::read_eeprom: Reads from the eeprom of the e1000
+#devices_e1000_e1000.cpp:e1000_driver::read_mac_address: Reads the mac address from the e1000
+#devices_e1000_e1000.cpp:e1000_driver::rx_init: Initializes the receive buffer
+#devices_e1000_e1000.cpp:e1000_driver::tx_init: Initializes the transmit buffer
+#devices_e1000_e1000.cpp:e1000_driver::start_link: Starts the link
+#devices_e1000_e1000.cpp:e1000_driver::activate: Activates the e1000 driver
+#devices_e1000_e1000.cpp:e1000_driver::receive: Receives a packet
+#devices_e1000_e1000.cpp:e1000_driver::send: Sends a packet
+#devices_e1000_e1000.cpp:e1000_driver::handle: interrupt handler for the e1000 driver
+#devices_e1000_e1000.cpp:e1000_driver::get_name: Gets the name of the e1000 driver
+#devices_e1000_e1000.cpp:e1000_driver::get_mac: Gets the mac of the e1000 driver
+#devices_e1000_e1000.cpp:e1000_driver::get_ip: Gets the ip of the e1000 driver
+#devices_e1000_e1000.cpp:e1000_driver::set_ip: Sets the ip of the e1000 driver
+#devices_e1000_main.cpp:e1000_found: Function called when a e1000 is found
+#devices_e1000_main.cpp:init: init function for the e1000 module
+#devices_ps2_mouse_ps2_mouse.cpp:ps2_mouse::ps2_mouse: Constructor for the ps2 mouse driver class
+#devices_ps2_mouse_ps2_mouse.cpp:ps2_mouse::activate: Activates the ps2 mouse driver
+#devices_ps2_mouse_ps2_mouse.cpp:ps2_mouse::is_presend: Checks if the ps2 mouse is presend
+#devices_ps2_mouse_ps2_mouse.cpp:ps2_mouse::get_name: Gets the name of the ps2 mouse driver
+#devices_ps2_mouse_ps2_mouse.cpp:ps2_mouse::handle: interrupt handler for the ps2 mouse driver
+#devices_ps2_mouse_ps2_mouse.cpp:ps2_mouse::mouse_wait: Waits for the mouse to be ready
+#devices_ps2_mouse_ps2_mouse.cpp:ps2_mouse::mouse_wait_input: Waits for the mouse to be ready for input
+#devices_ps2_mouse_ps2_mouse.cpp:ps2_mouse::mouse_write: Writes to the mouse
+#devices_ps2_mouse_ps2_mouse.cpp:ps2_mouse::mouse_read: Reads from mouse
+#devices_ps2_mouse_main.cpp:device_init: device init function for the ps2 mouse module
+#devices_rtl8139_rtl8139.cpp:rtl8139_driver::~rtl8139_driver: Destructor for the rtl8139 driver class
+#devices_rtl8139_rtl8139.cpp:rtl8139_driver::send: Sends a packet
+#devices_rtl8139_rtl8139.cpp:rtl8139_driver::get_mac: Gets the mac of the rtl8139 driver
+#devices_rtl8139_rtl8139.cpp:rtl8139_driver::get_ip: Gets the ip of the rtl8139 driver
+#devices_rtl8139_rtl8139.cpp:rtl8139_driver::set_ip: Sets the ip of the rtl8139 driver
+#devices_rtl8139_rtl8139.cpp:rtl8139_driver::receive: Receives a packet
+#devices_rtl8139_rtl8139.cpp:rtl8139_driver::handle: interrupt handler for the rtl8139 driver
+#devices_rtl8139_rtl8139.cpp:rtl8139_driver::activate: Activates the rtl8139 driver
+#devices_rtl8139_rtl8139.cpp:rtl8139_driver::get_name: Gets the name of the rtl8139 driver
+#devices_rtl8139_main.cpp:rtl8139_found: Function called when a rtl8139 is found
+#devices_rtl8139_main.cpp:init: init function for the rtl8139 module
+#devices_ahci_ahci.cpp:ahci_driver::ahci_driver: Constructor for the ahci driver class
+#devices_ahci_ahci.cpp:ahci_driver::get_name: Gets the name of the ahci driver
+#devices_ahci_ahci.cpp:check_port_type: Checks the port type
+#devices_ahci_ahci.cpp:ahci_driver::probe_ports: Probes the ports
+#devices_ahci_ahci.cpp:ahci_driver::activate: Activates the ahci driver
+#devices_ahci_ahci.cpp:ahci_driver::is_presend: Checks if the ahci is presend
+#devices_ahci_ahci_port.cpp:ahci_port::configure: Configures the port
+#devices_ahci_ahci_port.cpp:ahci_port::stop_command: Stops the command
+#devices_ahci_ahci_port.cpp:ahci_port::start_command: Starts the command
+#devices_ahci_ahci_port.cpp:ahci_port::read: Reads from the disk
+#devices_ahci_ahci_port.cpp:ahci_port::write: Writes to the disk
+#devices_ahci_main.cpp:ahci_pci_device_found: Function called when a ahci device is found
+#devices_ahci_main.cpp:init: init function for the ahci module
+#devices_xhci_xhci.cpp:xhci_timeout: Function to call a function with a timeout
+#devices_xhci_xhci.cpp:xhci_driver::xhci_driver: Constructor for the xhci driver class
+#devices_xhci_xhci.cpp:xhci_driver::handle: interrupt handler for the xhci driver
+#devices_xhci_xhci.cpp:xhci_driver::activate: Activates the xhci driver
+#devices_xhci_xhci.cpp:xhci_driver::get_name: Gets the name of the xhci driver
+#devices_xhci_xhci.cpp:xhci_driver::intel_enable_ports: Enables the ports
+#devices_xhci_xhci.cpp:xhci_driver::reset_controller: Resets the controller
+#devices_xhci_main.cpp:xhci_found: Function called when a xhci device is found
+#devices_xhci_main.cpp:init: init function for the xhci module
+
 #exclude:filesystems_fat32_fatfs_ff.cpp
 #exclude:filesystems_fat32_fatfs_ffsystem.cpp
 #exclude:filesystems_fat32_fatfs_diskio.cpp
 #exclude:filesystems_fat32_fatfs_ffunicode.cpp
 
-#ignore-ext:h,psf,ts,bmp,md,flags,module,txt,html,json,build,c,yml,o,ld
+#ignore-ext:h,psf,ts,bmp,md,flags,module,txt,html,json,build,c,yml,o,ld,elf
