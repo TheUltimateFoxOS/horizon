@@ -47,6 +47,7 @@
 #core_syscall_sys_delay.cpp:syscall::sys_delay: Syscall to delay the current process
 #core_syscall_sys_icmp_echo_request.cpp:syscall::sys_icmp_echo_request: Syscall to send an icmp echo request
 #core_syscall_sys_insmod.cpp:syscall::sys_insmod: Syscall to load a kernel module
+#core_syscall_sys_dbg.cpp:syscall::sys_dbg: Syscall to print a debug message
 #core_utils_argparse.cpp:setup_global_argparser: Sets up the global argparser
 #core_utils_argparse.cpp:argparser::get_arg: Gets an argument from the argparser
 #core_utils_argparse.cpp:argparser::is_arg: Checks if an argument is present in the argparser
