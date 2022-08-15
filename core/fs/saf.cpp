@@ -62,7 +62,12 @@ dir_t saf_mount::dir_at(int idx, char* path) {
 	debugf("dir_at: %s (%d)\n", path, idx);
 	char* path_cpy = new char[strlen(path) + 1];
 	strcpy(path_cpy, path);
-	path_cpy[strlen(path)] = 0;;
+	path_cpy[strlen(path)] = 0;
+	
+	// remove trailing slash
+	if (path_cpy[strlen(path) - 1] == '/') {
+		path_cpy[strlen(path) - 1] = 0;
+	}
 
 	char** path_parts = process_path(path_cpy);
 
