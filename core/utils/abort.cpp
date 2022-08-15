@@ -17,6 +17,9 @@
 
 extern uint8_t screen_of_death[];
 
+uint64_t program_start;
+uint64_t program_end;
+
 __attribute__((noreturn))
 void abortf(const char* fmt, ...) {
 	__asm__ volatile("cli");
@@ -65,6 +68,9 @@ void abortf(const char* fmt, ...) {
 		printf("Current task: %s\n", scheduler::task_queue[core_id]->list[0]->argv[0]);
 	}
 
+	program_start = (uint64_t) scheduler::task_queue[core_id]->list[0]->offset;
+	program_end = (uint64_t) scheduler::task_queue[core_id]->list[0]->offset + scheduler::task_queue[core_id]->list[0]->page_count * 4096;
+
 	printf("\nStarting stack trace:\n");
 
 	int max_lines = (renderer::global_renderer_2d->target->height - renderer::global_font_renderer->cursor_position.y) / 16;
@@ -79,7 +85,11 @@ void abortf(const char* fmt, ...) {
 			sprintf(str, "%s + %d", elf::resolve_symbol(rip), rip - elf::resolve_symbol(elf::resolve_symbol(rip)));
 			printf("%s\n", str);
 		} else {
-			printf("<unknown function at 0x%x>\n", rip);
+			if (rip >= program_start && rip < program_end) {
+				printf("<unknown function at 0x%x (0x%x)>\n", rip, rip - program_start);
+			} else {
+				printf("<unknown function at 0x%x>\n", rip);
+			}
 		}
 	});
 
