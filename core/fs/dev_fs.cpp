@@ -50,6 +50,10 @@ void dev_fs::unregister_file(dev_fs_file* file) {
 }
 
 file_t* dev_fs::open(char* path) {
+	if (path[0] == '/') {
+		path++;
+	}
+	
 	debugf("Opening dev fs file %s\n", path);
 	list<dev_fs_file*>::node* file_node = files.find<char*>([] (char* p, list<dev_fs_file*>::node* n) {
 		return strcmp(p, n->data->get_name()) == 0;
