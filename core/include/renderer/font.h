@@ -15,7 +15,7 @@ namespace renderer {
 	};
 
 	struct psf1_font_t {
-		psf1_header_t* psf1_Header;
+		psf1_header_t* header;
 		void* glyph_buffer;
 	};
 }

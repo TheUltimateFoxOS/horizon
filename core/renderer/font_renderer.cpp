@@ -66,7 +66,7 @@ void font_renderer::putchar(char c) {
 	if (c >= 20 && c <= 126) {
 
 		uint32_t* pix_ptr = (uint32_t*) target_frame_buffer->base_address;
-		char* font_ptr = (char*) font->glyph_buffer + (c * font->psf1_Header->charsize);
+		char* font_ptr = (char*) font->glyph_buffer + (c * font->header->charsize);
 
 		for (unsigned long y = cursor_position.y; y < cursor_position.y + 16; y++){
 			for (unsigned long x = cursor_position.x; x < cursor_position.x + 8; x++){

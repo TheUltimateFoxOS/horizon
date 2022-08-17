@@ -279,7 +279,6 @@ void scheduler::read_running_tasks(task_t** tasks, int max_tasks) {
 				for (int j = 0; j < len; j++) {
 					if (j < max_tasks) {
 						tasks[slot] = task_queue[i]->list[j];
-						debugf("Setting task slot %d to %p\n", slot, tasks[slot]);
 						max_tasks--;
 						slot++;
 					} else {

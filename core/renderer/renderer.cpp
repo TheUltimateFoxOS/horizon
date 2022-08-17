@@ -46,7 +46,7 @@ void renderer::setup() {
 	void* glyph_buffer = (default_font + sizeof(psf1_header_t));
 
 	psf1_font_t* finished_font = new psf1_font_t;
-	finished_font->psf1_Header = font_header;
+	finished_font->header = font_header;
 	finished_font->glyph_buffer = glyph_buffer;
 
 	debugf("Creating global_font_renderer\n");
