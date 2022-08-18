@@ -254,32 +254,24 @@ extern "C" void intr_common_handler_c(s_registers* regs) {
 		debugf_raw("\n");
 		debugf("Error code: %x\n", regs->error_code);
 
-		scheduler::task_t* tasks[512];
-		memset(tasks, 0, sizeof(scheduler::task_t*) * 512);
+		LAPIC_ID(id);
 
-		scheduler::read_running_tasks((scheduler::task_t**) tasks, 512);
+		scheduler::task_t* task = scheduler::task_queue[id]->list[0];
 
-		for (int i = 0; i < 512; i++) {
-			if (tasks[i] != 0) {
-				task_start_address = (uint64_t) tasks[i]->offset;
-				task_end_address = task_start_address + (tasks[i]->page_count * 0x1000);
+		task_start_address = (uint64_t) task->offset;
+		task_end_address = task_start_address + (task->page_count * 0x1000);
 
-				if (regs->rip >= task_start_address && regs->rip < task_end_address) {
-					debugf("Caused by task \"%s\" at %x. Stack trace:\n", tasks[i]->argv[0], ((uint64_t) regs->rip) - task_start_address);
+		debugf("Caused by task \"%s\" at %x. Stack trace:\n", task->argv[0], ((uint64_t) regs->rip) - task_start_address);
 
-					elf::unwind(10, regs->rbp, [](int frame_num, uint64_t rip) {
-						if (rip >= task_start_address && rip < task_end_address) {
-							debugf("%d: %x\n", frame_num, rip - task_start_address);
-						}
-					});
-
-					break;
-				}
-
-				task_start_address = 0;
-				task_end_address = 0;
+		elf::unwind(10, regs->rbp, [](int frame_num, uint64_t rip) {
+			if (rip >= task_start_address && rip < task_end_address) {
+				debugf("%d: %x\n", frame_num, rip - task_start_address);
 			}
-		}
+		});
+
+
+		task_start_address = 0;
+		task_end_address = 0;
 
 		if (!scheduler::handle_signal(regs->interrupt_number)) {
 			abortf(interrupt_name);
