@@ -14,6 +14,8 @@
 
 #include <apic/apic.h>
 
+#include <config.h>
+
 using namespace interrupts;
 
 namespace interrupts {
@@ -273,9 +275,14 @@ extern "C" void intr_common_handler_c(s_registers* regs) {
 		task_start_address = 0;
 		task_end_address = 0;
 
+	#ifdef SEND_SIGNALS
 		if (!scheduler::handle_signal(regs->interrupt_number)) {
 			abortf(interrupt_name);
 		}
+	#else
+		#warning "Signal sending is disabled!!!"
+		abortf(interrupt_name);
+	#endif
 	}
 
 	if (regs->interrupt_number == 0xff) {
