@@ -108,7 +108,7 @@ heap_segment_header_t* heap_segment_header_t::split(size_t split_length) {
 	}
 
 	heap_segment_header_t* new_split_hdr = (heap_segment_header_t*) ((size_t) this + split_length + sizeof(heap_segment_header_t));
-	next->last = new_split_hdr; // Set the next segment's last segment to our new segment
+	// next->last = new_split_hdr; // Set the next segment's last segment to our new segment
 	new_split_hdr->next = this->next; // Set the new segment's next segment to out original next segment
 	if (this->next) {
 		this->next->last = new_split_hdr; // Set the next segment's last segment to our new segment

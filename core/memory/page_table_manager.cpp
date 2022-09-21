@@ -5,6 +5,7 @@
 #include <memory/page_table_manager.h>
 #include <memory/page_map_indexer.h>
 #include <memory/page_frame_allocator.h>
+#include <utils/log.h>
 
 #include <utils/string.h>
 
@@ -19,6 +20,11 @@ page_table_manager::page_table_manager(page_table_t* PML4_address) {
 }
 
 void page_table_manager::map_memory(void* virtual_memory, void* physical_memory) {
+	if (virtual_memory == 0 || physical_memory == 0) {
+		debugf("--- WARNING --- Trying to map 0 page! Skipping...");
+		return;
+	}
+
 	page_map_indexer indexer = page_map_indexer((uint64_t) virtual_memory);
 	page_directory_entry_t PDE;
 
