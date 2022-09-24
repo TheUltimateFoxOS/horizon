@@ -29,7 +29,7 @@ static stivale2_header_tag_smp smp_tag = {
 		.identifier = STIVALE2_HEADER_TAG_SMP_ID,
 		.next = (uint64_t) &framebuffer_tag
 	},
-	.flags = 1 // use x2APIC if aviable
+	.flags = 0 // DO NOT use x2APIC
 };
 
 extern "C" void _start_stivale2();
