@@ -2,6 +2,7 @@
 [global bootstrap_data]
 [extern load_gdt]
 
+;#bootstrap-signature: void bootstrap()
 bootstrap:
 	cli
 
@@ -39,6 +40,7 @@ bootstrap:
 
 	jmp $
 
+;#bootstrap_data-discard
 bootstrap_data:
 	.status: db 0
 	.pagetable: dq 0

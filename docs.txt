@@ -180,6 +180,10 @@
 #core_sanitizers_ubsan.cpp:__ubsan_handle_nonnull_arg: Sanitizer handler for a nonnull argument
 #core_sanitizers_ubsan.cpp:__ubsan_handle_load_invalid_value: Sanitizer handler for a load invalid value
 
+#core_scheduler_smp.cpp:smp::ap_main: Main entry point for application processors
+#core_scheduler_smp.cpp:smp::startup: Start all application processors using the boot_info struct
+#core_scheduler_bootstrap.asm:bootstrap: Sets up a application processors to be able to run cpp code
+
 #core_boot_limine_entry.asm:cpu_init: Initializes the CPU
 #core_boot_limine_entry.asm:_start_limine: The main entry point for the limine boot protocol
 #core_boot_stivale2.cpp:boot::print_boot_info: Prints the boot information
