@@ -60,7 +60,10 @@ void smp::startup() {
 		__asm__ __volatile__ ("mov %%cr3, %%rax" : "=a"(data->pagetable));
 
 
-		*boot::boot_info.smp[i].target_stack = (uint64_t) memory::global_allocator.request_page() + 4096;;
+		if (boot::boot_info.smp[i].target_stack) {
+			*boot::boot_info.smp[i].target_stack = (uint64_t) memory::global_allocator.request_page() + 4096;
+		}
+
 		*boot::boot_info.smp[i].goto_address = (uint64_t) &bootstrap;
 
 		int timeout = 100;

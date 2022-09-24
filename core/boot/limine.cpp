@@ -57,6 +57,11 @@ static volatile limine_smbios_request smbios_request = {
 	.revision = 0
 };
 
+static volatile limine_smp_request smp_request = {
+	.id = LIMINE_SMP_REQUEST,
+	.flags = 0 // DO NOT use x2APIC
+};
+
 class limine_output_device : public output::output_device {
 	public:
 		virtual void putstring(const char *str) {
@@ -156,6 +161,21 @@ extern "C" void limine_entry() {
 
 	boot::boot_info.smbios_entry_64 = (void*) smbios_request.response->entry_64;
 	boot::boot_info.smbios_entry_32 = (void*) smbios_request.response->entry_32;
+
+	boot::boot_smp_core_t smp[smp_request.response->cpu_count];
+	for (int i = 0; i < smp_request.response->cpu_count; i++) {
+		smp[i] = {
+			.processor_id = smp_request.response->cpus[i]->processor_id,
+			.lapic_id = smp_request.response->cpus[i]->lapic_id,
+			.target_stack = nullptr, // bootloader automatically allocates that
+			.goto_address = (uint64_t*) &smp_request.response->cpus[i]->goto_address,
+		};
+	}
+
+
+	boot::boot_info.smp_entries = smp_request.response->cpu_count;
+	boot::boot_info.smp = smp;
+
 
 	boot::print_boot_info(&boot::boot_info, [](char* str) {
 		int len = 0;
