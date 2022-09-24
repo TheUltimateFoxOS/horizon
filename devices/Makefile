@@ -4,8 +4,8 @@ all:
 	make -C ahci
 	make -C ata
 	make -C cmos
-	# make -C e1000
-	# make -C am79C973
-	# make -C rtl8139
+	make -C e1000
+	make -C am79C973
+	make -C rtl8139
 	make -C pc_speaker
 	#make -C xhci
