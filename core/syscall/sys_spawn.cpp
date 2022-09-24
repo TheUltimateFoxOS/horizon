@@ -18,10 +18,10 @@ void syscall::sys_spawn(interrupts::s_registers* regs) {
     const char** envp = (const char**) regs->rdx;
 
     scheduler::task_t* task = elf::load_elf(name, argv, envp);
-	task->lock = true;
     if (task == nullptr) {
         debugf("Failed to load elf: %s\n", name);
     } else {
+		task->lock = true;
         if ((bool) regs->rsi) {
             // clone cwd
             char* self_cwd = (char*) scheduler::get_cwd_self();
@@ -48,9 +48,9 @@ void syscall::sys_spawn(interrupts::s_registers* regs) {
             debugf("Cloning pipe enabled\n");
             task->pipe_enabled = self->pipe_enabled;
         }
-    }
 
-	task->lock = false;
+		task->lock = false;
+    }
 
     regs->rax = (uint64_t) task;
 }
