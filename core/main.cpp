@@ -38,6 +38,7 @@
 #include <apic/apic.h>
 
 #include <scheduler/scheduler.h>
+#include <scheduler/smp.h>
 
 #include <syscall/syscall.h>
 
@@ -144,7 +145,8 @@ extern "C" void main() {
 
 	if (global_argparser->is_arg("--smp")) {
 		debugf("---WARNING--- SMP is VERY experimental!\n");
-		apic::smp_spinup();
+		// apic::smp_spinup();
+		smp::startup();
     }
 
 	BOOT_PROGRESS(30);

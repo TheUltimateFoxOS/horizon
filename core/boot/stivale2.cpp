@@ -24,6 +24,14 @@ static stivale2_header_tag_framebuffer framebuffer_tag = {
 	.framebuffer_bpp = 32
 };
 
+static stivale2_header_tag_smp smp_tag = {
+	.tag = {
+		.identifier = STIVALE2_HEADER_TAG_SMP_ID,
+		.next = (uint64_t) &framebuffer_tag
+	},
+	.flags = 1 // use x2APIC if aviable
+};
+
 extern "C" void _start_stivale2();
 
 __attribute__((section(".stivale2hdr"), used))
@@ -31,7 +39,7 @@ static stivale2_header __stivale2_header = {
 	.entry_point = (uintptr_t) _start_stivale2,
 	.stack = (uintptr_t) stack + sizeof(stack),
 	.flags = (1 << 2) | (1 << 3) | (1 << 4),
-	.tags = (uint64_t) &framebuffer_tag
+	.tags = (uint64_t) &smp_tag
 };
 
 typedef void (*term_write_t)(const char*, int len);
@@ -153,6 +161,23 @@ extern "C" void stivale2_entry(stivale2_struct* bootinfo) {
 	stivale2_struct_tag_smbios* smbios_tag = stivale2_tag_find<stivale2_struct_tag_smbios>(bootinfo, STIVALE2_STRUCT_TAG_SMBIOS_ID);
 	boot::boot_info.smbios_entry_32 = (void*) smbios_tag->smbios_entry_32;
 	boot::boot_info.smbios_entry_64 = (void*) smbios_tag->smbios_entry_64;
+
+	stivale2_struct_tag_smp* smp_tag = stivale2_tag_find<stivale2_struct_tag_smp>(bootinfo, STIVALE2_STRUCT_TAG_SMP_ID);
+
+	boot::boot_smp_core_t smp[smp_tag->cpu_count];
+	for (int i = 0; i < smp_tag->cpu_count; i++) {
+		smp[i] = {
+			.processor_id = smp_tag->smp_info[i].processor_id,
+			.lapic_id = smp_tag->smp_info[i].lapic_id,
+			.target_stack = &smp_tag->smp_info[i].target_stack,
+			.goto_address = &smp_tag->smp_info[i].goto_address,
+		};
+	}
+
+
+	boot::boot_info.smp_entries = smp_tag->cpu_count;
+	boot::boot_info.smp = smp;
+
 
 	boot::print_boot_info(&boot::boot_info, [](char* str) {
 		int len = 0;

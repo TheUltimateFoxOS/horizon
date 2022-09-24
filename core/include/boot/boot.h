@@ -18,6 +18,13 @@ namespace boot {
 		char string[128];
 	};
 
+	struct boot_smp_core_t {
+		uint32_t processor_id;
+		uint32_t lapic_id;
+		uint64_t* target_stack;
+		uint64_t* goto_address;
+	};
+
 	struct boot_info_t {
 		renderer::framebuffer_t framebuffer;
 
@@ -41,6 +48,9 @@ namespace boot {
 
 		void* smbios_entry_32;
 		void* smbios_entry_64;
+
+		uint64_t smp_entries;
+		boot_smp_core_t* smp;
 	};
 
 	#define MMAP_USABLE                 1

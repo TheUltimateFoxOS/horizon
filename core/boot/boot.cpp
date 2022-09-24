@@ -116,6 +116,12 @@ void boot::print_boot_info(boot_info_t* info, void (*write_str)(char* str)) {
 	memset(buffer, 0, sizeof(buffer));
 	sprintf(buffer, "SMBIOS 32 address: 0x%x\n", info->smbios_entry_32);
 	write_str(buffer);
+
+	for (int i = 0; i < info->smp_entries; i++) {
+		memset(buffer, 0, sizeof(buffer));
+		sprintf(buffer, "core %d: lapic id: %d, tgs: 0x%x, gta: 0x%x\n", info->smp[i].processor_id, info->smp[i].lapic_id, info->smp[i].target_stack, info->smp[i].goto_address);
+		write_str(buffer);
+	}
 }
 
 char* __bootinfo_dev_fs_file_data = nullptr;
