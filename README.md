@@ -7,6 +7,8 @@ The project structure will look something like this:
 - /core -> contains the core kernel stuff like paging and memory management it will also contain some very basic drivers like the VGA/serial and ps2 drivers.
 - /devices/\<device name\> -> contains the drivers for the device as a loadable module.
 - /filesystems/\<fs name\> -> contains the drivers for the filesystem as a loadable module.
+- /features/\<feature name\> -> contains the kernel features as a loadable module.
+- /tools/\<tool name\> -> tools used to build the kernel / the documentation
 
 ## The strict design principles
 
@@ -14,7 +16,7 @@ The project structure will look something like this:
 - the core kernel contains the vfs/network stack but no actual device drivers the device drivers are in the /\<device name\> as loadable modules (does not apply for the stivale2 bootmodules vfs driver)
 - the loaded drivers can manually scan for the device in case of for example ata or call a register_pci_driver function to register a function witch gets called when a device is found
 - the modules get loaded as early as possible
-- the vfs is going to be as simple as possible on the kernel side. The vfs is not going to implement the following functions:
+- the vfs is going to be as simple as possible on the kernel side. The vfs is going to implement the following functions:
 - - `file_t* open(char* path)`
 - - `void close(file_t* file)`
 - - `void read(file_t* file, void* buffer, size_t size, size_t offset)`
@@ -22,6 +24,8 @@ The project structure will look something like this:
 - - `void delete(file_t* file) // also closes file`
 - - `void mkdir(char* path)`
 - - `dir_t dir_at(int idx, char* path) // reurn is_none in struct`
+- - `void touch(char* path)`
+- - `void delete_dir(char* path)`
 - A module can specify the following function and they fill be called in that order by the kernel:
 - - init (directly called after loading)
 - - device_init (called in the device init phase of the kernel)
