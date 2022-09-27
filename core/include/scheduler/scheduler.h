@@ -12,7 +12,8 @@ namespace scheduler {
 	typedef void (*system)(char* in);
 
 	enum signal_handlers {
-		SIG_SPECIAL_KEY_UP = 33, // signals before signal 33 are exceptions
+		SIG_KASSERT_FAIL = 33, // signals before signal 33 are exceptions
+		SIG_SPECIAL_KEY_UP,
 		SIG_SPECIAL_KEY_DOWN,
 		SIG_INTR
 	};
