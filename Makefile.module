@@ -33,8 +33,8 @@ endif
 LDFLAGS = -r
 
 module: $(OBJS)
-	@echo LD $^
-	@$(LD) $(LDFLAGS) -o $(BUILDDIR)/$(MODULE_NAME) $^
+	@echo LD $^ $(USER_OBJECTS)
+	@$(LD) $(LDFLAGS) -o $(BUILDDIR)/$(MODULE_NAME) $^ $(USER_OBJECTS)
 
 	@echo "Compiled using asm: $(ASM), cc: $(CC), ld: $(LD)"
 

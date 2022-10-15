@@ -1,0 +1,9 @@
+[build]
+target = "../../foxos_rs/x86_64.json"
+
+[target.x86_64]
+rustflags = ["--emit=obj", "-C", "relocation-model=static", "-Z", "plt=no", "-C", "code-model=large"]
+
+[unstable]
+build-std = ["core", "alloc", "compiler_builtins"]
+build-std-features = ["compiler-builtins-mem"]

@@ -131,6 +131,12 @@ extern "C" {
 		debugf("DEBUG: laihost_handle_amldebug with %x\n", var);
 	}
 
+	void laihost_handle_global_notify(lai_nsnode_t* node, int _) {
+		debugf("DEBUG: laihost_handle_global_notify with %x\n", node);
+
+	}
+
+
 	int laihost_sync_wait(struct lai_sync_state *sync, unsigned int val, int64_t timeout) {
 		debugf("WARNING: laihost_sync_wait not implemented!\n");
 		return -1;

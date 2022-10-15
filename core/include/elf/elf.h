@@ -129,6 +129,7 @@ namespace elf {
 	#define R_X86_64_PC32 2
 	#define R_X86_64_PLT32 4
 	#define R_X86_64_RELATIVE 8
+	#define R_X86_64_PC64 24
 
 	typedef struct {
 		Elf64_Addr r_offset;

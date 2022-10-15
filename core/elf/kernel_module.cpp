@@ -128,7 +128,7 @@ module_t* elf::load_kernel_module(void* module, uint32_t size) {
 				uint64_t _symbol_addr = resolve_symbol(_symbol);
 
 				if (_symbol_addr == 0) {
-					debugf("WARNING: Could not resolve symbol %s\n", _symbol);
+					abortf("Could not resolve symbol %s", _symbol);
 					sym_table[sym].st_value = 0;
 				} else {
 					// debugf("Resolved symbol %s to %x\n", _symbol, _symbol_addr);
@@ -186,8 +186,12 @@ module_t* elf::load_kernel_module(void* module, uint32_t size) {
 					*(int32_t*) target = rel_table[rela].r_addend + symbol_table[ELF64_R_SYM(rel_table[rela].r_info)].st_value;
 					break;
 
+				case R_X86_64_PC64:
+					*(uint64_t*) target = rel_table[rela].r_addend + symbol_table[ELF64_R_SYM(rel_table[rela].r_info)].st_value - target;
+					break;
+
 				default:
-					debugf("WARNING: Unsupported relocation type %d\n", ELF64_R_TYPE(rel_table[rela].r_info));
+					abortf("Unsupported relocation type %d", ELF64_R_TYPE(rel_table[rela].r_info));
 					break;
 			}
 		}

@@ -1,6 +1,6 @@
 all:
 	make -C ps2_keyboard
-	make -C ps2_mouse
+	make -C ps2_mouse_rs
 	make -C ahci
 	make -C ata
 	make -C cmos

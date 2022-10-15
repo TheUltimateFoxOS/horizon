@@ -1,0 +1,18 @@
+[package]
+name = "ps2_mouse"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+foxos_rs = { path = "../../foxos_rs"}
+cstr_core = "0.2.6"
+
+[dependencies.lazy_static]
+version = "1.0"
+features = ["spin_no_std"]
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"

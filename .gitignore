@@ -3,3 +3,5 @@
 /docs/**
 !/docs/.placeholder
 /.vscode/**
+target
+Cargo.lock
