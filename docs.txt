@@ -140,11 +140,11 @@
 #core_renderer_font_renderer.cpp:font_renderer::font_renderer: Constructor for the class
 #core_timer_timer.cpp:timer::setup: Sets up the timers in the system
 #core_timer_timer.cpp:timer_device::sleep: Sleeps for a certain amount of time
-#core_timer_hpet.cpp:timer_device::get_ticks_per_second: Gets the number ticks per second of the timer
-#core_timer_hpet.cpp:timer_device::get_ticks: Gets the current number of ticks of the timer since initialized
+#core_timer_timer.cpp:timer_device::get_ticks_per_second: Gets the number ticks per second of the timer
+#core_timer_timer.cpp:timer_device::get_ticks: Gets the current number of ticks of the timer since initialized
 #core_timer_pit.cpp:pit_timer::sleep: Sleeps for a certain amount of time
-#core_timer_hpet.cpp:pit_timer::get_ticks_per_second: Gets the number ticks per second of the pit timer
-#core_timer_hpet.cpp:pit_timer::get_ticks: Gets the current number of ticks of the pit timer since initialized
+#core_timer_pit.cpp:pit_timer::get_ticks_per_second: Gets the number ticks per second of the pit timer
+#core_timer_pit.cpp:pit_timer::get_ticks: Gets the current number of ticks of the pit timer since initialized
 #core_timer_pit.cpp:pit_timer::handle: Handles the timer interrupt for the pit timer
 #core_timer_pit.cpp:pit_timer::set_divisor: Sets the divisor of the pit timer
 #core_timer_pit.cpp:pit_timer::pit_timer: Constructor for the pit timer class
