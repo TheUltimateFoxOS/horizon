@@ -16,12 +16,12 @@ void timer_device::sleep(uint32_t ms) {
 }
 
 uint64_t timer_device::get_ticks_per_second() {
-	debugf("pit_timer::get_ticks_per_second not implemented");
+	debugf("timer_device::get_ticks_per_second not implemented");
 	return 0;
 }
 
 uint64_t timer_device::get_ticks() {
-	debugf("pit_timer::get_ticks not implemented");
+	debugf("timer_device::get_ticks not implemented");
 	return 0;
 }
 

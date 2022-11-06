@@ -12,6 +12,8 @@
 #core_syscall_sys_socket_disconnect.cpp:syscall::sys_socket_disconnect: Syscall to disconnect a socket
 #core_syscall_sys_mkdir.cpp:syscall::sys_mkdir: Syscall to create a directory
 #core_core_syscall_sys_time.cpp:syscall::sys_time: Syscall to get the current unix time
+#core_syscall_sys_clock.cpp:syscall::sys_clock: Syscall to get the current number of timer ticks since boot
+#core_syscall_sys_clock.cpp:syscall::sys_clock_ticks_per_second: Syscall to get the number of timer ticks per second
 #core_syscall_sys_memory_info.cpp:syscall::sys_memory_info: Syscall to get the memory information
 #core_syscall_sys_sound_push_note.cpp:syscall::sys_sound_push_note: Syscall to push a note to the sound device queue
 #core_syscall_syscall_handler.asm:syscall_interrupt_stub: The syscall interrupt stub
@@ -138,12 +140,18 @@
 #core_renderer_font_renderer.cpp:font_renderer::font_renderer: Constructor for the class
 #core_timer_timer.cpp:timer::setup: Sets up the timers in the system
 #core_timer_timer.cpp:timer_device::sleep: Sleeps for a certain amount of time
+#core_timer_hpet.cpp:timer_device::get_ticks_per_second: Gets the number ticks per second of the timer
+#core_timer_hpet.cpp:timer_device::get_ticks: Gets the current number of ticks of the timer since initialized
 #core_timer_pit.cpp:pit_timer::sleep: Sleeps for a certain amount of time
+#core_timer_hpet.cpp:pit_timer::get_ticks_per_second: Gets the number ticks per second of the pit timer
+#core_timer_hpet.cpp:pit_timer::get_ticks: Gets the current number of ticks of the pit timer since initialized
 #core_timer_pit.cpp:pit_timer::handle: Handles the timer interrupt for the pit timer
 #core_timer_pit.cpp:pit_timer::set_divisor: Sets the divisor of the pit timer
 #core_timer_pit.cpp:pit_timer::pit_timer: Constructor for the pit timer class
 #core_timer_hpet.cpp:hpet_timer::is_available: Checks if the hpet timer is available
 #core_timer_hpet.cpp:hpet_timer::sleep: Sleeps for a certain amount of time
+#core_timer_hpet.cpp:hpet_timer::get_ticks_per_second: Gets the number ticks per second of the hpet timer
+#core_timer_hpet.cpp:hpet_timer::get_ticks: Gets the current number of ticks of the hpet timer since initialized
 #core_timer_hpet.cpp:hpet_timer::hpet_timer: Constructor for the hpet timer class
 #core_sound_sound.cpp:sound_device::get_channel_count: Gets the number of channels of the sound device
 #core_sound_sound.cpp:sound_device::sync: Waits until the sound device queue is empty
