@@ -9,6 +9,8 @@ namespace timer {
 			pit_timer();
 
 			virtual void sleep(uint32_t ms);
+			virtual uint64_t get_ticks_per_second();
+			virtual uint64_t get_ticks();
 
 			uint16_t divisor = 65535;
 			uint64_t ticks_since_boot = 0;

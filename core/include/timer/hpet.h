@@ -23,6 +23,9 @@ namespace timer {
 			hpet_t* hpet;
 
 			virtual void sleep(uint32_t ms);
+			virtual uint64_t get_ticks_per_second();
+			virtual uint64_t get_ticks();
+			
 			static bool is_available();
 	};
 

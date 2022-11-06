@@ -29,6 +29,14 @@ void hpet_timer::sleep(uint32_t ms) {
 	}
 }
 
+uint64_t hpet_timer::get_ticks_per_second() {
+	return 1250000000000000 / ((this->hpet->capabilities >> 32) & 0xffffffff);
+}
+
+uint64_t hpet_timer::get_ticks() {
+	return this->hpet->counter_value;
+}
+
 bool hpet_timer::is_available() {
 	acpi::hpet_table_t* hpet_table = (acpi::hpet_table_t*) acpi::find_table((char*) "HPET", 0);
 	if (hpet_table == nullptr) {

@@ -34,3 +34,11 @@ void pit_timer::sleep(uint32_t ms) {
 		__asm__ __volatile__("hlt");
 	}
 }
+
+uint64_t pit_timer::get_ticks_per_second() {
+	return 100 * (1193180 / divisor);
+}
+
+uint64_t pit_timer::get_ticks() {
+	return ticks_since_boot;
+}

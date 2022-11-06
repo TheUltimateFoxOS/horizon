@@ -39,6 +39,8 @@ namespace syscall {
 	void sys_spawn(interrupts::s_registers* regs);
 	void sys_env(interrupts::s_registers* regs);
 	void sys_time(interrupts::s_registers* regs);
+	void sys_clock(interrupts::s_registers* regs);
+	void sys_clock_ticks_per_second(interrupts::s_registers* regs);
 	void sys_touch(interrupts::s_registers* regs);
 	void sys_delete_dir(interrupts::s_registers* regs);
 
