@@ -17,6 +17,12 @@ namespace scheduler {
 		SIG_SPECIAL_KEY_DOWN,
 		SIG_INTR
 	};
+	
+	typedef enum {
+		UNKNOWN_EXECUTABLE = 0,
+		ELF_EXECUTABLE,
+		FEXEC_EXECUTABLE
+	} executable_type_t;
 
 	struct task_t {
 		interrupts::s_registers registers;
@@ -27,7 +33,7 @@ namespace scheduler {
 		bool kill_me; // if true task gets killed
 		bool lock; // if true task is locked and doesent get scheduled
 
-		bool is_elf; // if true task is started from an elf
+		bool is_binary; // if true task is started from an elf
 		char** argv;
 		char** envp;
 
@@ -49,6 +55,7 @@ namespace scheduler {
 		system system_method;
 
 		int running_on_cpu;
+		executable_type_t type;
 	};
 
 	void setup();

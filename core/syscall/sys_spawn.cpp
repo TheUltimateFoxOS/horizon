@@ -2,6 +2,7 @@
 
 #include <scheduler/scheduler.h>
 #include <elf/elf_loader.h>
+#include <fexec/fexec_loader.h>
 
 #include <utils/log.h>
 
@@ -17,11 +18,26 @@ void syscall::sys_spawn(interrupts::s_registers* regs) {
     const char** argv = (const char**) regs->rcx;
     const char** envp = (const char**) regs->rdx;
 
-    scheduler::task_t* task = elf::load_elf(name, argv, envp);
+    scheduler::executable_type_t type = (scheduler::executable_type_t) regs->rdi;
+
+    scheduler::task_t* task;
+    switch (type) {
+        case scheduler::ELF_EXECUTABLE:
+            task = elf::load_elf(name, argv, envp);
+            break;
+        case scheduler::FEXEC_EXECUTABLE:
+            task = fexec::load_fexec(name, argv, envp);
+            break;
+        default:
+            task = nullptr;
+            break;
+    }
+
     if (task == nullptr) {
         debugf("Failed to load elf: %s\n", name);
     } else {
-		task->lock = true;
+        task->lock = true;
+        task->type = type;
         if ((bool) regs->rsi) {
             // clone cwd
             char* self_cwd = (char*) scheduler::get_cwd_self();
@@ -49,7 +65,7 @@ void syscall::sys_spawn(interrupts::s_registers* regs) {
             task->pipe_enabled = self->pipe_enabled;
         }
 
-		task->lock = false;
+        task->lock = false;
     }
 
     regs->rax = (uint64_t) task;

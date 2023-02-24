@@ -8,6 +8,7 @@ int strnlen(const char *s, int maxlen);
 char* strcat(char* dest, const char* src); // X
 int strcmp(char* str1, char* str2); // x
 char* strchr(const char* str, int chr);
+char* strrchr(const char* str, int chr);
 
 int sprintf(char *buf, const char *fmt, ...);
 

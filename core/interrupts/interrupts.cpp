@@ -14,6 +14,8 @@
 
 #include <apic/apic.h>
 
+#include <elf/kernel_module.h>
+
 #include <config.h>
 
 using namespace interrupts;
@@ -201,8 +203,10 @@ void interrupts::prepare_interrupts() {
 	__asm__ __volatile__ ("sti");
 }
 
-uint64_t task_start_address = 0; //Used in the stack trace
-uint64_t task_end_address = 0;
+queue<scheduler::task_t*>* task_queue; //Used in the stack trace
+
+extern uint64_t kernel_start;
+extern uint64_t kernel_end;
 
 //#intr_common_handler_c-doc: The general purpose interrupt handler. This handler is called when an interrupt is received. The handler will check if there is a interrupt handler for the interrupt. If there is a interrupt handler, the handler will be called. If the interrupt is a exception, the handler will cause a panic if there is no signal handler.
 extern "C" void intr_common_handler_c(s_registers* regs) {
@@ -229,12 +233,12 @@ extern "C" void intr_common_handler_c(s_registers* regs) {
 			}
 
 			tmp >>= 2;
-			debugf_raw(" Index: %x.", tmp);
+			debugf_raw(" Index: 0x%x.", tmp);
 		}
 
 		if (regs->interrupt_number == 0xe) { //Page fault error code
 			uint64_t faulting_address = regs->cr2;
-			debugf_raw(" at %x.", faulting_address);
+			debugf_raw(" at 0x%x.", faulting_address);
 
 			if (!(regs->error_code & 0x1)) {
 				debugf_raw(" Page not present.");
@@ -258,22 +262,66 @@ extern "C" void intr_common_handler_c(s_registers* regs) {
 
 		LAPIC_ID(id);
 
-		scheduler::task_t* task = scheduler::task_queue[id]->list[0];
+		task_queue = scheduler::task_queue[id]; 
 
-		task_start_address = (uint64_t) task->offset;
-		task_end_address = task_start_address + (task->page_count * 0x1000);
+		if (regs->rip >= ((uint64_t) &kernel_start) && regs->rip < ((uint64_t) &kernel_end)) {
+			debugf("Caused by kernel at 0x%x. Stack trace:\n", regs->rip);
+		} else {
+			list<elf::module_t*>::node* found_module = elf::modules->find<uint64_t>([](uint64_t rip, list<elf::module_t*>::node* node) {
+				elf::module_t* tmp_module = node->data;
+				if (tmp_module->base_address != nullptr) {
+					return rip >= (uint64_t) tmp_module->base_address && rip < (uint64_t) tmp_module->base_address + (tmp_module->loaded_pages * 0x1000);
+				}
 
-		debugf("Caused by task \"%s\" at %x. Stack trace:\n", task->argv[0], ((uint64_t) regs->rip) - task_start_address);
+				return false;
+			}, regs->rip);
+
+			if (found_module == nullptr) {
+				scheduler::task_t* task = task_queue->list[0];
+				debugf("Caused by task \"%s\" at 0x%x. Stack trace:\n", task->argv[0], regs->rip - ((uint64_t) task->offset));
+			} else {
+				debugf("Caused by module \"%s\" at 0x%x. Stack trace:\n", found_module->data->name, regs->rip - ((uint64_t) found_module->data->base_address));
+			}
+		}
 
 		elf::unwind(10, regs->rbp, [](int frame_num, uint64_t rip) {
-			if (rip >= task_start_address && rip < task_end_address) {
-				debugf("%d: %x\n", frame_num, rip - task_start_address);
+			scheduler::task_t* task = nullptr;
+			for (int i = 0; i < task_queue->len; i++) {
+				scheduler::task_t* tmp_task = task_queue->list[i];
+				if (rip >= (uint64_t) tmp_task->offset && rip < (uint64_t) tmp_task->offset + (tmp_task->page_count * 0x1000)) {
+					task = tmp_task;
+					break;
+				}
 			}
+
+			if (task != nullptr) {
+				debugf("%d: TASK %s: 0x%x\n", frame_num, task->argv[0], rip - ((uint64_t) task->offset));
+				return;
+			}
+
+			list<elf::module_t*>::node* found_module = elf::modules->find<uint64_t>([](uint64_t rip, list<elf::module_t*>::node* node) {
+				elf::module_t* tmp_module = node->data;
+				if (tmp_module->base_address != nullptr) {
+					return rip >= (uint64_t) tmp_module->base_address && rip < (uint64_t) tmp_module->base_address + (tmp_module->loaded_pages * 0x1000);
+				}
+
+				return false;
+			}, rip);
+
+			if (found_module != nullptr) {
+				debugf("%d: MODULE %s: 0x%x\n", frame_num, found_module->data->name, rip - ((uint64_t) found_module->data->base_address));
+				return;
+			}
+
+			if (rip >= ((uint64_t) &kernel_start) && rip < ((uint64_t) &kernel_end)) {
+				debugf("%d: KERNEL: 0x%x\n", frame_num, rip);
+				return;
+			}
+
+			debugf("%d: UNKNOWN: 0x%x\n", frame_num, rip); //Not sure when and how this would happen
 		});
 
-
-		task_start_address = 0;
-		task_end_address = 0;
+		task_queue = 0;
 
 	#ifdef SEND_SIGNALS
 		if (!scheduler::handle_signal(regs->interrupt_number)) {

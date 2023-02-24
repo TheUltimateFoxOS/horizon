@@ -38,6 +38,23 @@ char* strchr(const char* str, int chr) {
 	return NULL;
 }
 
+char* strrchr(const char* s, int c) {
+	const char *found, *p;
+
+	c = (unsigned char) c;
+	if (c == '\0') {
+		return strchr(s, '\0');
+	}
+
+	found = NULL;
+	while ((p = strchr (s, c)) != NULL) {
+		found = p;
+		s = p + 1;
+	}
+
+	return (char*) found;
+}
+
 char* strcat(char* dest, const char* src) {
 	char* d = dest;
 	while(*d) {

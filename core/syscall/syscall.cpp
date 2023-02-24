@@ -31,7 +31,7 @@ void syscall::get_id_syscall(interrupts::s_registers* regs) {
 // }
 
 void syscall::setup() {
-	debugf("Setting up syscall's...\n");
+	debugf("Setting up syscalls...\n");
 	syscall_id_list = new list<syscall_entry_t>(20);
 
 	syscall_table[0] = (uint64_t) get_id_syscall;

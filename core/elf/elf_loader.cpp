@@ -79,7 +79,7 @@ scheduler::task_t* elf::load_elf(void* ptr, const char** argv, const char** envp
 
 
 	if(__builtin_bswap32(header->e_ident.i) != elf::MAGIC) {
-		return nullptr; // no elf
+		return nullptr; // not an elf
 	}
 	if(header->e_ident.c[elf::EI_CLASS] != elf::ELFCLASS64) {
 		return nullptr; // not 64 bit
@@ -120,7 +120,7 @@ scheduler::task_t* elf::load_elf(void* ptr, const char** argv, const char** envp
 	}
 	
 	scheduler::task_t* new_task = scheduler::create_task((void*) (header->e_entry + (uint64_t) offset));
-	new_task->is_elf = true;
+	new_task->is_binary = true;
 	new_task->offset = offset;
 	new_task->page_count = (uint64_t) last_dest / 0x1000 + 1;
 	new_task->argv = (char**) argv;

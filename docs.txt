@@ -536,34 +536,6 @@
 #core_gdt.asm:load_gdt: Loads the GDT
 #core_interrupts_interrupts.asm:load_idt: Loads the IDT
 
-#filesystems_foxfs_main.cpp:fs_init: fs_init for the foxfs module
-#filesystems_foxfs_main.cpp:device_init: device_init for the foxfs module
-#filesystems_foxfs_main.cpp:init: init for the foxfs module
-#filesystems_foxfs_foxfs_vfs.cpp:foxfs_mount::delete_dir: Deletes a directory
-#filesystems_foxfs_foxfs_vfs.cpp:foxfs_mount::delete_: Deletes a file
-#filesystems_foxfs_foxfs_vfs.cpp:foxfs_mount::dir_at: Gets the directory at a certain index
-#filesystems_foxfs_foxfs_vfs.cpp:foxfs_mount::mkdir: Creates a directory
-#filesystems_foxfs_foxfs_vfs.cpp:foxfs_mount::touch: Creates a file
-#filesystems_foxfs_foxfs_vfs.cpp:foxfs_mount::write: Writes to a file
-#filesystems_foxfs_foxfs_vfs.cpp:foxfs_mount::read: Reads from a file
-#filesystems_foxfs_foxfs_vfs.cpp:foxfs_mount::close: Closes a file
-#filesystems_foxfs_foxfs_vfs.cpp:foxfs_mount::open: Opens a file
-#filesystems_foxfs_foxfs_vfs.cpp:foxfs_mount::~foxfs_mount: Destructor for the foxfs mount class
-#filesystems_foxfs_foxfs_vfs.cpp:foxfs_mount::foxfs_mount: Constructor for the foxfs mount class
-#filesystems_foxfs_foxfs_fs.cpp:fs::create_dirent: Creates a dirent
-#filesystems_foxfs_foxfs_fs.cpp:fs::path_to_dirent: Converts a path to a dirent
-#filesystems_foxfs_foxfs_fs.cpp:segment_path: Splits a path into segments
-#filesystems_foxfs_foxfs_fs.cpp:fs::readdir: Reads a directory
-#filesystems_foxfs_foxfs_fs.cpp:fs::write_dirent: Writes a directory entry
-#filesystems_foxfs_foxfs_fs.cpp:fs::update_dirent_write: Updates a directory entry
-#filesystems_foxfs_foxfs_fs.cpp:fs::write_dirent_data: Writes directory entry data
-#filesystems_foxfs_foxfs_fs.cpp:fs::read_dirent: Reads a directory entry
-#filesystems_foxfs_foxfs_fs.cpp:fs::update_dirent_read: Updates a directory entry
-#filesystems_foxfs_foxfs_fs.cpp:fs::read_dirent_data: Reads directory entry data
-#filesystems_foxfs_foxfs_fs.cpp:fs::create_data_block: Creates a data block
-#filesystems_foxfs_foxfs_fs.cpp:fs::write_disk_block: Writes a block to the disk
-#filesystems_foxfs_foxfs_fs.cpp:fs::read_disk_block: Reads a block from the disk
-
 #filesystems_fat32_main.cpp:fs_init: fs_init for the fat32 module
 #filesystems_fat32_main.cpp:device_init: device_init for the fat32 module
 #filesystems_fat32_main.cpp:init: init for the fat32 module

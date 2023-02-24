@@ -1,4 +1,4 @@
-MODULE_NAME = foxfs.o
+MODULE_NAME = tmpfs.o
 
 include ../../Makefile.flags
 
