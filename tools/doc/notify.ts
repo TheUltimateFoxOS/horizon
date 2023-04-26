@@ -7,7 +7,7 @@ export function notify(hook: string, current_documented_functions: number, funct
 	} else {
 		var embed = new RichEmbed()
 		embed.title = "Not all functions documented"
-		embed.description = `${current_documented_functions} of ${functions} functions documented, this are ${Math.round(current_documented_functions / functions * 100)}% of the functions`
+		embed.description = `${current_documented_functions} of ${functions} functions documented, that is ${Math.round(current_documented_functions / functions * 100)}% of the functions`
 		embed.color = 0xff0000
 		var webhook = new Webhook(hook);
 		webhook.post(embed);

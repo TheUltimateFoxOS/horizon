@@ -3,7 +3,7 @@
 #include <stdint.h>
 
 namespace fexec {
-    constexpr uint32_t MAGIC = 0xf0c505ab;
+    constexpr uint32_t MAGIC = 0x45584546;
 
     typedef struct {
         uint32_t magic;
