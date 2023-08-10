@@ -125,7 +125,7 @@ void boot_screen_renderer::handle() {
 	}
 
 	divider++;
-	if (divider == 200) {
+	if (divider == timer::global_pit_timer->get_ticks_per_second() / 4) {
 		divider = 0;
 	} else {
 		return;

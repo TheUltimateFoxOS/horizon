@@ -11,6 +11,7 @@ namespace timer {
 			virtual void sleep(uint32_t ms);
 			virtual uint64_t get_ticks_per_second();
 			virtual uint64_t get_ticks();
+			uint64_t get_ticks_ms();
 
 			uint16_t divisor = 65535;
 			uint64_t ticks_since_boot = 0;
@@ -18,6 +19,7 @@ namespace timer {
 			virtual void handle();
 
 			Port8Bit channel_0;
+			Port8Bit init;
 
 			void set_divisor(uint16_t this_divisor);
 	};
