@@ -15,7 +15,7 @@ render2d::render2d(framebuffer_t* target_framebuffer) {
 }
 
 void render2d::put_pix(uint32_t x, uint32_t y, uint32_t colour) {
-	*(uint32_t*)((uint64_t)target->base_address + (x * 4) + (y * 4 * target->width)) = colour;
+	*(uint32_t*)((uint64_t)target->base_address + x + (y * (target->pitch / 4))) = colour;
 }
 
 void render2d::load_bitmap(uint8_t data[], int y) {
@@ -48,7 +48,7 @@ void render2d::load_bitmap(uint8_t data[], int y) {
 
 	for (int i = src_height; 0 < i; i--) {
 		for(int j = 0; j < width; j++) {
-			int where = (j + (i * target->width)) * 4 + location;     
+			int where = (j + (i * target->pitch / 4)) * 4 + location;
 			for (int c = 2; 0 <= c; c--) {
 				uint8_t g = logo_data[((j * src_width) / width + (((src_height - i) * src_height) / src_height) * src_width) * bit_count + c];
 				uint8_t* screen = (uint8_t*) target->base_address;
@@ -90,7 +90,7 @@ void render2d::load_bitmap(uint8_t data[], int y, int x) {
 
 	for (int i = src_height; 0 < i; i--) {
 		for(int j = 0; j < width; j++) {
-			int where = (j + (i * target->width)) * 4 + location;     
+			int where = (j + (i * target->pitch / 4)) * 4 + location;
 			for (int c = 2; 0 <= c; c--) {
 				uint8_t g = logo_data[((j * src_width) / width + (((src_height - i) * src_height) / src_height) * src_width) * bit_count + c];
 				uint8_t* screen = (uint8_t*) target->base_address;

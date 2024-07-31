@@ -119,6 +119,7 @@ extern "C" void limine_entry() {
 		.buffer_size = (size_t) framebuffer_request.response->framebuffers[0]->width * framebuffer_request.response->framebuffers[0]->height * 4,
 		.width = framebuffer_request.response->framebuffers[0]->width,
 		.height = framebuffer_request.response->framebuffers[0]->height,
+		.pitch = framebuffer_request.response->framebuffers[0]->pitch,
 	};
 
 	boot::boot_info.command_line = kernel_file_request.response->kernel_file->cmdline;

@@ -110,7 +110,8 @@ extern "C" void stivale2_entry(stivale2_struct* bootinfo) {
 		.base_address = (void*) framebuffer_tag->framebuffer_addr,
 		.buffer_size = (size_t) framebuffer_tag->framebuffer_width * framebuffer_tag->framebuffer_height * 4,
 		.width = framebuffer_tag->framebuffer_width,
-		.height = framebuffer_tag->framebuffer_height
+		.height = framebuffer_tag->framebuffer_height,
+		.pitch = framebuffer_tag->framebuffer_pitch,
 	};
 
 	stivale2_struct_tag_cmdline* cmdline_tag = stivale2_tag_find<stivale2_struct_tag_cmdline>(bootinfo, STIVALE2_STRUCT_TAG_CMDLINE_ID);

@@ -71,7 +71,7 @@ void font_renderer::putchar(char c) {
 		for (unsigned long y = cursor_position.y; y < cursor_position.y + 16; y++){
 			for (unsigned long x = cursor_position.x; x < cursor_position.x + 8; x++){
 				if ((*font_ptr & (0b10000000 >> (x - cursor_position.x))) > 0){
-					*(unsigned int*)(pix_ptr + x + (y * target_frame_buffer->width)) = color;
+					*(unsigned int*)(pix_ptr + x + (y * (target_frame_buffer->pitch / 4))) = color;
 				}
 			}
 			font_ptr++;
