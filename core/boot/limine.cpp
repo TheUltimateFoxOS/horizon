@@ -115,7 +115,7 @@ extern "C" void limine_entry() {
 	}
 
 	boot::boot_info.framebuffer = {
-		.base_address = framebuffer_request.response->framebuffers[0]->address,
+		.base_address = (uint32_t*) framebuffer_request.response->framebuffers[0]->address,
 		.buffer_size = (size_t) framebuffer_request.response->framebuffers[0]->width * framebuffer_request.response->framebuffers[0]->height * 4,
 		.width = framebuffer_request.response->framebuffers[0]->width,
 		.height = framebuffer_request.response->framebuffers[0]->height,

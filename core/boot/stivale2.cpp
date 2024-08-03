@@ -107,7 +107,7 @@ extern "C" void stivale2_entry(stivale2_struct* bootinfo) {
 	}
 
 	boot::boot_info.framebuffer = {
-		.base_address = (void*) framebuffer_tag->framebuffer_addr,
+		.base_address = (uint32_t*) framebuffer_tag->framebuffer_addr,
 		.buffer_size = (size_t) framebuffer_tag->framebuffer_width * framebuffer_tag->framebuffer_height * 4,
 		.width = framebuffer_tag->framebuffer_width,
 		.height = framebuffer_tag->framebuffer_height,

@@ -15,7 +15,7 @@ render2d::render2d(framebuffer_t* target_framebuffer) {
 }
 
 void render2d::put_pix(uint32_t x, uint32_t y, uint32_t colour) {
-	*(uint32_t*)((uint64_t)target->base_address + x + (y * (target->pitch / 4))) = colour;
+	*(uint32_t*)(target->base_address + x + (y * (target->pitch / 4))) = colour;
 }
 
 void render2d::load_bitmap(uint8_t data[], int y) {
